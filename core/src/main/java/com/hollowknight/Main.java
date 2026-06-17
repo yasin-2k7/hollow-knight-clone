@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.hollowknight.view.GameAssetManager;
+import com.hollowknight.view.InputManager;
 import com.hollowknight.view.MainMenuScreen;
 import com.hollowknight.view.UiManager;
 
@@ -18,6 +19,7 @@ public class Main extends Game {
         batch = new SpriteBatch();
 
         GameAssetManager.init();
+        InputManager.resetToDefaults();
         UiManager.init(this);
         MainMenuScreen mainMenuScreen = new com.hollowknight.view.MainMenuScreen();
         setScreen(mainMenuScreen);

@@ -2,6 +2,7 @@ package com.hollowknight.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.hollowknight.Main;
 import com.hollowknight.model.enums.GameAction;
 
 public class InputManager {

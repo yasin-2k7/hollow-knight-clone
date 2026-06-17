@@ -50,7 +50,7 @@ public class MainMenuScreen extends MenuScreen {
 
 
         rootTable.setFillParent(true);
-        rootTable.top();
+        rootTable.top().pad(40);
 
         rootTable.add(titleTable).row();
         rootTable.add(buttonsTable).pad(20);

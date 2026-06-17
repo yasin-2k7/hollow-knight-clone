@@ -26,7 +26,7 @@ public class LanguageSettingMenuScreen extends MenuScreen{
 
         rootTable.setFillParent(true);
 
-        rootTable.pad(60).top();
+        rootTable.pad(40).top();
         rootTable.defaults().pad(20);
         rootTable.add(title).row();
         rootTable.add(title_up).spaceBottom(100).row();

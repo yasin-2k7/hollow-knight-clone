@@ -15,7 +15,7 @@ public class UiManager {
     }
 
     public static MenuScreen getScreen(){
-        if (main.getScreen() instanceof MenuScreen abstractScreen){
+        if (main.getScreen() != null && main.getScreen() instanceof MenuScreen abstractScreen){
             return abstractScreen;
         }
         return null;

@@ -24,7 +24,7 @@ public class AudioSettingMenuScreen extends MenuScreen{
 
         rootTable.setFillParent(true);
 
-        rootTable.pad(60).top();
+        rootTable.pad(40).top();
         rootTable.defaults().pad(20);
         rootTable.add(title).colspan(2).row();
         rootTable.add(title_up).colspan(2).spaceBottom(60).row();
@@ -35,7 +35,7 @@ public class AudioSettingMenuScreen extends MenuScreen{
         rootTable.add(reset).bottom().colspan(2).expandY();
 
         backTable.setFillParent(true);
-        backTable.pad(60);
+        backTable.pad(40);
         backTable.bottom().left().add(backBtn).pad(10);
 
         rootStack.add(backTable);

@@ -21,7 +21,7 @@ public class SettingMenuScreen extends MenuScreen{
         TextButton backBtn = new TextButton(Texts.BACK.get(App.getCurrentLanguage()), skin, "default");
 
         rootTable.setFillParent(true);
-        rootTable.pad(60).top();
+        rootTable.pad(40).top();
         rootTable.defaults().pad(10);
         rootTable.add(title).row();
         rootTable.add(title_up).spaceBottom(90).row();
