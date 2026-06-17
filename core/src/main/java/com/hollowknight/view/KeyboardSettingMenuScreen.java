@@ -25,7 +25,7 @@ public class KeyboardSettingMenuScreen extends MenuScreen{
         rootTable.setFillParent(true);
         rootTable.pad(40).center().top();
         rootTable.defaults().pad(20);
-
+        reset = new TextButton(Texts.RESET.get(App.getCurrentLanguage()), skin, "default");
 
 
         buildKeyboardMenu();
@@ -96,7 +96,7 @@ public class KeyboardSettingMenuScreen extends MenuScreen{
 
         }
 
-        reset = new TextButton(Texts.RESET.get(App.getCurrentLanguage()), skin, "default");
+
         rootTable.row();
         rootTable.add(reset).bottom().colspan(4).expandY();
     }
