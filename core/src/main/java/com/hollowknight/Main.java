@@ -3,6 +3,8 @@ package com.hollowknight;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.hollowknight.model.App;
+import com.hollowknight.model.GameSave;
 import com.hollowknight.view.GameAssetManager;
 import com.hollowknight.view.InputManager;
 import com.hollowknight.view.MainMenuScreen;
@@ -21,6 +23,7 @@ public class Main extends Game {
         GameAssetManager.init();
         InputManager.resetToDefaults();
         UiManager.init(this);
+        App.getSaveSlots()[2] = new GameSave(5, 10, 22, 5, 8);
         MainMenuScreen mainMenuScreen = new com.hollowknight.view.MainMenuScreen();
         setScreen(mainMenuScreen);
 

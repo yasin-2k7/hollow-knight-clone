@@ -26,7 +26,7 @@ public class PointerMenuButton extends Table {
         this.textButton = new TextButton(text, skin, styleName);
 
         // 2. Load your pointer frame animation sequence
-        pointerAnim = new Animation<>(0.05f,
+        pointerAnim = new Animation<>(0.03f,
             atlas.findRegion("main_menu_pointer_anim0000"),
             atlas.findRegion("main_menu_pointer_anim0001"),
             atlas.findRegion("main_menu_pointer_anim0002"),

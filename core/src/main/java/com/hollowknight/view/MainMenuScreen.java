@@ -62,6 +62,13 @@ public class MainMenuScreen extends MenuScreen {
             }
         });
 
+        startBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                fadeAndSwitchScreen(new StartGameMenuScreen());
+            }
+        });
+
     }
 
 }
