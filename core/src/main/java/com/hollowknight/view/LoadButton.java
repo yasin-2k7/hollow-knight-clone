@@ -79,6 +79,11 @@ public class LoadButton extends Button {
 
         this.addListener(new ClickListener(){
             @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+            }
+
+            @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 over.setVisible(true);
             }

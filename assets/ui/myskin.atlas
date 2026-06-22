@@ -6,245 +6,252 @@ filter: Linear, Linear
 repeat: none
 select_game_HUD_0001_health
   rotate: false
-  xy: 1053, 1092
+  xy: 1350, 238
   size: 33, 41
   orig: 33, 41
   offset: 0, 0
   index: -1
 select_game_HUD_0002_health_frame
   rotate: false
-  xy: 1095, 1196
+  xy: 1095, 422
   size: 172, 106
   orig: 172, 106
   offset: 0, 0
   index: -1
 selector
   rotate: false
-  xy: 741, 1030
+  xy: 741, 98
   size: 310, 103
   orig: 310, 103
   offset: 0, 0
   index: -1
 white-pixel
   rotate: false
-  xy: 727, 894
+  xy: 1053, 103
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 MenuSliderHandle
   rotate: false
-  xy: 1277, 1483
+  xy: 1095, 361
   size: 51, 59
   orig: 51, 59
   offset: 0, 0
   index: -1
 checkbox0
   rotate: false
-  xy: 1947, 1865
+  xy: 1925, 1839
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 checkbox1
   rotate: false
-  xy: 1845, 1865
+  xy: 1925, 1941
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 checkbox2
   rotate: false
-  xy: 1, 87
+  xy: 1925, 1737
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 save_up
   rotate: false
-  xy: 1, 1135
+  xy: 1, 361
   size: 1092, 167
   orig: 1092, 167
   offset: 0, 0
   index: -1
+GameBG
+  rotate: false
+  xy: 1, 1273
+  size: 1408, 768
+  orig: 1408, 768
+  offset: 0, 0
+  index: -1
 TrajanPro-Regular
   rotate: false
-  xy: 1, 189
+  xy: 741, 203
   size: 506, 76
   orig: 506, 76
   offset: 0, 0
   index: -1
 edited
   rotate: false
-  xy: 1, 267
+  xy: 1411, 1529
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 Area_Forgotten Crossroads
   rotate: false
-  xy: 1, 1016
+  xy: 1, 242
   size: 738, 117
   orig: 738, 117
   offset: 0, 0
   index: -1
 Area_Green_Path
   rotate: false
-  xy: 1, 897
+  xy: 1, 123
   size: 738, 117
   orig: 738, 117
   offset: 0, 0
   index: -1
 button_skin_0003_wide_square_key
   rotate: false
-  xy: 515, 684
+  xy: 1053, 106
   size: 208, 95
   orig: 208, 95
   offset: 0, 0
   index: -1
 button_skin_0004_square_arrow
   rotate: false
-  xy: 515, 439
+  xy: 1263, 110
   size: 95, 95
   orig: 95, 95
   offset: 0, 0
   index: -1
 button_skin_0004_square_arrow_d
   rotate: false
-  xy: 1845, 1620
+  xy: 828, 1
   size: 95, 95
   orig: 95, 95
   offset: 0, 0
   index: -1
 button_skin_0004_square_arrow_r
   rotate: false
-  xy: 515, 342
+  xy: 925, 1
   size: 95, 95
   orig: 95, 95
   offset: 0, 0
   index: -1
 button_skin_0004_square_arrow_u
   rotate: false
-  xy: 1845, 1523
+  xy: 1925, 974
   size: 95, 95
   orig: 95, 95
   offset: 0, 0
   index: -1
 button_skin_0004_square_key
   rotate: false
-  xy: 515, 245
+  xy: 1277, 673
   size: 95, 95
   orig: 95, 95
   offset: 0, 0
   index: -1
 title_down
   rotate: false
-  xy: 1, 1304
+  xy: 1, 530
   size: 1274, 238
   orig: 1274, 238
   offset: 0, 0
   index: -1
 title_up
   rotate: false
-  xy: 1, 781
+  xy: 1, 7
   size: 724, 114
   orig: 724, 114
   offset: 0, 0
   index: -1
 title_up_others
   rotate: false
-  xy: 1331, 1967
+  xy: 741, 281
   size: 654, 78
   orig: 654, 78
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0000
   rotate: false
-  xy: 741, 956
+  xy: 1249, 207
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0001
   rotate: false
-  xy: 515, 610
+  xy: 1925, 1663
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0002
   rotate: false
-  xy: 1845, 1791
+  xy: 1925, 1589
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0003
   rotate: false
-  xy: 1, 13
+  xy: 1925, 1515
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0004
   rotate: false
-  xy: 103, 115
+  xy: 1925, 1441
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0005
   rotate: false
-  xy: 842, 956
+  xy: 1925, 1367
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0006
   rotate: false
-  xy: 515, 536
+  xy: 1925, 1293
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0007
   rotate: false
-  xy: 616, 610
+  xy: 1925, 1219
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0008
   rotate: false
-  xy: 1845, 1717
+  xy: 1925, 1145
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0009
   rotate: false
-  xy: 1946, 1791
+  xy: 1925, 1071
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 main_menu_pointer_anim0010
   rotate: false
-  xy: 204, 115
+  xy: 727, 24
   size: 99, 72
   orig: 99, 72
   offset: 0, 0
   index: -1
 vheart_title
   rotate: false
-  xy: 1, 1544
+  xy: 1, 770
   size: 1328, 501
   orig: 1328, 501
   offset: 0, 0
   index: -1
 large
   rotate: false
-  xy: 1331, 1453
+  xy: 1411, 1015
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
