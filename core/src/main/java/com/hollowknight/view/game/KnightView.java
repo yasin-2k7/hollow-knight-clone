@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.hollowknight.model.App;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enums.KnightState;
 
@@ -81,7 +82,14 @@ public class KnightView {
             currentFrame.flip(true, false);
         }
 
-        batch.draw(currentFrame, knight.getPosition().x, knight.getPosition().y, 45f, 25f);
+        float scale = 1 / 5f;
+        float renderX = knight.getPosition().x - (knight.getwOffset() * scale);
+        float renderY = knight.getPosition().y - (knight.gethOffsetDown() * scale);
+
+        float renderWidth = knight.getWidth() * scale;
+        float renderHeight = knight.getHeight() * scale;
+
+        batch.draw(currentFrame, renderX, renderY, renderWidth, renderHeight);
     }
 
     public void dispose() {

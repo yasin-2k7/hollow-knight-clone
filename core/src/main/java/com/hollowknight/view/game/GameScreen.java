@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -63,7 +64,7 @@ public class GameScreen implements Screen {
 
         knightView = new KnightView();
 
-        game = new Game(400f, 100f);
+        game = new Game(2000f, 850f, tiledMap);
 
         App.setCurrentGame(game);
 
@@ -128,6 +129,20 @@ public class GameScreen implements Screen {
         batch.end();
 
         renderer.render(new int[]{5,6,7});
+
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+
+// ۱. رسم باکس شوالیه
+        shapeRenderer.rect(game.getKnight().getBounds().x, game.getKnight().getBounds().y, game.getKnight().getBounds().width, game.getKnight().getBounds().height);
+
+// ۲. رسم تمام زمین‌ها
+        shapeRenderer.setColor(Color.GREEN);
+        for (Rectangle rect : game.getGrounds()) {
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        shapeRenderer.end();
 
     }
 
