@@ -8,6 +8,7 @@ public class App {
     private static Language currentLanguage = Language.ENGLISH;
     public static final ObjectMap<GameAction, Integer> bindings = new ObjectMap<>();
     private static GameSave[] saveSlots = new GameSave[4];
+    private static Game currentGame;
 
     public static void setCurrentLanguage(Language currentLanguage) {
         App.currentLanguage = currentLanguage;
@@ -19,5 +20,13 @@ public class App {
 
     public static GameSave[] getSaveSlots() {
         return saveSlots;
+    }
+
+    public static Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public static void setCurrentGame(Game currentGame) {
+        App.currentGame = currentGame;
     }
 }

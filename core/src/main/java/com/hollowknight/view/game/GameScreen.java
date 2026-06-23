@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hollowknight.model.App;
 import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.view.GameAssetManager;
@@ -34,13 +35,12 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
 
     Color topColor = new Color(0.15f, 0.15f, 0.45f, 1f);
-    // مشکی برای پایین (عمق تاریکی)
     Color bottomColor = new Color(0.01f, 0.01f, 0.05f, 1f);
 
     private Texture background;
 
     private Game game;
-    private Knight knight;
+    private KnightView knightView;
 
     @Override
     public void show() {
@@ -54,13 +54,19 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         viewport = new FitViewport(300f, 150f, camera);
 
+
 //        background = new Texture("ui/GameBG3.png");
 
         shapeRenderer = new ShapeRenderer();
 
         viewport.apply();
 
-        camera.position.set(400, 150, 0);
+        knightView = new KnightView();
+
+        game = new Game(400f, 100f);
+
+        App.setCurrentGame(game);
+
     }
 
     @Override
@@ -68,19 +74,12 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D)){
-            camera.translate(1, 0, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)){
-            camera.translate(-1, 0, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)){
-            camera.translate(0, 1, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)){
-            camera.translate(0, -1, 0);
-        }
+        game.getKnight().update(delta);
 
+        float centerX = game.getKnight().getPosition().x + 10f;
+        float centerY = game.getKnight().getPosition().y + 15f;
+
+        camera.position.set(centerX, centerY, 0);
         camera.update();
 
         shapeRenderer.setProjectionMatrix(camera.combined);
@@ -118,14 +117,17 @@ public class GameScreen implements Screen {
         float viewWidth = viewport.getWorldWidth() + (padding * 2);
         float viewHeight = viewport.getWorldHeight() + (padding * 2);
 
+
+
         renderer.setView(camera.combined, viewX, viewY, viewWidth, viewHeight);
-        renderer.render();
+        renderer.render(new int[]{0,1,2,3,4});
 
         batch.setProjectionMatrix(camera.combined);
-
         batch.begin();
-
+        knightView.draw(batch, game.getKnight(), delta);
         batch.end();
+
+        renderer.render(new int[]{5,6,7});
 
     }
 
