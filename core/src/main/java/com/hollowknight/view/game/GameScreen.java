@@ -121,28 +121,28 @@ public class GameScreen implements Screen {
 
 
         renderer.setView(camera.combined, viewX, viewY, viewWidth, viewHeight);
-        renderer.render(new int[]{0,1,2,3,4});
+        renderer.render(new int[]{0,1,2,3,4,5,6,7,8});
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         knightView.draw(batch, game.getKnight(), delta);
         batch.end();
 
-        renderer.render(new int[]{5,6,7});
+        renderer.render(new int[]{9,10,11});
 
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-
-// ۱. رسم باکس شوالیه
-        shapeRenderer.rect(game.getKnight().getBounds().x, game.getKnight().getBounds().y, game.getKnight().getBounds().width, game.getKnight().getBounds().height);
-
-// ۲. رسم تمام زمین‌ها
-        shapeRenderer.setColor(Color.GREEN);
-        for (Rectangle rect : game.getGrounds()) {
-            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        shapeRenderer.end();
+//        shapeRenderer.setProjectionMatrix(camera.combined);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        shapeRenderer.setColor(Color.RED);
+//
+//// ۱. رسم باکس شوالیه
+//        shapeRenderer.rect(game.getKnight().getBounds().x, game.getKnight().getBounds().y, game.getKnight().getBounds().width, game.getKnight().getBounds().height);
+//
+//// ۲. رسم تمام زمین‌ها
+//        shapeRenderer.setColor(Color.GREEN);
+//        for (Rectangle rect : game.getGrounds()) {
+//            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+//        }
+//        shapeRenderer.end();
 
     }
 

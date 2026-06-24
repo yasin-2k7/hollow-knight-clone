@@ -1,0 +1,361 @@
+{
+    "activeFile": "map.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "BG_bug_corpse_05.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "BG_egg_07_0001_Layer-2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "BG_egg_07_0002_Layer-3.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "BG_far_0010_a.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "BG_vines_0016_b.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "BG_vines_0017_b.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "BG_vines_0019_b.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "BG_vines_0020_a.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "C:/Users/mytei/AppData/Local/Temp/Rar$DIa15252.21047/crysalPath.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/AppData/Local/Temp/Rar$DIa15252.21047/crystal.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/AppData/Local/Temp/Rar$DIa15252.21047/flame.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/AppData/Local/Temp/Rar$DIa15252.21047/newMap.tmx": {
+            "scale": 0.30078125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 12000.415584415587,
+                "y": 7999.168831168832
+            }
+        },
+        "C:/Users/mytei/AppData/Local/Temp/Rar$DIa15252.23172/crysalPath.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/AppData/Local/Temp/Rar$DIa15252.23172/crystal.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/AppData/Local/Temp/Rar$DIa15252.23172/flame.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/AppData/Local/Temp/Rar$DIa15252.23172/newMap.tmx": {
+            "scale": 0.30078125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 12000.415584415587,
+                "y": 7999.168831168832
+            }
+        },
+        "FG_eggs_03_0003_01.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "FG_rocks.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Fung_FG_Silhouettes_0001_fb3.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "Fung_FG_Silhouettes_0004_fv5.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "Fung_FG_Silhouettes_0005_fv4.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Nailmasters_FG_pieces_0002_Layer-46.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1.5
+        },
+        "Nailmasters_FG_pieces_0004_Layer-54.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Nailmasters_FG_pieces_0008_Layer-51.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Spider_interior_set_0018_spider_web_FG_02.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "believer_Bg_plat.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "bg_bit_01.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "bg_highway_bridge_0002_3.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "cd_BG_egg_04.tsx": {
+            "scaleInDock": 0.33,
+            "scaleInEditor": 1
+        },
+        "cd_FG_rock_20.tsx": {
+            "scaleInDock": 0.5,
+            "scaleInEditor": 1
+        },
+        "cd_room_BG_01.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "cd_wall.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1.5
+        },
+        "deep_bridge_bottom_rubble.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fall_BG_06.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1.5
+        },
+        "fence_01.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1.5
+        },
+        "floor.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "floor_FG_rock_03_0004_01.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "fung_acid_BG_02_0002_a.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "grass1.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "grass2_idle_00000.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "highway_FG_0007_Layer-78.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 6830,
+                "y": 946.6666666666667
+            }
+        },
+        "map.tmx#believer_Bg_plat": {
+            "scaleInDock": 1
+        },
+        "old_nail_bg.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "plat_float_03.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "plat_float_05.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "plat_float_06.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "plat_float_07.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "roof_FG_rock_08_0002_04.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "royal_garden_BG_structure_0000_Layer-4_cage.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "snail_shaman_plinth_0009_bg.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "spider_town_bg.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "spike1.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "spike_back.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "temple_int_stone_FG.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tut_BG_set_02_0002_04.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "tut_BG_set_02_0003_03.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "vil_BG_01.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "vil_sign.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "wall_07_0003_01.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "wd_BG_skull_01.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "wd_FG_string_03.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1.5
+        },
+        "wp_exterior_bg_pole.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        }
+    },
+    "frame.defaultDuration": 200,
+    "last.imagePath": "C:/AP/Hollow Knight/assets/game/Architecture & Environment/Area specfic architecture/Forgotten Crossroads",
+    "map.height": 300,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 1000,
+    "openFiles": [
+        "map.tmx",
+        "floor.tsx",
+        "cd_wall.tsx",
+        "vil_sign.tsx",
+        "BG_egg_07_0001_Layer-2.tsx",
+        "fung_acid_BG_02_0002_a.tsx",
+        "BG_egg_07_0002_Layer-3.tsx",
+        "BG_vines_0017_b.tsx",
+        "BG_vines_0016_b.tsx",
+        "BG_vines_0019_b.tsx",
+        "fall_BG_06.tsx",
+        "wd_BG_skull_01.tsx",
+        "BG_far_0010_a.tsx",
+        "BG_vines_0020_a.tsx",
+        "fence_01.tsx",
+        "floor_FG_rock_03_0004_01.tsx",
+        "Fung_FG_Silhouettes_0004_fv5.tsx",
+        "Fung_FG_Silhouettes_0001_fb3.tsx",
+        "FG_eggs_03_0003_01.tsx",
+        "wd_FG_string_03.tsx",
+        "Nailmasters_FG_pieces_0002_Layer-46.tsx",
+        "believer_Bg_plat.tsx",
+        "grass2_idle_00000.tsx",
+        "grass1.tsx",
+        "wall_07_0003_01.tsx",
+        "plat_float_03.tsx",
+        "spike1.tsx",
+        "spike_back.tsx",
+        "bg_bit_01.tsx",
+        "bg_highway_bridge_0002_3.tsx",
+        "plat_float_05.tsx",
+        "plat_float_07.tsx",
+        "plat_float_06.tsx",
+        "spider_town_bg.tsx",
+        "wp_exterior_bg_pole.tsx",
+        "royal_garden_BG_structure_0000_Layer-4_cage.tsx",
+        "snail_shaman_plinth_0009_bg.tsx",
+        "old_nail_bg.tsx",
+        "BG_bug_corpse_05.tsx",
+        "tut_BG_set_02_0003_03.tsx",
+        "tut_BG_set_02_0002_04.tsx",
+        "vil_BG_01.tsx",
+        "cd_room_BG_01.tsx",
+        "cd_BG_egg_04.tsx",
+        "deep_bridge_bottom_rubble.tsx",
+        "temple_int_stone_FG.tsx",
+        "roof_FG_rock_08_0002_04.tsx",
+        "Fung_FG_Silhouettes_0005_fv4.tsx",
+        "highway_FG_0007_Layer-78.tsx",
+        "Nailmasters_FG_pieces_0008_Layer-51.tsx",
+        "Spider_interior_set_0018_spider_web_FG_02.tsx",
+        "Nailmasters_FG_pieces_0004_Layer-54.tsx",
+        "FG_rocks.tsx",
+        "cd_FG_rock_20.tsx"
+    ],
+    "project": "Map.tiled-project",
+    "property.type": "object",
+    "recentFiles": [
+        "cd_FG_rock_20.tsx",
+        "FG_rocks.tsx",
+        "Nailmasters_FG_pieces_0004_Layer-54.tsx",
+        "Spider_interior_set_0018_spider_web_FG_02.tsx",
+        "Nailmasters_FG_pieces_0008_Layer-51.tsx",
+        "highway_FG_0007_Layer-78.tsx",
+        "Fung_FG_Silhouettes_0005_fv4.tsx",
+        "roof_FG_rock_08_0002_04.tsx",
+        "temple_int_stone_FG.tsx",
+        "deep_bridge_bottom_rubble.tsx",
+        "cd_BG_egg_04.tsx",
+        "cd_room_BG_01.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 8,
+        "width": 8
+    },
+    "tileset.type": 0
+}
