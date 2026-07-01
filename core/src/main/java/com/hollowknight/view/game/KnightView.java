@@ -13,11 +13,27 @@ public class KnightView {
     private Texture runSheet;
     private Texture jumpSheet;
     private Texture landSheet;
+    private Texture onWallSheet;
+    private Texture wallJumpSheet;
+    private Texture doubleJumpSheet;
+    private Texture dashSheet;
+    private Texture slashUpSheet;
+    private Texture slashDownSheet;
+    private Texture slashSheet;
+    private Texture slashAltSheet;
 
     private Animation<TextureRegion> idleAnimation;
     private Animation<TextureRegion> runAnimation;
     private Animation<TextureRegion> jumpAnimation;
     private Animation<TextureRegion> landAnimation;
+    private Animation<TextureRegion> onWallAnimation;
+    private Animation<TextureRegion> wallJumpAnimation;
+    private Animation<TextureRegion> doubleJumpAnimation;
+    private Animation<TextureRegion> dashAnimation;
+    private Animation<TextureRegion> slashUpAnimation;
+    private Animation<TextureRegion> slashDownAnimation;
+    private Animation<TextureRegion> slashAnimation;
+    private Animation<TextureRegion> slashAltAnimation;
 
     private float stateTime = 0;
     private KnightState previousState = KnightState.IDLE;
@@ -49,6 +65,55 @@ public class KnightView {
         TextureRegion[] landFrames = new TextureRegion[4];
         System.arraycopy(frames[0], 0, landFrames, 0, 4);
         landAnimation = new Animation<>(0.2f, landFrames);
+
+        onWallSheet = new Texture("knight/Wall Slide.png");
+        frames = TextureRegion.split(onWallSheet, frameW, frameH);
+        TextureRegion[] onWallFrames = new TextureRegion[4];
+        System.arraycopy(frames[0], 0, onWallFrames, 0, 4);
+        onWallAnimation = new Animation<>(0.2f, onWallFrames);
+
+        wallJumpSheet = new Texture("knight/Walljump.png");
+        frames = TextureRegion.split(wallJumpSheet, frameW, frameH);
+        TextureRegion[] wallJumpFrames = new TextureRegion[9];
+        System.arraycopy(frames[0], 0, wallJumpFrames, 0, 9);
+        wallJumpAnimation = new Animation<>(0.1f, wallJumpFrames);
+
+        doubleJumpSheet = new Texture("knight/Double Jump.png");
+        frames = TextureRegion.split(doubleJumpSheet, frameW, frameH);
+        TextureRegion[] doubleJumpFrames = new TextureRegion[8];
+        System.arraycopy(frames[0], 0, doubleJumpFrames, 0, 8);
+        doubleJumpAnimation = new Animation<>(0.2f, doubleJumpFrames);
+
+        dashSheet = new Texture("knight/Dash.png");
+        frames = TextureRegion.split(dashSheet, frameW, frameH);
+        TextureRegion[] dashFrames = new TextureRegion[12];
+        System.arraycopy(frames[0], 0, dashFrames, 0, 12);
+        dashAnimation = new Animation<>(0.1f, dashFrames);
+
+        slashUpSheet = new Texture("knight/UpSlash.png");
+        frames = TextureRegion.split(slashUpSheet, frameW, frameH);
+        TextureRegion[] slashUpFrames = new TextureRegion[5];
+        System.arraycopy(frames[0], 0, slashUpFrames, 0, 5);
+        slashUpAnimation = new Animation<>(0.1f, slashUpFrames);
+
+        slashDownSheet = new Texture("knight/DownSlash.png");
+        frames = TextureRegion.split(slashDownSheet, frameW, frameH);
+        TextureRegion[] slashDownFrames = new TextureRegion[5];
+        System.arraycopy(frames[0], 0, slashDownFrames, 0, 5);
+        slashDownAnimation = new Animation<>(0.1f, slashDownFrames);
+
+        slashSheet = new Texture("knight/Slash.png");
+        frames = TextureRegion.split(slashSheet, frameW, frameH);
+        TextureRegion[] slashFrames = new TextureRegion[5];
+        System.arraycopy(frames[0], 0, slashFrames, 0, 5);
+        slashAnimation = new Animation<>(0.1f, slashFrames);
+
+        slashAltSheet = new Texture("knight/SlashAlt.png");
+        frames = TextureRegion.split(slashAltSheet, frameW, frameH);
+        TextureRegion[] slashAltFrames = new TextureRegion[5];
+        System.arraycopy(frames[0], 0, slashAltFrames, 0, 5);
+        slashAltAnimation = new Animation<>(0.1f, slashAltFrames);
+
     }
 
     public void draw(SpriteBatch batch, Knight knight, float delta){
@@ -69,6 +134,30 @@ public class KnightView {
             case LANDING:
                 currentFrame = landAnimation.getKeyFrame(stateTime, false);
                 break;
+            case ON_WALL:
+                currentFrame = onWallAnimation.getKeyFrame(stateTime, true);
+                break;
+            case WALL_JUMP:
+                currentFrame = wallJumpAnimation.getKeyFrame(stateTime, false);
+                break;
+            case DOUBLE_JUMP:
+                currentFrame = doubleJumpAnimation.getKeyFrame(stateTime, false);
+                break;
+            case DASH:
+                currentFrame = dashAnimation.getKeyFrame(stateTime, false);
+                break;
+            case ATTACK_SLASH:
+                currentFrame = slashAnimation.getKeyFrame(stateTime, false);
+                break;
+            case ATTACK_ALT_SLASH:
+                currentFrame = slashAltAnimation.getKeyFrame(stateTime, false);
+                break;
+            case ATTACK_UP:
+                currentFrame = slashUpAnimation.getKeyFrame(stateTime, false);
+                break;
+            case ATTACK_DOWN:
+                currentFrame = slashDownAnimation.getKeyFrame(stateTime, false);
+                break;
             case IDLE:
             default:
                 currentFrame = idleAnimation.getKeyFrame(stateTime, true);
@@ -82,7 +171,7 @@ public class KnightView {
             currentFrame.flip(true, false);
         }
 
-        float scale = 1 / 5f;
+        float scale = 1 / 6f;
         float renderX = knight.getPosition().x - (knight.getwOffset() * scale);
         float renderY = knight.getPosition().y - (knight.gethOffsetDown() * scale);
 

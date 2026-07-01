@@ -16,6 +16,10 @@
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
+        "BG_far_0004_a.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "BG_far_0010_a.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1.5
@@ -78,6 +82,10 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "FG_webs.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "Fung_FG_Silhouettes_0001_fb3.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1.5
@@ -105,6 +113,10 @@
         },
         "Spider_interior_set_0018_spider_web_FG_02.tsx": {
             "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Zote_BG_statue.tsx": {
+            "scaleInDock": 0.25,
             "scaleInEditor": 1
         },
         "believer_Bg_plat.tsx": {
@@ -175,11 +187,11 @@
             "scaleInEditor": 1
         },
         "map.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 0,
+            "scale": 1,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 6830,
-                "y": 946.6666666666667
+                "x": 2782.5,
+                "y": 1793
             }
         },
         "map.tmx#believer_Bg_plat": {
@@ -205,6 +217,14 @@
         },
         "plat_float_07.tsx": {
             "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "right_hill.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "rocks_FG_02.tsx": {
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "roof_FG_rock_08_0002_04.tsx": {
@@ -255,6 +275,10 @@
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
+        "wall_01.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "wall_07_0003_01.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
@@ -263,6 +287,10 @@
         "wd_BG_skull_01.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1.5
+        },
+        "wd_FG_string_02.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "wd_FG_string_03.tsx": {
             "scaleInDock": 1,
@@ -274,7 +302,7 @@
         }
     },
     "frame.defaultDuration": 200,
-    "last.imagePath": "C:/AP/Hollow Knight/assets/game/Architecture & Environment/Area specfic architecture/Forgotten Crossroads",
+    "last.imagePath": "C:/AP/Hollow Knight/assets/game/Architecture & Environment",
     "map.height": 300,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 8,
@@ -334,23 +362,30 @@
         "Spider_interior_set_0018_spider_web_FG_02.tsx",
         "Nailmasters_FG_pieces_0004_Layer-54.tsx",
         "FG_rocks.tsx",
-        "cd_FG_rock_20.tsx"
+        "cd_FG_rock_20.tsx",
+        "FG_webs.tsx",
+        "wd_FG_string_02.tsx",
+        "wall_01.tsx",
+        "rocks_FG_02.tsx",
+        "Zote_BG_statue.tsx",
+        "BG_far_0004_a.tsx",
+        "right_hill.tsx"
     ],
     "project": "Map.tiled-project",
     "property.type": "object",
     "recentFiles": [
+        "right_hill.tsx",
+        "BG_far_0004_a.tsx",
+        "Zote_BG_statue.tsx",
+        "rocks_FG_02.tsx",
+        "wall_01.tsx",
+        "wd_FG_string_02.tsx",
+        "FG_webs.tsx",
         "cd_FG_rock_20.tsx",
         "FG_rocks.tsx",
         "Nailmasters_FG_pieces_0004_Layer-54.tsx",
         "Spider_interior_set_0018_spider_web_FG_02.tsx",
-        "Nailmasters_FG_pieces_0008_Layer-51.tsx",
-        "highway_FG_0007_Layer-78.tsx",
-        "Fung_FG_Silhouettes_0005_fv4.tsx",
-        "roof_FG_rock_08_0002_04.tsx",
-        "temple_int_stone_FG.tsx",
-        "deep_bridge_bottom_rubble.tsx",
-        "cd_BG_egg_04.tsx",
-        "cd_room_BG_01.tsx"
+        "Nailmasters_FG_pieces_0008_Layer-51.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

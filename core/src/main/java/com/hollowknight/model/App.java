@@ -9,6 +9,7 @@ public class App {
     public static final ObjectMap<GameAction, Integer> bindings = new ObjectMap<>();
     private static GameSave[] saveSlots = new GameSave[4];
     private static Game currentGame;
+    private static float unitScale = 1 / 6f;
 
     public static void setCurrentLanguage(Language currentLanguage) {
         App.currentLanguage = currentLanguage;
@@ -28,5 +29,9 @@ public class App {
 
     public static void setCurrentGame(Game currentGame) {
         App.currentGame = currentGame;
+    }
+
+    public static float getUnitScale() {
+        return unitScale;
     }
 }

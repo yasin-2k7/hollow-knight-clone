@@ -18,43 +18,52 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hollowknight.controller.GameController;
 import com.hollowknight.model.App;
 import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.view.GameAssetManager;
+import com.hollowknight.view.MenuScreen;
 
-public class GameScreen implements Screen {
+public class GameScreen extends MenuScreen {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer renderer;
+
+    private boolean isStart = true;
 
     Skin skin = GameAssetManager.skin;
 
     private ShapeRenderer shapeRenderer;
 
     private OrthographicCamera camera;
+    private CameraManager cameraManager;
     private Viewport viewport;
     private SpriteBatch batch;
 
-    Color topColor = new Color(0.15f, 0.15f, 0.45f, 1f);
+    Color topColor = new Color(0.2f, 0.25f, 0.55f, 1f);
     Color bottomColor = new Color(0.01f, 0.01f, 0.05f, 1f);
 
     private Texture background;
 
     private Game game;
     private KnightView knightView;
+    private SlashEffectView slashEffectView;
 
     @Override
     public void show() {
 
+        GameController.setScreen(this);
 
         batch = new SpriteBatch();
 
         tiledMap = new TmxMapLoader().load("map/Map.tmx");
-        renderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 5f);
+        renderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 6f);
 
         camera = new OrthographicCamera();
-        viewport = new FitViewport(300f, 150f, camera);
+        viewport = new FitViewport(250f, 125f, camera);
 
+        cameraManager = new CameraManager(camera, App.getUnitScale());
+        cameraManager.loadBoundsFromMap(tiledMap);
 
 //        background = new Texture("ui/GameBG3.png");
 
@@ -64,7 +73,7 @@ public class GameScreen implements Screen {
 
         knightView = new KnightView();
 
-        game = new Game(2000f, 850f, tiledMap);
+        game = new Game(2000f, 2250f, tiledMap);
 
         App.setCurrentGame(game);
 
@@ -75,13 +84,21 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.getKnight().update(delta);
+        GameController.updateGame(delta);
 
-        float centerX = game.getKnight().getPosition().x + 10f;
-        float centerY = game.getKnight().getPosition().y + 15f;
 
-        camera.position.set(centerX, centerY, 0);
-        camera.update();
+
+        if (isStart){
+            isStart = false;
+            float centerX = game.getKnight().getPosition().x + 10f;
+            float centerY = game.getKnight().getPosition().y + 15f;
+
+            camera.position.set(centerX, centerY, 0);
+            camera.update();
+        }
+        else{
+            cameraManager.update(delta, App.getCurrentGame().getKnight().getBounds());
+        }
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -121,12 +138,24 @@ public class GameScreen implements Screen {
 
 
         renderer.setView(camera.combined, viewX, viewY, viewWidth, viewHeight);
-        renderer.render(new int[]{0,1,2,3,4,5,6,7,8});
+        renderer.render(new int[]{0,1,2,3,4,5,6});
+
+        if (slashEffectView != null) {
+            batch.setProjectionMatrix(camera.combined);
+            batch.begin();
+            slashEffectView.draw(batch, delta);
+            batch.end();
+        }
+
+        renderer.render(new int[]{7,8});
+
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         knightView.draw(batch, game.getKnight(), delta);
         batch.end();
+
+
 
         renderer.render(new int[]{9,10,11});
 
@@ -151,23 +180,11 @@ public class GameScreen implements Screen {
         viewport.update(width, height);
     }
 
-    @Override
-    public void pause() {
-
+    public void setSlashEffectView(SlashEffectView slashEffectView) {
+        this.slashEffectView = slashEffectView;
     }
 
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
+    public SlashEffectView getSlashEffectView() {
+        return slashEffectView;
     }
 }

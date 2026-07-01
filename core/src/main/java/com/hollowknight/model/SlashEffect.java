@@ -1,0 +1,80 @@
+package com.hollowknight.model;
+
+import com.badlogic.gdx.math.Rectangle;
+import com.hollowknight.model.enemies.Enemy;
+import com.hollowknight.model.enums.SlashDirection;
+
+import java.util.ArrayList;
+
+public class SlashEffect {
+    private final ArrayList<Enemy> hitEnemies = new ArrayList<>();
+    private SlashDirection type;
+    private float x,y;
+    private float width, height;
+    private float originalWidth, originalHeight;
+    private Rectangle hitBounds;
+    private boolean isFinished = false;
+    private final float duration = 0.3f;
+    private float stateTime = 0;
+
+    public SlashEffect(SlashDirection type, float x, float y, float width, float height) {
+        this.type = type;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        hitBounds = new Rectangle(x,y,width,height);
+    }
+
+    public void update(float delta) {
+        stateTime += delta;
+        if (stateTime >= duration) {
+            isFinished = true;
+        }
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public boolean hasHitAlready(Enemy enemy) {
+        return hitEnemies.contains(enemy);
+    }
+
+    public void registerHit(Enemy enemy) {
+        hitEnemies.add(enemy);
+    }
+
+    public void setOriginalSize(float originalWidth, float originalHeight) {
+        this.originalWidth = originalWidth;
+        this.originalHeight = originalHeight;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public float getOriginalWidth() {
+        return originalWidth;
+    }
+
+    public float getOriginalHeight() {
+        return originalHeight;
+    }
+
+    public SlashDirection getType() {
+        return type;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+}
