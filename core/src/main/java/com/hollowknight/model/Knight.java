@@ -2,6 +2,7 @@ package com.hollowknight.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.hollowknight.controller.GameController;
@@ -26,7 +27,12 @@ public class Knight {
     private boolean canDash = true;
     private boolean canAttack = true;
     private boolean useAltSlash = false;
+    private boolean noDamage = false;
 
+    private float damagedTimer = 0f;
+    private float damagedTime = 0.3f;
+    private float noDamageTimer = 0f;
+    private float noDamageTime = 0.9f;
     private float dashCooldownTimer = 0f;
     private float dashCooldown = 1f;
     private float dashTimer = 0f;
@@ -65,6 +71,7 @@ public class Knight {
             }
         }
 
+
         if (dashCooldownTimer > 0){
             dashCooldownTimer -= delta;
             if (dashCooldownTimer <= 0){
@@ -93,6 +100,23 @@ public class Knight {
                 useAltSlash = false;
             }
         }
+
+        if (state == KnightState.DAMAGED) {
+            damagedTimer -= delta;
+            velocity.x = MathUtils.lerp(velocity.x, 0, delta * 10f);
+            if (damagedTimer <= 0) {
+                state = KnightState.IDLE;
+                velocity.x = 0;
+            }
+        }
+
+        if (noDamage){
+            noDamageTimer -= delta;
+            if (noDamageTimer <= 0){
+                noDamage = false;
+            }
+        }
+
         inputHandle();
 
         position.x += velocity.x * delta;
@@ -156,12 +180,13 @@ public class Knight {
         boolean leftPressed = Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_LEFT));
         boolean rightPressed = Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_RIGHT));
 
-        if (state == KnightState.DASH || state == KnightState.ATTACK_UP || state == KnightState.ATTACK_DOWN || state == KnightState.ATTACK_SLASH || state == KnightState.ATTACK_ALT_SLASH){
+        if (state == KnightState.DASH || state == KnightState.ATTACK_UP || state == KnightState.ATTACK_DOWN || state == KnightState.ATTACK_SLASH || state == KnightState.ATTACK_ALT_SLASH || state == KnightState.DAMAGED){
             return;
         }
 
         if (state == KnightState.ON_WALL){
             boolean wallJump = false;
+            onFirstJump = false;
             if (jumpJustPressed && ((wallInTheRight && leftPressed) || (!wallInTheRight && rightPressed))) {
                 wallJump = true;
             }
@@ -254,6 +279,21 @@ public class Knight {
         }
     }
 
+    public void takeDamage(int sign){
+        velocity.x = 250f * sign;
+        masks--;
+        GameController.updateMasks();
+        if (masks == 0){
+            velocity.y = 60f;
+            return;
+        }
+        noDamage = true;
+        noDamageTimer = noDamageTime;
+        state = KnightState.DAMAGED;
+        damagedTimer = damagedTime;
+        velocity.y = 20f;
+    }
+
     public int getMasks() {
         return masks;
     }
@@ -300,5 +340,9 @@ public class Knight {
 
     public float gethOffsetUp() {
         return hOffsetUp;
+    }
+
+    public boolean isNoDamage() {
+        return noDamage;
     }
 }

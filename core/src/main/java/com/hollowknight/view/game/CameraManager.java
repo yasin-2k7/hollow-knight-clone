@@ -16,7 +16,7 @@ public class CameraManager {
     private Rectangle bossTrigger;
 
     private float cameraMinX = -100;
-    private float cameraMaxX = 1000;
+    private float cameraMaxX = 5000;
     private float cameraMinY = -100;
     private float cameraMaxY = 1000;
 

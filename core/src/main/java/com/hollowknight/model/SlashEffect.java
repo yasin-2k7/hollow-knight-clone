@@ -77,4 +77,8 @@ public class SlashEffect {
     public float getY() {
         return y;
     }
+
+    public Rectangle getHitBounds() {
+        return hitBounds;
+    }
 }

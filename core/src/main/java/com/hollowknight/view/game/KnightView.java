@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.hollowknight.controller.GameController;
 import com.hollowknight.model.App;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enums.KnightState;
@@ -36,6 +37,7 @@ public class KnightView {
     private Animation<TextureRegion> slashAltAnimation;
 
     private float stateTime = 0;
+    private float flashTime = 0;
     private KnightState previousState = KnightState.IDLE;
 
     public KnightView(){
@@ -121,7 +123,24 @@ public class KnightView {
             stateTime = 0;
             previousState = knight.getState();
         }
-        stateTime += delta;
+
+        flashTime += delta;
+
+        if (App.getCurrentGame().getKnight().getState() != KnightState.DAMAGED){
+            stateTime += delta;
+        }
+
+        if (knight.isNoDamage()) {
+            if ((int)(flashTime * 20) % 2 == 0) {
+                batch.setColor(1f, 1f, 1f, 0.2f);
+            } else {
+                batch.setColor(1f, 1f, 1f, 0.8f);
+            }
+        }
+        else {
+            batch.setColor(1f, 1f, 1f, 1f);
+        }
+
 
         TextureRegion currentFrame;
         switch (knight.getState()) {

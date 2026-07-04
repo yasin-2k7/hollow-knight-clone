@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -22,8 +23,16 @@ import com.hollowknight.controller.GameController;
 import com.hollowknight.model.App;
 import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
+import com.hollowknight.model.enemies.Enemy;
+import com.hollowknight.model.enemies.Laser;
 import com.hollowknight.view.GameAssetManager;
 import com.hollowknight.view.MenuScreen;
+import com.hollowknight.view.game.enemiesView.EnemyView;
+import com.hollowknight.view.game.enemiesView.LaserView;
+import com.hollowknight.view.game.hud.MasksTable;
+import com.hollowknight.view.game.hud.SoulWidget;
+
+import java.util.ArrayList;
 
 public class GameScreen extends MenuScreen {
     private TiledMap tiledMap;
@@ -40,6 +49,9 @@ public class GameScreen extends MenuScreen {
     private Viewport viewport;
     private SpriteBatch batch;
 
+    private MasksTable masksTable;
+    private Table soulsTable;
+
     Color topColor = new Color(0.2f, 0.25f, 0.55f, 1f);
     Color bottomColor = new Color(0.01f, 0.01f, 0.05f, 1f);
 
@@ -48,9 +60,11 @@ public class GameScreen extends MenuScreen {
     private Game game;
     private KnightView knightView;
     private SlashEffectView slashEffectView;
+    private ArrayList<LaserView> laserViews = new ArrayList<>();
 
     @Override
     public void show() {
+        super.show();
 
         GameController.setScreen(this);
 
@@ -73,9 +87,21 @@ public class GameScreen extends MenuScreen {
 
         knightView = new KnightView();
 
-        game = new Game(2000f, 2250f, tiledMap);
+        game = new Game(2000f, 250f, tiledMap);
 
         App.setCurrentGame(game);
+
+        rootTable.left().top();
+
+        masksTable = new MasksTable(App.getCurrentGame().getKnight(), skin);
+        soulsTable = new Table();
+        soulsTable.setFillParent(true);
+        soulsTable.left().top();
+        soulsTable.add(new SoulWidget(App.getCurrentGame().getKnight(), skin)).padLeft(10);
+
+        rootStack.add(soulsTable);
+
+        rootTable.add(masksTable).padLeft(350).padTop(20);
 
     }
 
@@ -118,16 +144,6 @@ public class GameScreen extends MenuScreen {
 
         shapeRenderer.end();
 
-
-//        batch.begin();
-//        // ترفند: اگر می‌خواهید تصویر به دوربین بچسبد و با حرکت بازیکن جا نماند،
-//        // پوزیشن آن را بر اساس مختصات فعلی دوربین تنظیم می‌کنیم:
-//        float bgX = camera.position.x - viewport.getWorldWidth() / 2;
-//        float bgY = camera.position.y - viewport.getWorldHeight() / 2;
-//
-//        batch.draw(background, bgX, bgY, viewport.getWorldWidth(), viewport.getWorldHeight());
-//        batch.end();
-
         float padding = 25f;
 
         float viewX = camera.position.x - (viewport.getWorldWidth() / 2) - padding;
@@ -139,6 +155,18 @@ public class GameScreen extends MenuScreen {
 
         renderer.setView(camera.combined, viewX, viewY, viewWidth, viewHeight);
         renderer.render(new int[]{0,1,2,3,4,5,6});
+
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        for (int i = laserViews.size() - 1; i >= 0; i--) {
+            LaserView laserView = laserViews.get(i);
+            laserView.draw(batch, delta);
+            if (laserView.isFinished()) {
+                laserView.dispose();
+                laserViews.remove(i);
+            }
+        }
+        batch.end();
 
         if (slashEffectView != null) {
             batch.setProjectionMatrix(camera.combined);
@@ -153,25 +181,42 @@ public class GameScreen extends MenuScreen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         knightView.draw(batch, game.getKnight(), delta);
+        for (EnemyView enemyView : GameController.getEnemyViews()){
+            enemyView.draw(batch, delta);
+        }
+
         batch.end();
+
+
 
 
 
         renderer.render(new int[]{9,10,11});
 
-//        shapeRenderer.setProjectionMatrix(camera.combined);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//        shapeRenderer.setColor(Color.RED);
-//
-//// ۱. رسم باکس شوالیه
-//        shapeRenderer.rect(game.getKnight().getBounds().x, game.getKnight().getBounds().y, game.getKnight().getBounds().width, game.getKnight().getBounds().height);
-//
-//// ۲. رسم تمام زمین‌ها
-//        shapeRenderer.setColor(Color.GREEN);
-//        for (Rectangle rect : game.getGrounds()) {
-//            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-//        }
-//        shapeRenderer.end();
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+
+        shapeRenderer.rect(game.getKnight().getBounds().x, game.getKnight().getBounds().y, game.getKnight().getBounds().width, game.getKnight().getBounds().height);
+
+        shapeRenderer.setColor(Color.CLEAR_WHITE);
+        for (Enemy enemy : GameController.getActiveEnemies()){
+            shapeRenderer.rect(enemy.getBounds().x, enemy.getBounds().y, enemy.getBounds().width, enemy.getBounds().height);
+        }
+        for (Laser laser : game.getLasers()){
+            shapeRenderer.rect(laser.getBounds().x, laser.getBounds().y, laser.getBounds().width, laser.getBounds().height);
+        }
+
+        shapeRenderer.setColor(Color.GREEN);
+        for (Rectangle rect : game.getGrounds()) {
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+        shapeRenderer.end();
+
+
+        stage.getViewport().apply();
+        stage.act(delta);
+        stage.draw();
 
     }
 
@@ -186,5 +231,13 @@ public class GameScreen extends MenuScreen {
 
     public SlashEffectView getSlashEffectView() {
         return slashEffectView;
+    }
+
+    public MasksTable getMasksTable() {
+        return masksTable;
+    }
+
+    public ArrayList<LaserView> getLaserViews() {
+        return laserViews;
     }
 }

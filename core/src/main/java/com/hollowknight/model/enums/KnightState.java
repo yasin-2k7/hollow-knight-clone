@@ -2,6 +2,7 @@ package com.hollowknight.model.enums;
 
 public enum KnightState {
     IDLE,
+    DAMAGED,
     RUN,
     DASH,
     DOUBLE_JUMP,

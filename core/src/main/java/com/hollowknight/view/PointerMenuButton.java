@@ -42,8 +42,6 @@ public class PointerMenuButton extends Table {
             );
         pointerAnim.setPlayMode(Animation.PlayMode.NORMAL);
 
-        // 3. Create Scene2D Image actors for the pointers
-        // Start them out with the first frame, but we will hide them initially
         TextureRegionDrawable firstFrame = new TextureRegionDrawable(pointerAnim.getKeyFrame(0));
 
         this.leftPointer = new Image(firstFrame);
@@ -53,16 +51,13 @@ public class PointerMenuButton extends Table {
         rightPointer.setOrigin(rightPointer.getWidth() / 2f, rightPointer.getHeight() / 2f);
         rightPointer.setScaleX(-1f);
 
-        // Hide pointers by default until hovered
         leftPointer.setVisible(false);
         rightPointer.setVisible(false);
 
-        // 4. Arrange them in a clean horizontal grid row
         this.add(leftPointer).padRight(15);
         this.add(textButton);
         this.add(rightPointer).padLeft(15);
 
-        // 5. Add the hover input listener to the whole row container
         this.addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor fromActor) {

@@ -3,6 +3,7 @@
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "BG_bug_corpse_05.tsx": {
             "scaleInDock": 0.25,
@@ -73,6 +74,89 @@
                 "x": 12000.415584415587,
                 "y": 7999.168831168832
             }
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/Area_Forgotten Crossroads.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/FG_rocks_02.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/FK_break__0000_wall_default.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/FK_break__0001_wall_half_break.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/FK_break__0002_break_debris_02.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/backfo.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_BG_bone_01.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_BG_egg_04.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_BG_well_shaft.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_FG_bone_08.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_arch_01.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_archway_02.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_big_roof_0000_07.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_big_roof_0006_01.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_broken_wall.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_floor_02.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_floor_highway_05.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_wall_01_solid.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_wall_04.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cliff.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/floor_FG_rock_03_0002_03.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/guard_clubs.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx": {
+            "scale": 0.30078125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 12800,
+                "y": 7528.727272727273
+            }
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx#Area_Cliffs": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx#back": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/vil_BG_05.tsx": {
+            "scaleInDock": 1
         },
         "FG_eggs_03_0003_01.tsx": {
             "scaleInDock": 1,
@@ -187,11 +271,11 @@
             "scaleInEditor": 1
         },
         "map.tmx": {
-            "scale": 1,
-            "selectedLayer": 1,
+            "scale": 0.5,
+            "selectedLayer": 13,
             "viewCenter": {
-                "x": 2782.5,
-                "y": 1793
+                "x": 3163,
+                "y": 1960
             }
         },
         "map.tmx#believer_Bg_plat": {
@@ -369,11 +453,13 @@
         "rocks_FG_02.tsx",
         "Zote_BG_statue.tsx",
         "BG_far_0004_a.tsx",
-        "right_hill.tsx"
+        "right_hill.tsx",
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx"
     ],
     "project": "Map.tiled-project",
-    "property.type": "object",
+    "property.type": "string",
     "recentFiles": [
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx",
         "right_hill.tsx",
         "BG_far_0004_a.tsx",
         "Zote_BG_statue.tsx",
@@ -384,8 +470,7 @@
         "cd_FG_rock_20.tsx",
         "FG_rocks.tsx",
         "Nailmasters_FG_pieces_0004_Layer-54.tsx",
-        "Spider_interior_set_0018_spider_web_FG_02.tsx",
-        "Nailmasters_FG_pieces_0008_Layer-51.tsx"
+        "Spider_interior_set_0018_spider_web_FG_02.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

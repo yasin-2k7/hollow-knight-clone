@@ -67,6 +67,7 @@ public class SlashEffectView {
         }
     }
 
-
-
+    public boolean isFlipped() {
+        return flipped;
+    }
 }

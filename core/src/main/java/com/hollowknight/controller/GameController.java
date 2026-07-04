@@ -5,18 +5,32 @@ import com.badlogic.gdx.math.Rectangle;
 import com.hollowknight.model.App;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.SlashEffect;
+import com.hollowknight.model.enemies.Enemy;
+import com.hollowknight.model.enemies.Laser;
 import com.hollowknight.model.enums.KnightState;
 import com.hollowknight.model.enums.SlashDirection;
 import com.hollowknight.view.UiManager;
 import com.hollowknight.view.game.GameScreen;
 import com.hollowknight.view.game.SlashEffectView;
+import com.hollowknight.view.game.enemiesView.CrawlerView;
+import com.hollowknight.view.game.enemiesView.EnemyView;
+import com.hollowknight.view.game.enemiesView.LaserView;
+
+import java.util.ArrayList;
 
 public class GameController {
     private static float unitScale = App.getUnitScale();
     private static GameScreen screen;
+    private static ArrayList<EnemyView> enemyViews = new ArrayList<>();
+
+    public static void addEnemyView(EnemyView enemyView){
+        enemyViews.add(enemyView);
+    }
 
     public static void updateGame(float delta){
-        App.getCurrentGame().update(delta);
+        float cappedDelta = Math.min(delta, 0.016f);
+
+        App.getCurrentGame().update(cappedDelta);
         if (App.getCurrentGame().getActiveSlashEffect() != null) {
             if (App.getCurrentGame().getActiveSlashEffect().isFinished()) {
                 App.getCurrentGame().setActiveSlashEffect(null);
@@ -24,6 +38,8 @@ public class GameController {
                 screen.setSlashEffectView(null);
             }
         }
+
+        App.getCurrentGame().getLasers().removeIf(Laser::isFinished);
     }
 
     public static void setSlashEffect(Knight knight){
@@ -154,6 +170,29 @@ public class GameController {
                 screen.setSlashEffectView(new SlashEffectView(hFrame, wFrame, address, knight.isFlipped(), slashEffect));
             }
         }
+    }
+
+    public static void createLaser(float originX, float originY, boolean flipped){
+        Laser laser = new Laser(originX, originY, App.getCurrentGame(), flipped);
+        App.getCurrentGame().getLasers().add(laser);
+        LaserView laserView = new LaserView(laser.getBounds());
+        screen.getLaserViews().add(laserView);
+    }
+
+    public static ArrayList<EnemyView> getEnemyViews() {
+        return enemyViews;
+    }
+
+    public static SlashEffectView getActiveSlashView(){
+        return screen.getSlashEffectView();
+    }
+
+    public static ArrayList<Enemy> getActiveEnemies(){
+        return App.getCurrentGame().getAllEnemies();
+    }
+
+    public static void updateMasks(){
+        screen.getMasksTable().updateHealth(App.getCurrentGame().getKnight().getMasks());
     }
 
     public static void setScreen(GameScreen screen) {
