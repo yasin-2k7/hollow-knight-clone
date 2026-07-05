@@ -22,6 +22,10 @@ public class KnightView {
     private Texture slashDownSheet;
     private Texture slashSheet;
     private Texture slashAltSheet;
+    private Texture focusSheet;
+    private Texture focusStartSheet;
+    private Texture focusGetSheet;
+    private Texture focusEndSheet;
 
     private Animation<TextureRegion> idleAnimation;
     private Animation<TextureRegion> runAnimation;
@@ -35,6 +39,10 @@ public class KnightView {
     private Animation<TextureRegion> slashDownAnimation;
     private Animation<TextureRegion> slashAnimation;
     private Animation<TextureRegion> slashAltAnimation;
+    private Animation<TextureRegion> focusAnimation;
+    private Animation<TextureRegion> focusGetAnimation;
+    private Animation<TextureRegion> focusStartAnimation;
+    private Animation<TextureRegion> focusEndAnimation;
 
     private float stateTime = 0;
     private float flashTime = 0;
@@ -116,6 +124,30 @@ public class KnightView {
         System.arraycopy(frames[0], 0, slashAltFrames, 0, 5);
         slashAltAnimation = new Animation<>(0.1f, slashAltFrames);
 
+        focusSheet = new Texture("knight/Focus.png");
+        frames = TextureRegion.split(focusSheet, frameW, frameH);
+        TextureRegion[] focusFrames = new TextureRegion[4];
+        System.arraycopy(frames[0], 0, focusFrames, 0, 4);
+        focusAnimation = new Animation<>(0.1f, focusFrames);
+
+        focusGetSheet = new Texture("knight/Focus Get.png");
+        frames = TextureRegion.split(focusGetSheet, frameW, frameH);
+        TextureRegion[] focusGetFrames = new TextureRegion[6];
+        System.arraycopy(frames[0], 0, focusGetFrames, 0, 6);
+        focusGetAnimation = new Animation<>(0.1f, focusGetFrames);
+
+        focusStartSheet = new Texture("knight/Focus Start.png");
+        frames = TextureRegion.split(focusStartSheet, frameW, frameH);
+        TextureRegion[] focusStartFrames = new TextureRegion[3];
+        System.arraycopy(frames[0], 0, focusStartFrames, 0, 3);
+        focusStartAnimation = new Animation<>(0.07f, focusStartFrames);
+
+        focusEndSheet = new Texture("knight/Focus End.png");
+        frames = TextureRegion.split(focusEndSheet, frameW, frameH);
+        TextureRegion[] focusEndFrames = new TextureRegion[3];
+        System.arraycopy(frames[0], 0, focusEndFrames, 0, 3);
+        focusEndAnimation = new Animation<>(0.07f, focusEndFrames);
+
     }
 
     public void draw(SpriteBatch batch, Knight knight, float delta){
@@ -177,6 +209,18 @@ public class KnightView {
             case ATTACK_DOWN:
                 currentFrame = slashDownAnimation.getKeyFrame(stateTime, false);
                 break;
+            case FOCUS_START:
+                currentFrame = focusStartAnimation.getKeyFrame(stateTime, false);
+                break;
+            case FOCUS:
+                currentFrame = focusAnimation.getKeyFrame(stateTime, true);
+                break;
+            case FOCUS_GET:
+                currentFrame = focusGetAnimation.getKeyFrame(stateTime, false);
+                break;
+            case FOCUS_END:
+                currentFrame = focusEndAnimation.getKeyFrame(stateTime, false);
+                break;
             case IDLE:
             default:
                 currentFrame = idleAnimation.getKeyFrame(stateTime, true);
@@ -198,6 +242,7 @@ public class KnightView {
         float renderHeight = knight.getHeight() * scale;
 
         batch.draw(currentFrame, renderX, renderY, renderWidth, renderHeight);
+        batch.setColor(1f, 1f, 1f, 1f);
     }
 
     public void dispose() {

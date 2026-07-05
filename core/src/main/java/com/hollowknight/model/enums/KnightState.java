@@ -13,5 +13,9 @@ public enum KnightState {
     ATTACK_SLASH,
     ATTACK_ALT_SLASH,
     ATTACK_UP,
-    ATTACK_DOWN
+    ATTACK_DOWN,
+    FOCUS_START,
+    FOCUS,
+    FOCUS_END,
+    FOCUS_GET
 }

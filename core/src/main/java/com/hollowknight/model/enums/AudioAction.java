@@ -1,0 +1,23 @@
+package com.hollowknight.model.enums;
+
+public enum AudioAction {
+    KNIGHT_ATTACK,
+    KNIGHT_ATTACK_ALT,
+    KNIGHT_TAKE_DAMAGE,
+    KNIGHT_DASH,
+    KNIGHT_DEATH,
+    KNIGHT_JUMP,
+    LAND,
+    MANTIS_CLAW,
+    WALL_JUMP,
+    STONE_FOOTSTEP,
+    GRASS_FOOTSTEP,
+    WALL_SLIDE,
+    WALL_SLIDE_STOP,
+    ENEMY_TAKE_DAMAGE,
+    KNIGHT_GAIN_SOUL,
+    FOCUS_READY,
+    FOCUS_HEALTH_CHARGE,
+    FOCUS_HEALTH_HEAL,
+    FOCUS_NOT_FINISHED
+}

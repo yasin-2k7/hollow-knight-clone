@@ -31,11 +31,14 @@ public class Game {
         return GRAVITY;
     }
 
-    public Game(float startX, float startY, TiledMap tiledMap) {
+    public Game(float startX, float startY) {
         this.startX = startX;
         this.startY = startY;
-        knight = new Knight(4, 55, startX, startY, this);
         grounds = new ArrayList<>();
+    }
+
+    public void initialize(TiledMap tiledMap){
+        knight = new Knight(4, 55, startX, startY, this);
         addGrounds(tiledMap);
         addTurnPositions(tiledMap);
         spawnEnemies(tiledMap, App.getUnitScale());
@@ -57,6 +60,7 @@ public class Game {
                     if (!activeSlashEffect.hasHitAlready(enemy)){
                         enemy.takeDamage();
                         activeSlashEffect.registerHit(enemy);
+                        knight.increaseSoul(11);
                     }
                 }
             }

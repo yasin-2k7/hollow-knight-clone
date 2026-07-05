@@ -8,6 +8,7 @@ import com.hollowknight.controller.GameController;
 import com.hollowknight.model.App;
 import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
+import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.EnemyState;
 
 public class FlyerEnemy extends AbstractEnemy {
@@ -54,7 +55,7 @@ public class FlyerEnemy extends AbstractEnemy {
             return;
         }
 
-        if (state != EnemyState.TURN && state != EnemyState.DAMAGED && state != EnemyState.CHASE) {
+        if (state != EnemyState.TURN && state != EnemyState.DAMAGED && state != EnemyState.CHASE && state != EnemyState.DEATH_AIR) {
             checkVision(App.getCurrentGame().getKnight());
         }
         handleStates(delta);
@@ -242,6 +243,7 @@ public class FlyerEnemy extends AbstractEnemy {
     @Override
     public void takeDamage() {
         if (dead) return;
+        audioListener.onAudioEvent(AudioAction.ENEMY_TAKE_DAMAGE);
         velocity.x = GameController.getActiveSlashView().isFlipped() ? 250 : -250;
         health--;
         if (health == 0){

@@ -64,6 +64,7 @@ public class PointerMenuButton extends Table {
                 isHovered = true;
                 leftPointer.setVisible(true);
                 rightPointer.setVisible(true);
+                AudioManager.playHover();
             }
 
             @Override

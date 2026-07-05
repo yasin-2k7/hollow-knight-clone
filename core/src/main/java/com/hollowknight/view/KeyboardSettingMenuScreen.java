@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.hollowknight.controller.InputManager;
 import com.hollowknight.model.App;
 import com.hollowknight.model.enums.GameAction;
 import com.hollowknight.model.enums.Texts;

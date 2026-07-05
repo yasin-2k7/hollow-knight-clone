@@ -1,16 +1,18 @@
 package com.hollowknight.controller;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
-import com.hollowknight.model.App;
-import com.hollowknight.model.Knight;
-import com.hollowknight.model.SlashEffect;
+import com.hollowknight.model.*;
 import com.hollowknight.model.enemies.Enemy;
 import com.hollowknight.model.enemies.Laser;
+import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.KnightState;
 import com.hollowknight.model.enums.SlashDirection;
+import com.hollowknight.view.AudioManager;
 import com.hollowknight.view.UiManager;
 import com.hollowknight.view.game.GameScreen;
+import com.hollowknight.view.game.KnightView;
 import com.hollowknight.view.game.SlashEffectView;
 import com.hollowknight.view.game.enemiesView.CrawlerView;
 import com.hollowknight.view.game.enemiesView.EnemyView;
@@ -172,11 +174,66 @@ public class GameController {
         }
     }
 
+    public static void init(TiledMap tiledMap, float startX, float startY){
+        Game game = new Game(startX, startY);
+        App.setCurrentGame(game);
+        game.initialize(tiledMap);
+
+        screen = new GameScreen();
+        screen.setTiledMap(tiledMap);
+        screen.setGame(game);
+
+        KnightView knightView = new KnightView();
+        screen.setKnightView(knightView);
+
+        game.getKnight().setAudioListener(new EntityAudioListener() {
+            @Override
+            public void onAudioEvent(AudioAction action) {
+                handleAudioEvent(action);
+            }
+        });
+
+        for (Enemy enemy : game.getAllEnemies()){
+            enemy.setAudioListener(new EntityAudioListener() {
+                @Override
+                public void onAudioEvent(AudioAction action) {
+                    handleAudioEvent(action);
+                }
+            });
+        }
+    }
+
     public static void createLaser(float originX, float originY, boolean flipped){
         Laser laser = new Laser(originX, originY, App.getCurrentGame(), flipped);
         App.getCurrentGame().getLasers().add(laser);
         LaserView laserView = new LaserView(laser.getBounds());
         screen.getLaserViews().add(laserView);
+    }
+
+    private static void handleAudioEvent(AudioAction event) {
+        switch (event) {
+            case KNIGHT_ATTACK -> AudioManager.playSwordA();
+            case KNIGHT_ATTACK_ALT -> AudioManager.playSwordB();
+            case KNIGHT_TAKE_DAMAGE -> AudioManager.playHeroDamage();
+            case KNIGHT_DASH -> AudioManager.playHeroDash();
+            case KNIGHT_DEATH -> AudioManager.playHeroDeath();
+            case KNIGHT_JUMP -> AudioManager.playHeroJump();
+            case LAND -> AudioManager.playHeroLand();
+            case MANTIS_CLAW -> AudioManager.playHeroMantisClaw();
+            case WALL_JUMP -> AudioManager.playHeroWallJump();
+            case STONE_FOOTSTEP -> AudioManager.playStoneFootstep();
+            case WALL_SLIDE -> AudioManager.playWallSlide();
+            case WALL_SLIDE_STOP -> AudioManager.stopWallSlide();
+            case ENEMY_TAKE_DAMAGE -> AudioManager.playEnemyDamage();
+            case KNIGHT_GAIN_SOUL -> AudioManager.playKnightGainSoul();
+            case FOCUS_READY -> AudioManager.playFocusReady();
+            case FOCUS_HEALTH_CHARGE -> AudioManager.playFocusHealthCharge();
+            case FOCUS_HEALTH_HEAL -> AudioManager.playFocusHealthHeal();
+            case FOCUS_NOT_FINISHED -> AudioManager.stopFocus();
+            default -> {
+                return;
+            }
+        }
     }
 
     public static ArrayList<EnemyView> getEnemyViews() {
@@ -193,6 +250,10 @@ public class GameController {
 
     public static void updateMasks(){
         screen.getMasksTable().updateHealth(App.getCurrentGame().getKnight().getMasks());
+    }
+
+    public static GameScreen getScreen() {
+        return screen;
     }
 
     public static void setScreen(GameScreen screen) {

@@ -5,7 +5,9 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 import com.hollowknight.controller.GameController;
+import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.GameAction;
 import com.hollowknight.model.enums.KnightState;
 
@@ -13,6 +15,8 @@ public class Knight {
     private Game game;
     private int masks;
     private int soul;
+
+    private EntityAudioListener audioListener;
 
     private float width = 250f;
     private float height = 135f;
@@ -28,7 +32,13 @@ public class Knight {
     private boolean canAttack = true;
     private boolean useAltSlash = false;
     private boolean noDamage = false;
+    private boolean focusStart = false;
 
+    private float focusGetTime = 0.6f;
+    private float focusStartTime = 0.2f;
+    private float focusEndTime = 0.2f;
+    private float focusTimer = 0f;
+    private float focusTime = 0.5f;
     private float damagedTimer = 0f;
     private float damagedTime = 0.3f;
     private float noDamageTimer = 0f;
@@ -63,6 +73,66 @@ public class Knight {
     }
 
     public void update(float delta){
+        boolean wasOnGround = this.onGround;
+
+        if (state == KnightState.FOCUS_START){
+            focusTimer -= delta;
+            if (focusTimer <= 0){
+                state = KnightState.FOCUS;
+                audioListener.onAudioEvent(AudioAction.FOCUS_HEALTH_CHARGE);
+                focusTimer = focusTime;
+            }
+            if (velocity.x != 0 || velocity.y != 0 || !Gdx.input.isKeyPressed(App.bindings.get(GameAction.FOCUS_AND_CAST))){
+                state = KnightState.IDLE;
+                focusStart = false;
+            }
+        }
+
+        if (state == KnightState.FOCUS){
+            focusTimer -= delta;
+            if (focusTimer <= 0){
+                state = KnightState.FOCUS_GET;
+
+                focusTimer = focusGetTime;
+            }
+            if (velocity.x != 0 || velocity.y != 0 || !Gdx.input.isKeyPressed(App.bindings.get(GameAction.FOCUS_AND_CAST))){
+                state = KnightState.IDLE;
+                audioListener.onAudioEvent(AudioAction.FOCUS_NOT_FINISHED);
+                focusStart = false;
+            }
+        }
+
+        if (state == KnightState.FOCUS_GET){
+            focusTimer -= delta;
+            if (focusTimer <= 0){
+                state = KnightState.FOCUS_END;
+                focusTimer = focusEndTime;
+                audioListener.onAudioEvent(AudioAction.FOCUS_HEALTH_HEAL);
+            }
+            if (velocity.x != 0 || velocity.y != 0 || !Gdx.input.isKeyPressed(App.bindings.get(GameAction.FOCUS_AND_CAST))){
+                state = KnightState.IDLE;
+                audioListener.onAudioEvent(AudioAction.FOCUS_NOT_FINISHED);
+                focusStart = false;
+            }
+        }
+
+        if (state == KnightState.FOCUS_END){
+            focusTimer -= delta;
+            if (focusTimer <= 0){
+                System.out.println("yes");
+                state = KnightState.IDLE;
+                soul -= 33;
+                masks++;
+                GameController.updateMasks();
+                focusStart = false;
+            }
+            if (velocity.x != 0 || velocity.y != 0 || !Gdx.input.isKeyPressed(App.bindings.get(GameAction.FOCUS_AND_CAST))){
+                state = KnightState.IDLE;
+                audioListener.onAudioEvent(AudioAction.FOCUS_NOT_FINISHED);
+                focusStart = false;
+            }
+        }
+
         if (state == KnightState.DASH){
             dashTimer -= delta;
             if (dashTimer <= 0){
@@ -70,7 +140,6 @@ public class Knight {
                 velocity.x = 0;
             }
         }
-
 
         if (dashCooldownTimer > 0){
             dashCooldownTimer -= delta;
@@ -161,12 +230,24 @@ public class Knight {
                 else{
                     position.y = rectangle.y + rectangle.height;
                     onGround = true;
+                    if (!wasOnGround){
+                        audioListener.onAudioEvent(AudioAction.LAND);
+                    }
                 }
                 velocity.y = 0;
                 bounds.setPosition(position.x, position.y);
             }
         }
 
+        if (onGround && velocity.x != 0){
+            audioListener.onAudioEvent(AudioAction.STONE_FOOTSTEP);
+        }
+
+        if (state == KnightState.ON_WALL) {
+            audioListener.onAudioEvent(AudioAction.WALL_SLIDE);
+        } else {
+            audioListener.onAudioEvent(AudioAction.WALL_SLIDE_STOP);
+        }
 
     }
 
@@ -184,6 +265,16 @@ public class Knight {
             return;
         }
 
+        if (masks < 5 && soul >= 33 && Gdx.input.isKeyPressed(App.bindings.get(GameAction.FOCUS_AND_CAST)) && velocity.x == 0 && velocity.y == 0){
+            if (!focusStart){
+                focusStart = true;
+                focusTimer = focusTime;
+                audioListener.onAudioEvent(AudioAction.FOCUS_READY);
+                state = KnightState.FOCUS_START;
+            }
+            return;
+        }
+
         if (state == KnightState.ON_WALL){
             boolean wallJump = false;
             onFirstJump = false;
@@ -195,6 +286,7 @@ public class Knight {
             }
 
             if (wallJump){
+                audioListener.onAudioEvent(AudioAction.WALL_JUMP);
                 velocity.y = JUMP_SPEED;
                 state = KnightState.WALL_JUMP;
                 onFirstJump = true;
@@ -212,6 +304,7 @@ public class Knight {
 
         if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.DASH))){
             if (canDash){
+                audioListener.onAudioEvent(AudioAction.KNIGHT_DASH);
                 canDash = false;
                 dashCooldownTimer = dashCooldown;
                 dashTimer = dashTime;
@@ -227,16 +320,20 @@ public class Knight {
 
             if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_UP))){
                 state = KnightState.ATTACK_UP;
+                audioListener.onAudioEvent(AudioAction.KNIGHT_ATTACK);
             }
             else if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_DOWN))){
                 state = KnightState.ATTACK_DOWN;
+                audioListener.onAudioEvent(AudioAction.KNIGHT_ATTACK);
             }
             else {
                 if (useAltSlash){
                     state = KnightState.ATTACK_ALT_SLASH;
+                    audioListener.onAudioEvent(AudioAction.KNIGHT_ATTACK_ALT);
                 }
                 else {
                     state = KnightState.ATTACK_SLASH;
+                    audioListener.onAudioEvent(AudioAction.KNIGHT_ATTACK);
                 }
                 useAltSlash = !useAltSlash;
             }
@@ -246,12 +343,14 @@ public class Knight {
 
         if (jumpJustPressed) {
             if (onGround) {
+                audioListener.onAudioEvent(AudioAction.KNIGHT_JUMP);
                 velocity.y = JUMP_SPEED;
                 state = KnightState.JUMP;
                 onGround = false;
                 onFirstJump = true;
                 return;
             } else if (onFirstJump) {
+                audioListener.onAudioEvent(AudioAction.KNIGHT_JUMP);
                 velocity.y = JUMP_SPEED;
                 state = KnightState.DOUBLE_JUMP;
                 onFirstJump = false;
@@ -262,12 +361,16 @@ public class Knight {
         if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_RIGHT))){
             flipped = true;
             velocity.x = MOVE_SPEED;
-            if (onGround) { state = KnightState.RUN; }
+            if (onGround) {
+                state = KnightState.RUN;
+            }
         }
         else if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_LEFT))){
             flipped = false;
             velocity.x = -MOVE_SPEED;
-            if (onGround) { state = KnightState.RUN; }
+            if (onGround) {
+                state = KnightState.RUN;
+            }
         }
         else {
             velocity.x = 0;
@@ -280,6 +383,7 @@ public class Knight {
     }
 
     public void takeDamage(int sign){
+        audioListener.onAudioEvent(AudioAction.KNIGHT_TAKE_DAMAGE);
         velocity.x = 250f * sign;
         masks--;
         GameController.updateMasks();
@@ -344,5 +448,22 @@ public class Knight {
 
     public boolean isNoDamage() {
         return noDamage;
+    }
+
+    public void setAudioListener(EntityAudioListener audioListener) {
+        this.audioListener = audioListener;
+    }
+
+    public void increaseSoul(int amount){
+        if (soul < 99){
+            float delayInSeconds = 0.5f;
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    audioListener.onAudioEvent(AudioAction.KNIGHT_GAIN_SOUL);
+                    soul = Math.min(99, soul+amount);
+                }
+            }, delayInSeconds);
+        }
     }
 }
