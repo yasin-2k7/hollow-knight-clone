@@ -1,16 +1,27 @@
 package com.hollowknight.view;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.hollowknight.controller.GameController;
 import com.hollowknight.model.App;
 import com.hollowknight.model.GameSave;
+import com.hollowknight.model.Manager;
 import com.hollowknight.model.enums.Texts;
 import com.hollowknight.view.game.GameScreen;
 
 public class StartGameMenuScreen extends MenuScreen{
+    private Image blackOverlay;
+
     @Override
     public void show() {
         super.show();
@@ -43,6 +54,16 @@ public class StartGameMenuScreen extends MenuScreen{
             }
         });
 
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.BLACK);
+        pixmap.fill();
+        Texture blackTexture = new Texture(pixmap);
+        pixmap.dispose();
+        blackOverlay = new Image(blackTexture);
+        blackOverlay.setSize(stage.getWidth(), stage.getHeight());
+        blackOverlay.getColor().a = 0f;
+        blackOverlay.setTouchable(Touchable.disabled);
+        stage.addActor(blackOverlay);
 
     }
 
@@ -68,10 +89,31 @@ public class StartGameMenuScreen extends MenuScreen{
             Button clear = new TextButton(Texts.CLEAR_SAVE.get(App.getCurrentLanguage()), skin);
             rootTable.add(clear).padLeft(200).row();
 
+            final int finalI = i;
             newButton.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    fadeAndSwitchScreen(new GameScreen());
+                    AudioManager.fadeOutCurrentMusic();
+
+                    blackOverlay.setTouchable(Touchable.enabled);
+                    blackOverlay.addAction(Actions.sequence(
+                        Actions.fadeIn(0.5f),
+                        Actions.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                blackOverlay.remove();
+                                if (gameSave == null){
+                                    GameSave newSave = Manager.createNewGame(finalI);
+                                    TiledMap map = new TmxMapLoader().load(newSave.getTiledMapAddress());
+                                    GameController.init(map, newSave.getStartX(), newSave.getStartY());
+                                } else {
+                                    TiledMap map = new TmxMapLoader().load(gameSave.getTiledMapAddress());
+                                    GameController.init(map, gameSave.getStartX(), gameSave.getStartY());
+                                }
+                                UiManager.setScreen(GameController.getScreen());
+                            }
+                        })
+                    ));
                 }
             });
 

@@ -3,16 +3,14 @@ package com.hollowknight.view.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -25,6 +23,8 @@ import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enemies.Enemy;
 import com.hollowknight.model.enemies.Laser;
+import com.hollowknight.model.enums.AudioAction;
+import com.hollowknight.view.AudioManager;
 import com.hollowknight.view.GameAssetManager;
 import com.hollowknight.view.MenuScreen;
 import com.hollowknight.view.game.enemiesView.EnemyView;
@@ -62,15 +62,12 @@ public class GameScreen extends MenuScreen {
     private SlashEffectView slashEffectView;
     private ArrayList<LaserView> laserViews = new ArrayList<>();
 
+
     @Override
     public void show() {
         super.show();
 
-        GameController.setScreen(this);
-
         batch = new SpriteBatch();
-
-        tiledMap = new TmxMapLoader().load("map/Map.tmx");
         renderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 6f);
 
         camera = new OrthographicCamera();
@@ -85,12 +82,6 @@ public class GameScreen extends MenuScreen {
 
         viewport.apply();
 
-        knightView = new KnightView();
-
-        game = new Game(2000f, 250f, tiledMap);
-
-        App.setCurrentGame(game);
-
         rootTable.left().top();
 
         masksTable = new MasksTable(App.getCurrentGame().getKnight(), skin);
@@ -100,8 +91,10 @@ public class GameScreen extends MenuScreen {
         soulsTable.add(new SoulWidget(App.getCurrentGame().getKnight(), skin)).padLeft(10);
 
         rootStack.add(soulsTable);
+        rootStack.add(rootTable);
 
         rootTable.add(masksTable).padLeft(350).padTop(20);
+        AudioManager.fadeInMusic(AudioManager.crossroadsMainMusic);
 
     }
 
@@ -239,5 +232,17 @@ public class GameScreen extends MenuScreen {
 
     public ArrayList<LaserView> getLaserViews() {
         return laserViews;
+    }
+
+    public void setTiledMap(TiledMap tiledMap) {
+        this.tiledMap = tiledMap;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public void setKnightView(KnightView knightView) {
+        this.knightView = knightView;
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.hollowknight.model.App;
+import com.hollowknight.model.Manager;
 import com.hollowknight.model.enums.Texts;
 
 public class AudioSettingMenuScreen extends MenuScreen{
@@ -18,9 +19,13 @@ public class AudioSettingMenuScreen extends MenuScreen{
         CheckBox music = new CheckBox(Texts.MUSIC.get(App.getCurrentLanguage()), skin);
         CheckBox sfx = new CheckBox(Texts.SFX.get(App.getCurrentLanguage()), skin);
         Label volume = new Label(Texts.MUSIC_VOLUME.get(App.getCurrentLanguage()), skin);
-        Slider musicVolume = new Slider(0, 10, 1, false, skin);
+        Slider musicVolume = new Slider(0, 10, 1f, false, skin);
         TextButton reset = new TextButton(Texts.RESET.get(App.getCurrentLanguage()), skin, "default");
         TextButton backBtn = new TextButton(Texts.BACK.get(App.getCurrentLanguage()), skin, "default");
+
+        music.setChecked(App.isMusicEnabled());
+        sfx.setChecked(App.isSfxEnabled());
+        musicVolume.setValue(App.getMusicVolume()*10);
 
         rootTable.setFillParent(true);
 
@@ -45,6 +50,33 @@ public class AudioSettingMenuScreen extends MenuScreen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 fadeAndSwitchScreen(new SettingMenuScreen());
+            }
+        });
+
+        musicVolume.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                float sliderValue = musicVolume.getValue();
+                App.setMusicVolume(sliderValue / 10f);
+                AudioManager.updateMusicVolume();
+                Manager.saveConfig();
+            }
+        });
+
+        music.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                App.setMusicEnabled(music.isChecked());
+                AudioManager.updateMusicBoolean();
+                Manager.saveConfig();
+            }
+        });
+
+        sfx.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                App.setSfxEnabled(sfx.isChecked());
+                Manager.saveConfig();
             }
         });
 

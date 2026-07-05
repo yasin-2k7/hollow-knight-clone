@@ -35,6 +35,7 @@ public class SettingMenuScreen extends MenuScreen{
         audioBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.playClick();
                 fadeAndSwitchScreen(new AudioSettingMenuScreen());
             }
         });
@@ -50,6 +51,7 @@ public class SettingMenuScreen extends MenuScreen{
         languageBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.playClick();
                 fadeAndSwitchScreen(new LanguageSettingMenuScreen());
             }
         });
@@ -57,6 +59,7 @@ public class SettingMenuScreen extends MenuScreen{
         keyboardBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.playClick();
                 fadeAndSwitchScreen(new KeyboardSettingMenuScreen());
             }
         });

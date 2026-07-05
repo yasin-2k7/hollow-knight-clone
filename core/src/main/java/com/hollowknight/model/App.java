@@ -10,6 +10,33 @@ public class App {
     private static GameSave[] saveSlots = new GameSave[4];
     private static Game currentGame;
     private static float unitScale = 1 / 6f;
+    private static boolean musicEnabled = true;
+    private static boolean sfxEnabled = true;
+    private static float musicVolume = 0.6f;
+
+    public static boolean isMusicEnabled() {
+        return musicEnabled;
+    }
+
+    public static boolean isSfxEnabled() {
+        return sfxEnabled;
+    }
+
+    public static float getMusicVolume() {
+        return musicVolume;
+    }
+
+    public static void setMusicEnabled(boolean musicEnabled) {
+        App.musicEnabled = musicEnabled;
+    }
+
+    public static void setSfxEnabled(boolean sfxEnabled) {
+        App.sfxEnabled = sfxEnabled;
+    }
+
+    public static void setMusicVolume(float musicVolume) {
+        App.musicVolume = musicVolume;
+    }
 
     public static void setCurrentLanguage(Language currentLanguage) {
         App.currentLanguage = currentLanguage;

@@ -1,12 +1,12 @@
 package com.hollowknight;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.hollowknight.model.App;
-import com.hollowknight.model.GameSave;
+import com.hollowknight.model.Manager;
+import com.hollowknight.view.AudioManager;
 import com.hollowknight.view.GameAssetManager;
-import com.hollowknight.view.InputManager;
 import com.hollowknight.view.MainMenuScreen;
 import com.hollowknight.view.UiManager;
 
@@ -20,14 +20,14 @@ public class Main extends Game {
     public void create() {
         batch = new SpriteBatch();
 
+        Manager.loadConfig();
+
+        Manager.loadAllAllSlots();
+
         GameAssetManager.init();
-        InputManager.resetToDefaults();
         UiManager.init(this);
-        App.getSaveSlots()[2] = new GameSave(5, 10, 22, 5, 8);
         MainMenuScreen mainMenuScreen = new com.hollowknight.view.MainMenuScreen();
         setScreen(mainMenuScreen);
-
-
     }
 
     public SpriteBatch getBatch() {
@@ -36,7 +36,7 @@ public class Main extends Game {
 
     @Override
     public void render() {
-
+        AudioManager.update(Gdx.graphics.getDeltaTime());
         super.render();
     }
 

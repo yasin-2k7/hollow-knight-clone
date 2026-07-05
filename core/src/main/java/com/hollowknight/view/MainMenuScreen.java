@@ -58,6 +58,7 @@ public class MainMenuScreen extends MenuScreen {
         settingBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.playClick();
                 fadeAndSwitchScreen(new SettingMenuScreen());
             }
         });
@@ -65,6 +66,7 @@ public class MainMenuScreen extends MenuScreen {
         startBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.playClick();
                 fadeAndSwitchScreen(new StartGameMenuScreen());
             }
         });

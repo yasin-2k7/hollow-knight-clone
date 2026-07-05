@@ -1,17 +1,27 @@
 package com.hollowknight.model;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+
 public class GameSave {
     private float startX, startY;
     private int soul;
     private int masks;
     private int playTime;
+    private String tiledMapAddress;
 
-    public GameSave(float startX, float startY, int soul, int masks, int playMatch) {
+    public GameSave() {}
+
+    public GameSave(float startX, float startY, int soul, int masks, int playMatch, String tiledMapAddress) {
         this.startX = startX;
         this.startY = startY;
         this.soul = soul;
         this.masks = masks;
         this.playTime = playMatch;
+        this.tiledMapAddress = tiledMapAddress;
+    }
+
+    public String getTiledMapAddress() {
+        return tiledMapAddress;
     }
 
     public float getStartX() {

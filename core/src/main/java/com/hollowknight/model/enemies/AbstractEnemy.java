@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.hollowknight.controller.GameController;
 import com.hollowknight.model.App;
+import com.hollowknight.model.EntityAudioListener;
 import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enums.EnemyState;
@@ -14,6 +15,8 @@ public abstract class AbstractEnemy implements Enemy{
     protected boolean onGround = false;
     protected boolean flipped = true;
     protected boolean dead = false;
+
+    protected EntityAudioListener audioListener;
 
     protected Game game;
 
@@ -92,5 +95,10 @@ public abstract class AbstractEnemy implements Enemy{
 
     public Game getGame() {
         return game;
+    }
+
+    @Override
+    public void setAudioListener(EntityAudioListener audioListener) {
+        this.audioListener = audioListener;
     }
 }

@@ -8,6 +8,7 @@ import com.hollowknight.controller.GameController;
 import com.hollowknight.model.App;
 import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
+import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.EnemyState;
 
 public class HuskHornHeadEnemy extends AbstractEnemy{
@@ -238,6 +239,7 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
     @Override
     public void takeDamage() {
         if (dead) return;
+        audioListener.onAudioEvent(AudioAction.ENEMY_TAKE_DAMAGE);
         velocity.x = GameController.getActiveSlashView().isFlipped() ? 250 : -250;
         health--;
         if (health == 0){
