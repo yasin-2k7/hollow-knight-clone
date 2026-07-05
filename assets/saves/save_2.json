@@ -1,0 +1,7 @@
+{
+startX: 2000
+startY: 250
+soul: 5
+masks: 5
+tiledMapAddress: map/map.tmx
+}

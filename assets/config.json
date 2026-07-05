@@ -1,0 +1,21 @@
+{
+language: ENGLISH
+keyBindings: {
+	QUICK_MAP: 61
+	MOVE_LEFT: 21
+	ATTACK: 52
+	DASH: 31
+	QUICK_CAST: 34
+	MOVE_UP: 19
+	JUMP: 54
+	INVENTORY: 37
+	DREAM_NAIL: 32
+	MOVE_RIGHT: 22
+	SUPER_DASH: 47
+	FOCUS_AND_CAST: 29
+	MOVE_DOWN: 20
+}
+musicOn: true
+sfxOn: true
+musicVol: 0.6
+}
