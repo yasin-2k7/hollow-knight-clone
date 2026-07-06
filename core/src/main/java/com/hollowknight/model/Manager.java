@@ -76,4 +76,11 @@ public class Manager {
         return newSave;
     }
 
+    public static void clearSave(int slotIndex) {
+        FileHandle file = Gdx.files.local("saves/save_" + slotIndex + ".json");
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
 }

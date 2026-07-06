@@ -3,18 +3,18 @@ package com.hollowknight.view;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.hollowknight.model.App;
 import com.hollowknight.model.Manager;
 import com.hollowknight.model.enums.Texts;
 
-public class AudioSettingMenuScreen extends MenuScreen{
-    @Override
-    public void show() {
-        super.show();
+public class AudioTable extends Stack {
+    public AudioTable(Skin skin, Runnable backRunnable) {
 
         Table backTable = new Table();
+        Table rootTable = new Table();
 
         Image title_up = new Image(skin.getDrawable("title_up_others"));
         Label title = new Label(Texts.AUDIO_SETTINGS.get(App.getCurrentLanguage()), skin, "title");
@@ -25,11 +25,10 @@ public class AudioSettingMenuScreen extends MenuScreen{
         TextButton reset = new TextButton(Texts.RESET.get(App.getCurrentLanguage()), skin, "default");
         TextButton backBtn = new TextButton(Texts.BACK.get(App.getCurrentLanguage()), skin, "default");
 
+        rootTable.setFillParent(true);
         music.setChecked(App.isMusicEnabled());
         sfx.setChecked(App.isSfxEnabled());
         musicVolume.setValue(App.getMusicVolume()*10);
-
-        rootTable.setFillParent(true);
 
         rootTable.pad(40).top();
         rootTable.defaults().pad(20);
@@ -39,19 +38,19 @@ public class AudioSettingMenuScreen extends MenuScreen{
         rootTable.add(sfx).row();
         rootTable.add(volume).center().padBottom(90).padRight(60);
         rootTable.add(musicVolume).size(400, 100).spaceBottom(60).row();
-        rootTable.add(reset).bottom().colspan(2).expandY();
+        rootTable.add(reset).pad(10).bottom().colspan(2).expandY();
 
-        backTable.setFillParent(true);
         backTable.pad(40);
         backTable.bottom().left().add(backBtn).pad(10);
 
-        rootStack.add(backTable);
+        this.add(rootTable);
+        this.add(backTable);
 
 
         backBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                fadeAndSwitchScreen(new SettingMenuScreen());
+                backRunnable.run();
                 AudioManager.playClick();
             }
         });
@@ -67,20 +66,6 @@ public class AudioSettingMenuScreen extends MenuScreen{
                 musicVolume.setValue(App.getMusicVolume()*10);
                 Manager.saveConfig();
                 AudioManager.playClick();
-            }
-        });
-
-        backBtn.addListener(new InputListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                AudioManager.playHover();
-            }
-        });
-
-        reset.addListener(new InputListener(){
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                AudioManager.playHover();
             }
         });
 
@@ -111,6 +96,15 @@ public class AudioSettingMenuScreen extends MenuScreen{
             }
         });
 
+        InputListener hoverListener = new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                AudioManager.playHover();
+            }
+        };
+
+        backBtn.addListener(hoverListener);
+        reset.addListener(hoverListener);
 
     }
 }

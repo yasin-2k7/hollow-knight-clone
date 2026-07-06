@@ -20,8 +20,8 @@ public class Knight {
 
     private float width = 250f;
     private float height = 135f;
-    private float wOffset = 120f;
-    private float hOffsetUp = 40f;
+    private float wOffset = 110f;
+    private float hOffsetUp = 45f;
     private float hOffsetDown = 5f;
     private Rectangle bounds;
     private boolean onGround;
@@ -33,6 +33,7 @@ public class Knight {
     private boolean useAltSlash = false;
     private boolean noDamage = false;
     private boolean focusStart = false;
+    private boolean isPogo = false;
 
     private float focusGetTime = 0.6f;
     private float focusStartTime = 0.2f;
@@ -84,6 +85,7 @@ public class Knight {
             }
             if (velocity.x != 0 || velocity.y != 0 || !Gdx.input.isKeyPressed(App.bindings.get(GameAction.FOCUS_AND_CAST))){
                 state = KnightState.IDLE;
+                audioListener.onAudioEvent(AudioAction.FOCUS_NOT_FINISHED);
                 focusStart = false;
             }
         }
@@ -125,6 +127,7 @@ public class Knight {
                 masks++;
                 GameController.updateMasks();
                 focusStart = false;
+                audioListener.onAudioEvent(AudioAction.FOCUS_NOT_FINISHED);
             }
             if (velocity.x != 0 || velocity.y != 0 || !Gdx.input.isKeyPressed(App.bindings.get(GameAction.FOCUS_AND_CAST))){
                 state = KnightState.IDLE;
@@ -239,6 +242,10 @@ public class Knight {
             }
         }
 
+        if (onGround){
+            isPogo = false;
+        }
+
         if (onGround && velocity.x != 0){
             audioListener.onAudioEvent(AudioAction.STONE_FOOTSTEP);
         }
@@ -323,8 +330,21 @@ public class Knight {
                 audioListener.onAudioEvent(AudioAction.KNIGHT_ATTACK);
             }
             else if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_DOWN))){
-                state = KnightState.ATTACK_DOWN;
-                audioListener.onAudioEvent(AudioAction.KNIGHT_ATTACK);
+                if (onGround){
+                    if (useAltSlash){
+                        state = KnightState.ATTACK_ALT_SLASH;
+                        audioListener.onAudioEvent(AudioAction.KNIGHT_ATTACK_ALT);
+                    }
+                    else {
+                        state = KnightState.ATTACK_SLASH;
+                        audioListener.onAudioEvent(AudioAction.KNIGHT_ATTACK);
+                    }
+                    useAltSlash = !useAltSlash;
+                }
+                else{
+                    state = KnightState.ATTACK_DOWN;
+                    audioListener.onAudioEvent(AudioAction.KNIGHT_ATTACK);
+                }
             }
             else {
                 if (useAltSlash){
@@ -377,7 +397,7 @@ public class Knight {
             if (onGround) {state = KnightState.IDLE;}
         }
 
-        if (!Gdx.input.isKeyPressed(App.bindings.get(GameAction.JUMP)) && velocity.y > 0){
+        if (!isPogo && !Gdx.input.isKeyPressed(App.bindings.get(GameAction.JUMP)) && velocity.y > 0){
             velocity.y = velocity.y * 0.7f;
         }
     }
@@ -396,6 +416,15 @@ public class Knight {
         state = KnightState.DAMAGED;
         damagedTimer = damagedTime;
         velocity.y = 20f;
+    }
+
+    public void pogoJump(){
+        audioListener.onAudioEvent(AudioAction.KNIGHT_JUMP);
+        velocity.y = JUMP_SPEED;
+        state = KnightState.JUMP;
+        onGround = false;
+        isPogo = true;
+        onFirstJump = true;
     }
 
     public int getMasks() {

@@ -1,7 +1,8 @@
 {
-startX: 2000
-startY: 250
-soul: 5
-masks: 5
+startX: 3799.3289
+startY: 474.67007
+soul: 49
+masks: 3
+playTime: 130.26604
 tiledMapAddress: map/map.tmx
 }

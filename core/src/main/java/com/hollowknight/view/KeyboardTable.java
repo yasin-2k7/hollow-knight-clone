@@ -6,6 +6,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
@@ -14,18 +16,19 @@ import com.hollowknight.model.App;
 import com.hollowknight.model.enums.GameAction;
 import com.hollowknight.model.enums.Texts;
 
-public class KeyboardSettingMenuScreen extends MenuScreen{
-
+public class KeyboardTable extends Stack {
     private GameAction actionBeingRebound = null;
-    TextButton reset;
+    private TextButton reset;
+    private Table rootTable;
+    private Skin skin;
 
-    @Override
-    public void show() {
-        super.show();
+    public KeyboardTable(Skin skin, Runnable backRunnable) {
+        rootTable = new Table();
+        Table backTable = new Table();
+        this.skin = skin;
 
         TextButton backBtn = new TextButton(Texts.BACK.get(App.getCurrentLanguage()), skin, "default");
 
-        rootTable.setFillParent(true);
         rootTable.pad(40).center().top();
         rootTable.defaults().pad(20);
         reset = new TextButton(Texts.RESET.get(App.getCurrentLanguage()), skin, "default");
@@ -33,21 +36,17 @@ public class KeyboardSettingMenuScreen extends MenuScreen{
 
         buildKeyboardMenu();
 
-
-        Table backTable = new Table();
-
-
-        backTable.setFillParent(true);
         backTable.pad(40);
         backTable.bottom().left().add(backBtn).pad(10);
 
 
-        rootStack.add(backTable);
+        this.add(rootTable);
+        this.add(backTable);
 
         backBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                fadeAndSwitchScreen(new SettingMenuScreen());
+                backRunnable.run();
                 AudioManager.playClick();
             }
         });
@@ -75,6 +74,7 @@ public class KeyboardSettingMenuScreen extends MenuScreen{
                 AudioManager.playHover();
             }
         });
+
     }
 
     public void buildKeyboardMenu() {
@@ -113,7 +113,7 @@ public class KeyboardSettingMenuScreen extends MenuScreen{
 
 
         rootTable.row();
-        rootTable.add(reset).bottom().colspan(4).expandY();
+        rootTable.add(reset).pad(10).bottom().colspan(4).expandY();
     }
 
     public Button createKeyIcon(GameAction action, int keyCode) {
@@ -174,6 +174,7 @@ public class KeyboardSettingMenuScreen extends MenuScreen{
     }
 
     private void listenForKeypress() {
+        final Stage stage = this.getStage();
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {

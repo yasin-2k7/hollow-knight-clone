@@ -81,6 +81,7 @@ public class Mask extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a * parentAlpha);
         TextureRegion currentFrame;
 
         switch (state){

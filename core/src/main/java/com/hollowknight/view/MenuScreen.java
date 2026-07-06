@@ -25,8 +25,8 @@ public abstract class MenuScreen implements Screen {
 
     protected Table rootTable;
     protected Stack rootStack;
-    private Stack modalStack;
-    private Stack toastStack;
+    protected Stack modalStack;
+    protected Stack toastStack;
     private Stack mainStack;
 
     private Viewport backgroundViewport;
@@ -131,7 +131,17 @@ public abstract class MenuScreen implements Screen {
 
     public void fadeAndSwitchScreen(final Screen targetScreen) {
         Gdx.input.setInputProcessor(null);
-        stage.getRoot().addAction(Actions.fadeOut(0.4f));
-        UiManager.setScreen(targetScreen);
+        final Screen currentScreen = this;
+        stage.getRoot().addAction(Actions.sequence(
+            Actions.fadeOut(0.4f),
+            Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    UiManager.setScreen(targetScreen);
+
+                    currentScreen.dispose();
+                }
+            })
+        ));
     }
 }

@@ -33,7 +33,19 @@ public enum Texts {
     INVENTORY("INVENTORY", "INVENTAIRE"),
     SELECT_PROFILE("SELECT PROFILE", "SÉLECTIONNER UN PROFIL"),
     CLEAR_SAVE("CLEAR SAVE", "EFFACER LA SAUVEGRADE"),
-    NEW_GAME("NEW GAME", "NOUVELLE PARTIE");
+    NEW_GAME("NEW GAME", "NOUVELLE PARTIE"),
+    PAUSED("PAUSED", "PAUSE"),
+    RESUME("RESUME", "REPRENDRE"),
+    CHEAT_CODES("CHEAT CODES", "CODES DE TRICHE"),
+    SAVE_AND_EXIT("SAVE AND EXIT", "SAUVEGARDER ET QUITTER"),
+    BOSS_ARENA_TELEPORT("Boss Arena Teleport", "Téléportation vers l'arène du boss"),
+    SPECTATOR_MODE("Spectator Mode", "Mode spectateur"),
+    EMERGENCY_HEAL("Emergency Heal", "Soin d'urgence"),
+    REFILL_SOUL_VESSEL("Refill Soul Vessel", "Remplir le réceptacle d'âme"),
+    GOD_MODE("God Mode", "Mode Dieu"),
+    KILL_NEARBY_ENEMIES("Kill Nearby Enemies", "Tuer les ennemis proches"),
+    SHIFT("Shift", "La touche Maj");
+
 
 
 

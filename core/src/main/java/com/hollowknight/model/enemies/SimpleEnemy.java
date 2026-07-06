@@ -27,7 +27,15 @@ public class SimpleEnemy extends AbstractEnemy{
 
     @Override
     public void update(float delta) {
-        if (dead) return;
+        if (dead){
+            if (!onGround) {
+                velocity.y += game.getGRAVITY() * delta;
+                position.y += velocity.y * delta;
+                bounds.setPosition(position.x, position.y);
+                checkVerticalCollisions();
+            }
+            return;
+        }
         handleStates(delta);
 
         position.x += velocity.x * delta;

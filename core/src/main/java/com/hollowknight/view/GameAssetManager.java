@@ -18,7 +18,6 @@ public class GameAssetManager {
         skin = new Skin(atlas);
         skin.load(Gdx.files.internal("ui/myskin.json"));
         AudioManager.load();
-        AudioManager.fadeInMusic(AudioManager.menuMusic);
     }
 
     public static void dispose() {

@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.hollowknight.controller.GameController;
 import com.hollowknight.model.enemies.*;
+import com.hollowknight.model.enums.EnemyState;
+import com.hollowknight.model.enums.SlashDirection;
 import com.hollowknight.view.game.enemiesView.CrawlerView;
 import com.hollowknight.view.game.enemiesView.CrystallizedView;
 import com.hollowknight.view.game.enemiesView.HuskHornHeadView;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 
 public class Game {
     private float startX, startY;
+    private float playTime;
+    private String mapAddress;
     private Knight knight;
     private final float GRAVITY = -250f;
     private ArrayList<Rectangle> grounds;
@@ -31,20 +35,23 @@ public class Game {
         return GRAVITY;
     }
 
-    public Game(float startX, float startY) {
+    public Game(float startX, float startY, float playTime) {
         this.startX = startX;
         this.startY = startY;
         grounds = new ArrayList<>();
+        this.playTime = playTime;
     }
 
-    public void initialize(TiledMap tiledMap){
-        knight = new Knight(4, 55, startX, startY, this);
+    public void initialize(String mapAddress, TiledMap tiledMap, int masks, int soul){
+        knight = new Knight(masks, soul, startX, startY, this);
+        this.mapAddress = mapAddress;
         addGrounds(tiledMap);
         addTurnPositions(tiledMap);
         spawnEnemies(tiledMap, App.getUnitScale());
     }
 
     public void update(float delta){
+        playTime += delta;
         knight.update(delta);
         if (activeSlashEffect != null){
             activeSlashEffect.update(delta);
@@ -58,9 +65,14 @@ public class Game {
             for (Enemy enemy : allEnemies) {
                 if (Intersector.overlaps(activeSlashEffect.getHitBounds(), enemy.getBounds())) {
                     if (!activeSlashEffect.hasHitAlready(enemy)){
-                        enemy.takeDamage();
-                        activeSlashEffect.registerHit(enemy);
-                        knight.increaseSoul(11);
+                        if (!enemy.isDead()) {
+                            enemy.takeDamage();
+                            activeSlashEffect.registerHit(enemy);
+                            knight.increaseSoul(11);
+                            if (activeSlashEffect.getType() == SlashDirection.DOWN){
+                                knight.pogoJump();
+                            }
+                        }
                     }
                 }
             }
@@ -68,7 +80,7 @@ public class Game {
 
         if (!knight.isNoDamage()){
             for (Enemy enemy : allEnemies) {
-                if (Intersector.overlaps(knight.getBounds(), enemy.getBounds()) && !enemy.isDead()) {
+                if (Intersector.overlaps(knight.getBounds(), enemy.getBounds()) && !enemy.isDead() && enemy.getState() != EnemyState.DEATH_AIR) {
                     if (enemy.getPosition().x > knight.getPosition().x){
                         knight.takeDamage(-1);
                     }
@@ -138,7 +150,7 @@ public class Game {
                     GameController.addEnemyView(new CrystallizedView(crystallizedEnemy));
                 }
                 else if ("mosquito".equals(enemyType)) {
-                    FlyerEnemy flyerEnemy = new FlyerEnemy(this, x, y, 200f, 120f, 60f, 40f, 5f);
+                    FlyerEnemy flyerEnemy = new FlyerEnemy(this, x, y, 180f, 110f, 70f, 40f, 10f);
                     allEnemies.add(flyerEnemy);
                     RectangleMapObject patrolObj = pointObj.getProperties().get("patrol", RectangleMapObject.class);
                     Rectangle tiledRectangle = patrolObj.getRectangle();
@@ -176,5 +188,13 @@ public class Game {
 
     public ArrayList<Laser> getLasers() {
         return lasers;
+    }
+
+    public float getPlayTime() {
+        return playTime;
+    }
+
+    public String getMapAddress() {
+        return mapAddress;
     }
 }

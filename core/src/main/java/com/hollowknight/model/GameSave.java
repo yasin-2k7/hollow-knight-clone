@@ -6,12 +6,12 @@ public class GameSave {
     private float startX, startY;
     private int soul;
     private int masks;
-    private int playTime;
+    private float playTime;
     private String tiledMapAddress;
 
     public GameSave() {}
 
-    public GameSave(float startX, float startY, int soul, int masks, int playMatch, String tiledMapAddress) {
+    public GameSave(float startX, float startY, int soul, int masks, float playMatch, String tiledMapAddress) {
         this.startX = startX;
         this.startY = startY;
         this.soul = soul;
@@ -40,7 +40,7 @@ public class GameSave {
         return masks;
     }
 
-    public int getPlayTime() {
+    public float getPlayTime() {
         return playTime;
     }
 }

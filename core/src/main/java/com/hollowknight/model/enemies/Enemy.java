@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.hollowknight.model.EntityAudioListener;
 import com.hollowknight.model.Knight;
+import com.hollowknight.model.enums.EnemyState;
 
 public interface Enemy {
     void takeDamage();
@@ -15,4 +16,5 @@ public interface Enemy {
     void attack(Knight knight);
     void knightHit(Knight knight);
     void setAudioListener(EntityAudioListener audioListener);
+    EnemyState getState();
 }

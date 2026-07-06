@@ -1,5 +1,7 @@
 package com.hollowknight.controller;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -7,14 +9,13 @@ import com.hollowknight.model.*;
 import com.hollowknight.model.enemies.Enemy;
 import com.hollowknight.model.enemies.Laser;
 import com.hollowknight.model.enums.AudioAction;
-import com.hollowknight.model.enums.KnightState;
+import com.hollowknight.model.enums.GameState;
 import com.hollowknight.model.enums.SlashDirection;
 import com.hollowknight.view.AudioManager;
-import com.hollowknight.view.UiManager;
-import com.hollowknight.view.game.GameScreen;
-import com.hollowknight.view.game.KnightView;
-import com.hollowknight.view.game.SlashEffectView;
-import com.hollowknight.view.game.enemiesView.CrawlerView;
+import com.hollowknight.view.GameAssetManager;
+import com.hollowknight.view.MainMenuScreen;
+import com.hollowknight.view.SettingTable;
+import com.hollowknight.view.game.*;
 import com.hollowknight.view.game.enemiesView.EnemyView;
 import com.hollowknight.view.game.enemiesView.LaserView;
 
@@ -24,12 +25,18 @@ public class GameController {
     private static float unitScale = App.getUnitScale();
     private static GameScreen screen;
     private static ArrayList<EnemyView> enemyViews = new ArrayList<>();
+    private static GameState gameState = GameState.RUNNING;
+    private static int currentSaveIndex = -1;
 
     public static void addEnemyView(EnemyView enemyView){
         enemyViews.add(enemyView);
     }
 
     public static void updateGame(float delta){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            togglePause();
+        }
+        if (gameState == GameState.PAUSED) return;
         float cappedDelta = Math.min(delta, 0.016f);
 
         App.getCurrentGame().update(cappedDelta);
@@ -53,7 +60,7 @@ public class GameController {
                 wFrame = 169;
                 hFrame = 192;
                 width = 100f * unitScale;
-                float maxHeight = 200f * unitScale;
+                float maxHeight = 170f * unitScale;
                 height = maxHeight;
                 x = knight.getPosition().x + unitScale*(knight.getWidth()-2*knight.getwOffset())/2 - width/2;
                 y = knight.getPosition().y + unitScale*(knight.getHeight() - knight.gethOffsetUp());
@@ -76,7 +83,7 @@ public class GameController {
                 wFrame = 182;
                 hFrame = 209;
                 width = 100f * unitScale;
-                height = 200f * unitScale;
+                height = 170f * unitScale;
                 float maxHeight = height;
                 x = knight.getPosition().x + unitScale*(knight.getWidth()-2*knight.getwOffset())/2 - width/2;
                 y = knight.getPosition().y - height + unitScale* knight.gethOffsetDown();
@@ -101,13 +108,13 @@ public class GameController {
             case ATTACK_SLASH -> {
                 wFrame = 349;
                 hFrame = 186;
-                float maxWidth = 250f * unitScale;
-                height = 125f * unitScale;
+                float maxWidth = 170f * unitScale;
+                height = 80f * unitScale;
                 y = knight.getPosition().y;
                 address = "effects/SlashEffect.png";
 
                 if (knight.isFlipped()) {
-                    x = knight.getPosition().x + unitScale * (knight.getWidth() - 2 * knight.getwOffset()) - 15f;
+                    x = knight.getPosition().x;
                     width = maxWidth;
                     for (Rectangle ground : App.getCurrentGame().getGrounds()) {
                         Rectangle fakeBounds = new Rectangle(x, y, width, height);
@@ -117,7 +124,7 @@ public class GameController {
                         }
                     }
                 } else {
-                    x = knight.getPosition().x - maxWidth + 15f;
+                    x = knight.getPosition().x + knight.getBounds().width - maxWidth;
                     width = maxWidth;
                     for (Rectangle ground : App.getCurrentGame().getGrounds()) {
                         Rectangle fakeBounds = new Rectangle(x, y, width, height);
@@ -125,7 +132,7 @@ public class GameController {
                             float groundRightEdge = ground.x + ground.width;
                             if (groundRightEdge > x && groundRightEdge < knight.getPosition().x) {
                                 x = groundRightEdge;
-                                width = (knight.getPosition().x + 15f) - x;
+                                width = (knight.getPosition().x) - x;
                             }
                         }
                     }
@@ -138,12 +145,12 @@ public class GameController {
             case ATTACK_ALT_SLASH -> {
                 wFrame = 349;
                 hFrame = 186;
-                float maxWidth = 250f * unitScale;
-                height = 125f * unitScale;
+                float maxWidth = 170f * unitScale;
+                height = 80f * unitScale;
                 y = knight.getPosition().y;
                 address = "effects/SlashEffectAlt.png";
                 if (knight.isFlipped()) {
-                    x = knight.getPosition().x + unitScale * (knight.getWidth() - 2 * knight.getwOffset()) - 15f;
+                    x = knight.getPosition().x;
                     width = maxWidth;
                     for (Rectangle ground : App.getCurrentGame().getGrounds()) {
                         Rectangle fakeBounds = new Rectangle(x, y, width, height);
@@ -153,7 +160,7 @@ public class GameController {
                         }
                     }
                 } else {
-                    x = knight.getPosition().x - maxWidth + 15f;
+                    x = knight.getPosition().x + knight.getBounds().width - maxWidth;
                     width = maxWidth;
                     for (Rectangle ground : App.getCurrentGame().getGrounds()) {
                         Rectangle fakeBounds = new Rectangle(x, y, width, height);
@@ -161,7 +168,7 @@ public class GameController {
                             float groundRightEdge = ground.x + ground.width;
                             if (groundRightEdge > x && groundRightEdge < knight.getPosition().x) {
                                 x = groundRightEdge;
-                                width = (knight.getPosition().x+15f) - x;
+                                width = (knight.getPosition().x) - x;
                             }
                         }
                     }
@@ -174,10 +181,10 @@ public class GameController {
         }
     }
 
-    public static void init(TiledMap tiledMap, float startX, float startY){
-        Game game = new Game(startX, startY);
+    public static void init(String mapAddress, TiledMap tiledMap, float startX, float startY, int masks, int soul, float playTime){
+        Game game = new Game(startX, startY, playTime);
         App.setCurrentGame(game);
-        game.initialize(tiledMap);
+        game.initialize(mapAddress, tiledMap, masks, soul);
 
         screen = new GameScreen();
         screen.setTiledMap(tiledMap);
@@ -236,6 +243,47 @@ public class GameController {
         }
     }
 
+    public static void pauseGame(){
+        gameState = GameState.PAUSED;
+        screen.showPauseMenu();
+
+    }
+
+    public static void togglePause(){
+        if (gameState == GameState.RUNNING){
+            pauseGame();
+        }
+        else {
+            resumeGame();
+        }
+    }
+
+    public static void resumeGame(){
+        gameState = GameState.RUNNING;
+        screen.backToGame();
+    }
+
+    public static void settingInPause(){
+        screen.switchModalTable(new SettingTable(GameAssetManager.skin, () -> {
+            screen.switchModalTable(new PauseTable(GameAssetManager.skin));
+        }));
+    }
+
+    public static void showCheatCodes(){
+        screen.switchModalTable(new CheatCodeTable(GameAssetManager.skin, () -> {
+            screen.switchModalTable(new PauseTable(GameAssetManager.skin));
+        }));
+    }
+
+    public static void saveGame(){
+        Knight knight = App.getCurrentGame().getKnight();
+        GameSave currentGame = new GameSave(knight.getPosition().x / unitScale, knight.getPosition().y / unitScale, knight.getSoul(), knight.getMasks(), App.getCurrentGame().getPlayTime(), App.getCurrentGame().getMapAddress());
+        Manager.saveGame(currentSaveIndex, currentGame);
+        currentSaveIndex = -1;
+        screen.fadeAndSwitchScreen(new MainMenuScreen());
+        AudioManager.fadeOutCurrentMusic();
+    }
+
     public static ArrayList<EnemyView> getEnemyViews() {
         return enemyViews;
     }
@@ -258,5 +306,17 @@ public class GameController {
 
     public static void setScreen(GameScreen screen) {
         GameController.screen = screen;
+    }
+
+    public static GameState getGameState() {
+        return gameState;
+    }
+
+    public static void setCurrentSaveIndex(int currentSaveIndex) {
+        GameController.currentSaveIndex = currentSaveIndex;
+    }
+
+    public static void setGameState(GameState gameState) {
+        GameController.gameState = gameState;
     }
 }

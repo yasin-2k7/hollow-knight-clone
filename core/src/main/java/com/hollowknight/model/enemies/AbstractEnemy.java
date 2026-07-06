@@ -101,4 +101,9 @@ public abstract class AbstractEnemy implements Enemy{
     public void setAudioListener(EntityAudioListener audioListener) {
         this.audioListener = audioListener;
     }
+
+    @Override
+    public EnemyState getState() {
+        return state;
+    }
 }

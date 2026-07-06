@@ -246,10 +246,16 @@ public class KnightView {
     }
 
     public void dispose() {
-        if (idleSheet != null) idleSheet.dispose();
-        if (runSheet != null) runSheet.dispose();
-        if (jumpSheet != null) jumpSheet.dispose();
-        if (landSheet != null) landSheet.dispose();
-
+        Texture[] sheets = {
+            idleSheet, runSheet, jumpSheet, landSheet, onWallSheet,
+            wallJumpSheet, doubleJumpSheet, dashSheet, slashUpSheet,
+            slashDownSheet, slashSheet, slashAltSheet, focusSheet,
+            focusStartSheet, focusGetSheet, focusEndSheet
+        };
+        for (Texture sheet : sheets) {
+            if (sheet != null) {
+                sheet.dispose();
+            }
+        }
     }
 }

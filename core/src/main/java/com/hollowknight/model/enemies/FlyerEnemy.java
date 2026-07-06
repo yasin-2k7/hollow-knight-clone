@@ -51,7 +51,12 @@ public class FlyerEnemy extends AbstractEnemy {
             velocity.y += game.getGRAVITY() * delta;
         }
         if (dead){
-            velocity.y += game.getGRAVITY() * delta;
+            if (!onGround) {
+                velocity.y += game.getGRAVITY() * delta;
+                position.y += velocity.y * delta;
+                bounds.setPosition(position.x, position.y);
+                checkVerticalCollisions();
+            }
             return;
         }
 

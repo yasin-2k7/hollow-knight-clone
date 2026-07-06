@@ -3,22 +3,22 @@ package com.hollowknight.view;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.hollowknight.model.App;
 import com.hollowknight.model.enums.Language;
 import com.hollowknight.model.enums.Texts;
 
-public class LanguageSettingMenuScreen extends MenuScreen{
+public class LanguageTable extends Stack {
     private TextButton english;
     private TextButton french;
     private Label title;
     private TextButton backBtn;
+    private Table rootTable;
 
-    @Override
-    public void show() {
-        super.show();
-
+    public LanguageTable(Skin skin, Runnable backRunnable) {
+        rootTable = new Table();
         Image title_up = new Image(skin.getDrawable("title_up_others"));
         title = new Label(Texts.LANGUAGE.get(App.getCurrentLanguage()), skin, "title");
         english = new TextButton("ENGLISH", skin, "toggle");
@@ -43,11 +43,12 @@ public class LanguageSettingMenuScreen extends MenuScreen{
         languageGroup.setMaxCheckCount(1);
         languageGroup.setMinCheckCount(1);
 
+        this.add(rootTable);
 
         backBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                fadeAndSwitchScreen(new SettingMenuScreen());
+                backRunnable.run();
                 AudioManager.playClick();
             }
         });
@@ -78,6 +79,7 @@ public class LanguageSettingMenuScreen extends MenuScreen{
                 }
             }
         });
+
     }
 
     private void setCheckedLanguage() {
@@ -92,6 +94,6 @@ public class LanguageSettingMenuScreen extends MenuScreen{
         title.setText(Texts.LANGUAGE.get(currentLang));
         backBtn.setText(Texts.BACK.get(currentLang));
 
-        rootTable.invalidateHierarchy(); // Forces table to adapt cleanly to changes
+        rootTable.invalidateHierarchy();
     }
 }

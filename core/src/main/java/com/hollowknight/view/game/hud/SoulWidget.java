@@ -111,6 +111,7 @@ public class SoulWidget extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a * parentAlpha);
         if (started || isIntroPlaying) {
             if (!isIntroPlaying){
                 return;

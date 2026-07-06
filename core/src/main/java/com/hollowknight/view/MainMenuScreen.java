@@ -17,6 +17,7 @@ public class MainMenuScreen extends MenuScreen {
     public void show() {
         super.show();
 
+        App.setCurrentGame(null);
         Table titleTable = new Table();
         Image titleTop = new Image(skin.getDrawable("title_up"));
         Label title = new Label(Texts.GAME_TITLE.get(App.getCurrentLanguage()),skin, "title");
@@ -71,6 +72,7 @@ public class MainMenuScreen extends MenuScreen {
             }
         });
 
+        AudioManager.fadeInMusic(AudioManager.menuMusic);
     }
 
 }

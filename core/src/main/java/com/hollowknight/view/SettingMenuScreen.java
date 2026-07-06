@@ -1,6 +1,8 @@
 package com.hollowknight.view;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -13,56 +15,12 @@ public class SettingMenuScreen extends MenuScreen{
     public void show() {
         super.show();
 
-        Image title_up = new Image(skin.getDrawable("title_up_others"));
-        Label title = new Label(Texts.SETTINGS.get(App.getCurrentLanguage()), skin, "title");
-        PointerMenuButton audioBtn = new PointerMenuButton(Texts.AUDIO.get(App.getCurrentLanguage()), skin, "default", skin.getAtlas());
-        PointerMenuButton keyboardBtn = new PointerMenuButton(Texts.KEYBOARD.get(App.getCurrentLanguage()), skin, "default", skin.getAtlas());
-        PointerMenuButton languageBtn = new PointerMenuButton(Texts.LANGUAGE.get(App.getCurrentLanguage()), skin, "default", skin.getAtlas());
-        TextButton backBtn = new TextButton(Texts.BACK.get(App.getCurrentLanguage()), skin, "default");
+        Runnable backToMainMenu = () -> fadeAndSwitchScreen(new MainMenuScreen());
 
-        rootTable.setFillParent(true);
-        rootTable.pad(40).top();
-        rootTable.defaults().pad(10);
-        rootTable.add(title).row();
-        rootTable.add(title_up).spaceBottom(90).row();
-        rootTable.add(audioBtn).row();
-        rootTable.add(keyboardBtn).row();
-        rootTable.add(languageBtn).row();
-        rootTable.add(backBtn).bottom().left().expand();
+        SettingTable settingTable = new SettingTable(skin, backToMainMenu);
+        settingTable.setFillParent(true);
 
-
-
-        audioBtn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                AudioManager.playClick();
-                fadeAndSwitchScreen(new AudioSettingMenuScreen());
-            }
-        });
-
-
-        backBtn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                fadeAndSwitchScreen(new MainMenuScreen());
-            }
-        });
-
-        languageBtn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                AudioManager.playClick();
-                fadeAndSwitchScreen(new LanguageSettingMenuScreen());
-            }
-        });
-
-        keyboardBtn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                AudioManager.playClick();
-                fadeAndSwitchScreen(new KeyboardSettingMenuScreen());
-            }
-        });
+        rootStack.addActor(settingTable);
     }
 
 }

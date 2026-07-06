@@ -9,12 +9,12 @@ import com.hollowknight.model.enums.Texts;
 
 public class LoadButton extends Button {
     private boolean empty;
-    private int playTime;
+    private float playTime;
     private int buttonNum;
     private int masks;
     private Stack stack;
 
-    public LoadButton(boolean empty, int playTime, int buttonNum, int masks) {
+    public LoadButton(boolean empty, float playTime, int buttonNum, int masks) {
         super(new ButtonStyle());
 
         float buttonWidth = 600f;
@@ -58,7 +58,7 @@ public class LoadButton extends Button {
                 Image mask = new Image(skin.getDrawable("select_game_HUD_0001_health"));
                 hud.add(mask).size(30,30).padBottom(5);
             }
-            Label playTimeLabel = new Label(Integer.toString(playTime) + "M", skin);
+            Label playTimeLabel = new Label(Integer.toString((int) playTime) + "M", skin);
             hud.add(playTimeLabel).right().bottom().expand();
             details.left().add(saveNum).padLeft(60);
 
@@ -80,12 +80,13 @@ public class LoadButton extends Button {
         this.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
+                AudioManager.playClick();
             }
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 over.setVisible(true);
+                AudioManager.playHover();
             }
 
             @Override
