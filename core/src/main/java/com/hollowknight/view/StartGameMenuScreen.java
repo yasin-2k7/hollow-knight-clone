@@ -116,10 +116,10 @@ public class StartGameMenuScreen extends MenuScreen{
                                 if (gameSave == null){
                                     GameSave newSave = Manager.createNewGame(finalI);
                                     TiledMap map = new TmxMapLoader().load(newSave.getTiledMapAddress());
-                                    GameController.init(newSave.getTiledMapAddress(), map, newSave.getStartX(), newSave.getStartY(), newSave.getMasks(), newSave.getSoul(), newSave.getPlayTime());
+                                    GameController.init(newSave.getTiledMapAddress(), map, newSave.getStartX(), newSave.getStartY(), newSave.getMasks(), newSave.getSoul(), newSave.getPlayTime(), newSave.getMapStartX(), newSave.getMapStartY());
                                 } else {
                                     TiledMap map = new TmxMapLoader().load(gameSave.getTiledMapAddress());
-                                    GameController.init(gameSave.getTiledMapAddress(), map, gameSave.getStartX(), gameSave.getStartY(), gameSave.getMasks(), gameSave.getSoul(), gameSave.getPlayTime());
+                                    GameController.init(gameSave.getTiledMapAddress(), map, gameSave.getStartX(), gameSave.getStartY(), gameSave.getMasks(), gameSave.getSoul(), gameSave.getPlayTime(), gameSave.getMapStartX(), gameSave.getMapStartY());
                                 }
                                 GameController.setCurrentSaveIndex(finalI);
                                 GameController.setGameState(GameState.RUNNING);

@@ -7,7 +7,8 @@ import com.hollowknight.model.Knight;
 import com.hollowknight.model.enums.EnemyState;
 
 public interface Enemy {
-    void takeDamage();
+    void takeDamage(int amount, float sourceX, float knockbackSpeed);
+    void takeSpikeDamage(int damage, float sourceX);
     void update(float delta);
     Rectangle getBounds();
     Vector2 getPosition();

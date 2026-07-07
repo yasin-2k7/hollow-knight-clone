@@ -14,16 +14,19 @@ public class SlashEffect {
     private float originalWidth, originalHeight;
     private Rectangle hitBounds;
     private boolean isFinished = false;
-    private final float duration = 0.3f;
+    private final float duration;
     private float stateTime = 0;
+    private int damage;
 
-    public SlashEffect(SlashDirection type, float x, float y, float width, float height) {
+    public SlashEffect(SlashDirection type, float x, float y, float width, float height, int damage, float duration) {
         this.type = type;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         hitBounds = new Rectangle(x,y,width,height);
+        this.damage = damage;
+        this.duration = duration;
     }
 
     public void update(float delta) {
@@ -80,5 +83,9 @@ public class SlashEffect {
 
     public Rectangle getHitBounds() {
         return hitBounds;
+    }
+
+    public float getDuration() {
+        return duration;
     }
 }

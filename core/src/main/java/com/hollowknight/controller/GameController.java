@@ -8,9 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.hollowknight.model.*;
 import com.hollowknight.model.enemies.Enemy;
 import com.hollowknight.model.enemies.Laser;
-import com.hollowknight.model.enums.AudioAction;
-import com.hollowknight.model.enums.GameState;
-import com.hollowknight.model.enums.SlashDirection;
+import com.hollowknight.model.enums.*;
 import com.hollowknight.view.AudioManager;
 import com.hollowknight.view.GameAssetManager;
 import com.hollowknight.view.MainMenuScreen;
@@ -36,6 +34,10 @@ public class GameController {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
             togglePause();
         }
+        if (Gdx.input.isKeyJustPressed(App.bindings.get(GameAction.INVENTORY))){
+            toggleInventory();
+        }
+
         if (gameState == GameState.PAUSED) return;
         float cappedDelta = Math.min(delta, 0.016f);
 
@@ -48,10 +50,43 @@ public class GameController {
             }
         }
 
+        if (App.getCurrentGame().getActiveSpellEffect() != null) {
+            if (App.getCurrentGame().getActiveSpellEffect().isFinished()) {
+                App.getCurrentGame().setActiveSpellEffect(null);
+                screen.getSpellEffectView().dispose();
+                screen.setSpellEffectView(null);
+            }
+        }
+
         App.getCurrentGame().getLasers().removeIf(Laser::isFinished);
     }
 
-    public static void setSlashEffect(Knight knight){
+    public static void setSpellEffect(boolean isUpgraded, SpellType type, float x, float y, float width, float height, int damage, boolean isFlipped){
+        String address;
+        int wFrame;
+        int hFrame;
+        int totalFrame;
+        float frameDuration;
+        if (type.equals(SpellType.VENGEFUL_SPIRIT)){
+            address = isUpgraded ? "effects/ShadowBall.png" : "effects/SoulBall.png";
+            wFrame = isUpgraded ? 504 : 317;
+            hFrame = isUpgraded ? 157 : 143;
+            totalFrame = isUpgraded ? 6 : 4;
+            frameDuration = 0.15f;
+        }
+        else{
+            address = isUpgraded ? "effects/ShadowScream.png" : "effects/SoulScream.png";
+            wFrame = isUpgraded ? 357 : 332;
+            hFrame = isUpgraded ? 292 : 306;
+            totalFrame = 13;
+            frameDuration = 0.15f;
+        }
+        SpellEffect spellEffect = new SpellEffect(type, x, y, width, height, damage, isFlipped);
+        App.getCurrentGame().setActiveSpellEffect(spellEffect);
+        screen.setSpellEffectView(new SpellEffectView(wFrame, hFrame, address, totalFrame, frameDuration, isFlipped, spellEffect));
+    }
+
+    public static void setSlashEffect(Knight knight, float attackTime){
         float x,y,width,height;
         int wFrame,hFrame;
         String address;
@@ -74,7 +109,7 @@ public class GameController {
                         }
                     }
                 }
-                SlashEffect slashEffect = new SlashEffect(SlashDirection.UP, x, y, width, height);
+                SlashEffect slashEffect = new SlashEffect(SlashDirection.UP, x, y, width, height, knight.getSlashDamage(), attackTime);
                 slashEffect.setOriginalSize(width, maxHeight);
                 App.getCurrentGame().setActiveSlashEffect(slashEffect);
                 screen.setSlashEffectView(new SlashEffectView(hFrame, wFrame, address, knight.isFlipped(), slashEffect));
@@ -100,7 +135,7 @@ public class GameController {
                     }
                 }
 
-                SlashEffect slashEffect = new SlashEffect(SlashDirection.DOWN, x, y, width, height);
+                SlashEffect slashEffect = new SlashEffect(SlashDirection.DOWN, x, y, width, height, knight.getSlashDamage(), attackTime);
                 slashEffect.setOriginalSize(width, maxHeight);
                 App.getCurrentGame().setActiveSlashEffect(slashEffect);
                 screen.setSlashEffectView(new SlashEffectView(hFrame, wFrame, address, knight.isFlipped(), slashEffect));
@@ -137,7 +172,7 @@ public class GameController {
                         }
                     }
                 }
-                SlashEffect slashEffect = new SlashEffect(SlashDirection.NORMAL, x, y, width, height);
+                SlashEffect slashEffect = new SlashEffect(SlashDirection.NORMAL, x, y, width, height, knight.getSlashDamage(), attackTime);
                 slashEffect.setOriginalSize(maxWidth, height);
                 App.getCurrentGame().setActiveSlashEffect(slashEffect);
                 screen.setSlashEffectView(new SlashEffectView(hFrame, wFrame, address, knight.isFlipped(), slashEffect));
@@ -173,7 +208,7 @@ public class GameController {
                         }
                     }
                 }
-                SlashEffect slashEffect = new SlashEffect(SlashDirection.ALT, x, y, width, height);
+                SlashEffect slashEffect = new SlashEffect(SlashDirection.ALT, x, y, width, height, knight.getSlashDamage(), attackTime);
                 slashEffect.setOriginalSize(maxWidth, height);
                 App.getCurrentGame().setActiveSlashEffect(slashEffect);
                 screen.setSlashEffectView(new SlashEffectView(hFrame, wFrame, address, knight.isFlipped(), slashEffect));
@@ -181,8 +216,8 @@ public class GameController {
         }
     }
 
-    public static void init(String mapAddress, TiledMap tiledMap, float startX, float startY, int masks, int soul, float playTime){
-        Game game = new Game(startX, startY, playTime);
+    public static void init(String mapAddress, TiledMap tiledMap, float startX, float startY, int masks, int soul, float playTime, float mapStartX, float mapStartY){
+        Game game = new Game(mapStartX, mapStartY, startX, startY, playTime);
         App.setCurrentGame(game);
         game.initialize(mapAddress, tiledMap, masks, soul);
 
@@ -243,24 +278,26 @@ public class GameController {
         }
     }
 
-    public static void pauseGame(){
-        gameState = GameState.PAUSED;
-        screen.showPauseMenu();
-
-    }
-
     public static void togglePause(){
         if (gameState == GameState.RUNNING){
-            pauseGame();
+            gameState = GameState.PAUSED;
+            screen.showPauseMenu();
         }
         else {
-            resumeGame();
+            gameState = GameState.RUNNING;
+            screen.backToGame();
         }
     }
 
-    public static void resumeGame(){
-        gameState = GameState.RUNNING;
-        screen.backToGame();
+    public static void toggleInventory(){
+        if (gameState == GameState.RUNNING){
+            gameState = GameState.PAUSED;
+            screen.showInventoryMenu();
+        }
+        else {
+            gameState = GameState.RUNNING;
+            screen.backToGame();
+        }
     }
 
     public static void settingInPause(){
@@ -277,11 +314,15 @@ public class GameController {
 
     public static void saveGame(){
         Knight knight = App.getCurrentGame().getKnight();
-        GameSave currentGame = new GameSave(knight.getPosition().x / unitScale, knight.getPosition().y / unitScale, knight.getSoul(), knight.getMasks(), App.getCurrentGame().getPlayTime(), App.getCurrentGame().getMapAddress());
+        GameSave currentGame = new GameSave(knight.getPosition().x / unitScale, knight.getPosition().y / unitScale, knight.getSoul(), knight.getMasks(), App.getCurrentGame().getPlayTime(), App.getCurrentGame().getMapAddress(), App.getCurrentGame().getMapStartX(), App.getCurrentGame().getMapStartY());
         Manager.saveGame(currentSaveIndex, currentGame);
         currentSaveIndex = -1;
         screen.fadeAndSwitchScreen(new MainMenuScreen());
         AudioManager.fadeOutCurrentMusic();
+    }
+
+    public static void fadeScreen (Runnable runnable, float blackTime){
+        screen.triggerScreenFade(runnable, blackTime);
     }
 
     public static ArrayList<EnemyView> getEnemyViews() {

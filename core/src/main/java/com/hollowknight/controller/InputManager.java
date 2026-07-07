@@ -10,11 +10,11 @@ import static com.hollowknight.model.App.bindings;
 
 public class InputManager {
 
-
     public static void resetToDefaults(){
         for (GameAction action : GameAction.values()){
             bindings.put(action, action.getDefaultKey());
         }
+        Manager.saveConfig();
     }
 
     public static void rebindKey(GameAction action, int newKeyCode) {

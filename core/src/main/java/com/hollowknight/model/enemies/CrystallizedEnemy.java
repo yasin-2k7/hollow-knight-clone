@@ -20,7 +20,7 @@ public class CrystallizedEnemy extends AbstractEnemy{
 
     private float movedAmount = 0f;
 
-    private int health = 3;
+    private int health = 5;
 
     private float evadeTimer;
     private float shootTimer;
@@ -53,6 +53,9 @@ public class CrystallizedEnemy extends AbstractEnemy{
                 position.y += velocity.y * delta;
                 bounds.setPosition(position.x, position.y);
                 checkVerticalCollisions();
+            }
+            if (App.getCurrentGame().getKnight().getPosition().dst(position) > 500f){
+                reset();
             }
             return;
         }
@@ -237,11 +240,11 @@ public class CrystallizedEnemy extends AbstractEnemy{
     }
 
     @Override
-    public void takeDamage() {
+    public void takeDamage(int amount, float sourceX, float knockbackSpeed) {
         if (dead) return;
         audioListener.onAudioEvent(AudioAction.ENEMY_TAKE_DAMAGE);
-        velocity.x = GameController.getActiveSlashView().isFlipped() ? 250 : -250;
-        health--;
+        velocity.x = sourceX < position.x ? knockbackSpeed : -knockbackSpeed;
+        health -= amount;
         if (health == 0){
             state = EnemyState.DEATH_AIR;
             velocity.y = 60f;
@@ -259,6 +262,8 @@ public class CrystallizedEnemy extends AbstractEnemy{
         this.velocity.x = 0;
         this.flipped = true;
         this.state = EnemyState.IDLE;
+        this.health = 5;
+        this.dead = false;
     }
 
     public void turn(){

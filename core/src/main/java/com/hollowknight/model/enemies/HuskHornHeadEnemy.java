@@ -16,7 +16,7 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
     private float visionHeight = 10f;
     private final Rectangle visionBox;
 
-    private int health = 3;
+    private int health = 4;
 
     private float attackCooldownTimer;
     private float attackAnticipateTimer;
@@ -46,6 +46,9 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
                 position.y += velocity.y * delta;
                 bounds.setPosition(position.x, position.y);
                 checkVerticalCollisions();
+            }
+            if (App.getCurrentGame().getKnight().getPosition().dst(position) > 500f){
+                reset();
             }
             return;
         }
@@ -239,11 +242,11 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
     }
 
     @Override
-    public void takeDamage() {
+    public void takeDamage(int amount, float sourceX, float knockbackSpeed) {
         if (dead) return;
         audioListener.onAudioEvent(AudioAction.ENEMY_TAKE_DAMAGE);
-        velocity.x = GameController.getActiveSlashView().isFlipped() ? 250 : -250;
-        health--;
+        velocity.x = sourceX < position.x ? knockbackSpeed : -knockbackSpeed;
+        health -= amount;
         if (health == 0){
             state = EnemyState.DEATH_AIR;
             velocity.y = 60f;
@@ -261,6 +264,8 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
         this.velocity.x = MOVE_SPEED;
         this.flipped = true;
         this.state = EnemyState.WALK;
+        this.health = 4;
+        this.dead = false;
     }
 
     public void turn(){

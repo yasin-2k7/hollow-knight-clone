@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 
 public class GameSave {
     private float startX, startY;
+    private float mapStartX, mapStartY;
     private int soul;
     private int masks;
     private float playTime;
@@ -11,9 +12,11 @@ public class GameSave {
 
     public GameSave() {}
 
-    public GameSave(float startX, float startY, int soul, int masks, float playMatch, String tiledMapAddress) {
+    public GameSave(float startX, float startY, int soul, int masks, float playMatch, String tiledMapAddress, float mapStartX, float mapStartY) {
         this.startX = startX;
         this.startY = startY;
+        this.mapStartX = mapStartX;
+        this.mapStartY = mapStartY;
         this.soul = soul;
         this.masks = masks;
         this.playTime = playMatch;
@@ -42,5 +45,13 @@ public class GameSave {
 
     public float getPlayTime() {
         return playTime;
+    }
+
+    public float getMapStartX() {
+        return mapStartX;
+    }
+
+    public float getMapStartY() {
+        return mapStartY;
     }
 }

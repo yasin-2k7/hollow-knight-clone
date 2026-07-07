@@ -16,7 +16,7 @@ public class Manager {
 
     private static class SettingsDTO {
         public Language language;
-        public ObjectMap<GameAction, Integer> keyBindings;
+        public ObjectMap<String, Integer> keyBindings;
         public boolean musicOn;
         public boolean sfxOn;
         public float musicVol;
@@ -34,8 +34,12 @@ public class Manager {
             App.setMusicEnabled(dto.musicOn);
             App.setSfxEnabled(dto.sfxOn);
             App.setMusicVolume(dto.musicVol);
-            if (dto.keyBindings != null){
-                App.bindings.putAll(dto.keyBindings);
+            if (dto.keyBindings != null) {
+                App.bindings.clear();
+                for (ObjectMap.Entry<String, Integer> entry : dto.keyBindings.entries()) {
+                    GameAction action = GameAction.valueOf(entry.key);
+                    App.bindings.put(action, entry.value);
+                }
             }
         } else {
             saveConfig();
@@ -48,7 +52,11 @@ public class Manager {
         dto.musicOn = App.isMusicEnabled();
         dto.sfxOn = App.isSfxEnabled();
         dto.musicVol = App.getMusicVolume();
-        dto.keyBindings = App.bindings;
+
+        dto.keyBindings = new ObjectMap<>();
+        for (ObjectMap.Entry<GameAction, Integer> entry : App.bindings.entries()) {
+            dto.keyBindings.put(entry.key.name(), entry.value);
+        }
 
         Json json = new Json();
         Gdx.files.local(CONFIG_FILE).writeString(json.prettyPrint(dto), false);
@@ -70,7 +78,7 @@ public class Manager {
     }
 
     public static GameSave createNewGame(int slotIndex) {
-        GameSave newSave = new GameSave(2000f, 250f, 5, 5, 0, "map/map.tmx");
+        GameSave newSave = new GameSave(2000f, 250f, 5, 5, 0, "map/map.tmx", 2000f, 250f);
         App.getSaveSlots()[slotIndex] = newSave;
         saveGame(slotIndex, newSave);
         return newSave;

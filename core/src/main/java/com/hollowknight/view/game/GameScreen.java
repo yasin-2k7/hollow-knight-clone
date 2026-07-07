@@ -46,6 +46,7 @@ public class GameScreen extends MenuScreen {
     Skin skin = GameAssetManager.skin;
 
     private PauseTable pauseTable = new PauseTable(skin);
+    private CharmsTable charmsTable = new CharmsTable(skin, App.getCurrentGame().getKnight());
 
     private ShapeRenderer shapeRenderer;
 
@@ -57,12 +58,15 @@ public class GameScreen extends MenuScreen {
     private MasksTable masksTable;
     private Table soulsTable;
 
+    private Image fadeOverlay = createDarkOverlay(1f);
+
     Color topColor = new Color(0.2f, 0.25f, 0.55f, 1f);
     Color bottomColor = new Color(0.01f, 0.01f, 0.05f, 1f);
 
     private Game game;
     private KnightView knightView;
     private SlashEffectView slashEffectView;
+    private SpellEffectView spellEffectView;
     private ArrayList<LaserView> laserViews = new ArrayList<>();
 
 
@@ -118,6 +122,9 @@ public class GameScreen extends MenuScreen {
 
         rootTable.add(masksTable).padLeft(350).padTop(20);
         AudioManager.fadeInMusic(AudioManager.crossroadsMainMusic);
+
+        fadeOverlay.getColor().a = 0f;
+        rootStack.add(fadeOverlay);
 
     }
 
@@ -201,6 +208,13 @@ public class GameScreen extends MenuScreen {
             batch.end();
         }
 
+        if (spellEffectView != null) {
+            batch.setProjectionMatrix(camera.combined);
+            batch.begin();
+            spellEffectView.draw(batch, gameDelta);
+            batch.end();
+        }
+
         renderer.render(new int[]{7,8});
 
 
@@ -255,6 +269,14 @@ public class GameScreen extends MenuScreen {
         return slashEffectView;
     }
 
+    public SpellEffectView getSpellEffectView() {
+        return spellEffectView;
+    }
+
+    public void setSpellEffectView(SpellEffectView spellEffectView) {
+        this.spellEffectView = spellEffectView;
+    }
+
     public MasksTable getMasksTable() {
         return masksTable;
     }
@@ -275,9 +297,9 @@ public class GameScreen extends MenuScreen {
         this.knightView = knightView;
     }
 
-    private Image createDarkOverlay() {
+    private Image createDarkOverlay(float alpha) {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0, 0, 0, 0.5f);
+        pixmap.setColor(0, 0, 0, alpha);
         pixmap.fill();
 
         Texture texture = new Texture(pixmap);
@@ -316,14 +338,33 @@ public class GameScreen extends MenuScreen {
 
     public void showPauseMenu() {
         modalStack.clearChildren();
-        Image darkOverlay = createDarkOverlay();
+        Image darkOverlay = createDarkOverlay(0.5f);
         modalStack.add(darkOverlay);
         switchModalTable(pauseTable);
         modalStack.setVisible(true);
     }
 
+    public void showInventoryMenu() {
+        modalStack.clearChildren();
+        Image darkOverlay = createDarkOverlay(0.5f);
+        modalStack.add(darkOverlay);
+        switchModalTable(charmsTable);
+        modalStack.setVisible(true);
+    }
+
     public void backToGame(){
         modalStack.setVisible(false);
+    }
+
+    public void triggerScreenFade(final Runnable actionOnBlack, float blackTime) {
+        fadeOverlay.clearActions();
+
+        fadeOverlay.addAction(Actions.sequence(
+            Actions.fadeIn(0.05f),
+            Actions.run(actionOnBlack),
+            Actions.delay(blackTime),
+            Actions.fadeOut(0.15f)
+        ));
     }
 
     @Override
@@ -336,6 +377,7 @@ public class GameScreen extends MenuScreen {
         if (laserViews != null) laserViews.clear();
         if (knightView != null) knightView.dispose();
         if (slashEffectView != null) slashEffectView.dispose();
+        if (spellEffectView != null) spellEffectView.dispose();
         GameController.getEnemyViews().clear();
 
     }

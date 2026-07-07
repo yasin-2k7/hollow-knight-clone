@@ -13,7 +13,7 @@ import com.hollowknight.model.enums.EnemyState;
 
 public class SimpleEnemy extends AbstractEnemy{
 
-    private int health = 2;
+    private int health = 3;
 
     private final float MOVE_SPEED = 40f;
     private final float DAMAGED_TIME = 0.5f;
@@ -33,6 +33,9 @@ public class SimpleEnemy extends AbstractEnemy{
                 position.y += velocity.y * delta;
                 bounds.setPosition(position.x, position.y);
                 checkVerticalCollisions();
+            }
+            if (App.getCurrentGame().getKnight().getPosition().dst(position) > 500f){
+                reset();
             }
             return;
         }
@@ -167,11 +170,11 @@ public class SimpleEnemy extends AbstractEnemy{
     }
 
     @Override
-    public void takeDamage() {
+    public void takeDamage(int amount, float sourceX, float knockbackSpeed) {
         if (dead) return;
         audioListener.onAudioEvent(AudioAction.ENEMY_TAKE_DAMAGE);
-        velocity.x = GameController.getActiveSlashView().isFlipped() ? 250 : -250;
-        health--;
+        velocity.x = sourceX < position.x ? knockbackSpeed : -knockbackSpeed;
+        health -= amount;
         if (health == 0){
             state = EnemyState.DEATH_AIR;
             velocity.y = 60f;
@@ -190,6 +193,8 @@ public class SimpleEnemy extends AbstractEnemy{
         this.velocity.x = MOVE_SPEED;
         this.flipped = true;
         this.state = EnemyState.WALK;
+        this.health = 3;
+        this.dead = false;
     }
 
     public void turn(){

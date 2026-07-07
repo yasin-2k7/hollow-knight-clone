@@ -26,6 +26,9 @@ public class KnightView {
     private Texture focusStartSheet;
     private Texture focusGetSheet;
     private Texture focusEndSheet;
+    private Texture fireballCastSheet;
+    private Texture screamSheet;
+    private Texture shadowDashSheet;
 
     private Animation<TextureRegion> idleAnimation;
     private Animation<TextureRegion> runAnimation;
@@ -43,6 +46,9 @@ public class KnightView {
     private Animation<TextureRegion> focusGetAnimation;
     private Animation<TextureRegion> focusStartAnimation;
     private Animation<TextureRegion> focusEndAnimation;
+    private Animation<TextureRegion> fireballCastAnimation;
+    private Animation<TextureRegion> screamAnimation;
+    private Animation<TextureRegion> shadowDashAnimation;
 
     private float stateTime = 0;
     private float flashTime = 0;
@@ -98,7 +104,7 @@ public class KnightView {
         frames = TextureRegion.split(dashSheet, frameW, frameH);
         TextureRegion[] dashFrames = new TextureRegion[12];
         System.arraycopy(frames[0], 0, dashFrames, 0, 12);
-        dashAnimation = new Animation<>(0.1f, dashFrames);
+        dashAnimation = new Animation<>(0.018f, dashFrames);
 
         slashUpSheet = new Texture("knight/UpSlash.png");
         frames = TextureRegion.split(slashUpSheet, frameW, frameH);
@@ -147,6 +153,24 @@ public class KnightView {
         TextureRegion[] focusEndFrames = new TextureRegion[3];
         System.arraycopy(frames[0], 0, focusEndFrames, 0, 3);
         focusEndAnimation = new Animation<>(0.07f, focusEndFrames);
+
+        fireballCastSheet = new Texture("knight/Fireball Cast.png");
+        frames = TextureRegion.split(fireballCastSheet, frameW, frameH);
+        TextureRegion[] fireballCastFrames = new TextureRegion[9];
+        System.arraycopy(frames[0], 0, fireballCastFrames, 0, 9);
+        fireballCastAnimation = new Animation<>(0.1f, fireballCastFrames);
+
+        screamSheet = new Texture("knight/Scream.png");
+        frames = TextureRegion.split(screamSheet, frameW, frameH);
+        TextureRegion[] screamFrames = new TextureRegion[7];
+        System.arraycopy(frames[0], 0, screamFrames, 0, 7);
+        screamAnimation = new Animation<>(0.1f, screamFrames);
+
+        shadowDashSheet = new Texture("knight/Shadow Dash.png");
+        frames = TextureRegion.split(shadowDashSheet, frameW, frameH);
+        TextureRegion[] shadowDashFrames = new TextureRegion[11];
+        System.arraycopy(frames[0], 0, shadowDashFrames, 0, 11);
+        shadowDashAnimation = new Animation<>(0.02f, shadowDashFrames);
 
     }
 
@@ -221,6 +245,15 @@ public class KnightView {
             case FOCUS_END:
                 currentFrame = focusEndAnimation.getKeyFrame(stateTime, false);
                 break;
+            case FIREBALL_CAST:
+                currentFrame = fireballCastAnimation.getKeyFrame(stateTime, false);
+                break;
+            case SCREAM:
+                currentFrame = screamAnimation.getKeyFrame(stateTime, false);
+                break;
+            case SHADOW_DASH:
+                currentFrame = shadowDashAnimation.getKeyFrame(stateTime, false);
+                break;
             case IDLE:
             default:
                 currentFrame = idleAnimation.getKeyFrame(stateTime, true);
@@ -250,7 +283,7 @@ public class KnightView {
             idleSheet, runSheet, jumpSheet, landSheet, onWallSheet,
             wallJumpSheet, doubleJumpSheet, dashSheet, slashUpSheet,
             slashDownSheet, slashSheet, slashAltSheet, focusSheet,
-            focusStartSheet, focusGetSheet, focusEndSheet
+            focusStartSheet, focusGetSheet, focusEndSheet, fireballCastSheet, screamSheet, shadowDashSheet
         };
         for (Texture sheet : sheets) {
             if (sheet != null) {

@@ -17,5 +17,9 @@ public enum KnightState {
     FOCUS_START,
     FOCUS,
     FOCUS_END,
-    FOCUS_GET
+    FOCUS_GET,
+    FIREBALL_CAST,
+    SCREAM,
+    SHADOW_DASH,
+    DEATH
 }

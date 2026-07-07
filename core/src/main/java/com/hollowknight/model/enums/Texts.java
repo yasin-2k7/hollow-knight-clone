@@ -23,13 +23,10 @@ public enum Texts {
     MOVE_DOWN("MOVE DOWN", "BAS"),
     MOVE_RIGHT("MOVE RIGHT", "DROITE"),
     JUMP("JUMP", "SAUTER"),
-    QUICK_MAP("QUICK MAP", "CARTE RAPIDE"),
     ATTACK("ATTACK", "ATTAQUER"),
-    SUPER_DASH("SUPER DASH", "SUPER RUÉE"),
     DASH("DASH", "RUÉE"),
-    DREAM_NAIL("DREAM NAIL", "AIGUILLON DES RÊVES"),
-    FOCUS_AND_CAST("FOCUS / CAST", "CONCENTRATION / SORT"),
-    QUICK_CAST("QUICK CAST", "SORT RAPIDE"),
+    FOCUS("FOCUS", "CONCENTRATION"),
+    CAST("CAST", "SORT"),
     INVENTORY("INVENTORY", "INVENTAIRE"),
     SELECT_PROFILE("SELECT PROFILE", "SÉLECTIONNER UN PROFIL"),
     CLEAR_SAVE("CLEAR SAVE", "EFFACER LA SAUVEGRADE"),
@@ -44,7 +41,39 @@ public enum Texts {
     REFILL_SOUL_VESSEL("Refill Soul Vessel", "Remplir le réceptacle d'âme"),
     GOD_MODE("God Mode", "Mode Dieu"),
     KILL_NEARBY_ENEMIES("Kill Nearby Enemies", "Tuer les ennemis proches"),
-    SHIFT("Shift", "La touche Maj");
+    SHIFT("Shift", "La touche Maj"),
+    DESC_DASH_MASTER(
+        "Allows the bearer to dash more frequently.",
+        "Permet de se ruer plus fréquemment."
+    ),
+    DESC_HEAVY_BLOW(
+        "Increases the knockback of the Nail, pushing enemies further away.",
+        "Augmente le recul de l'Aiguillon, repoussant les ennemis plus loin."
+    ),
+    DESC_QUICK_FOCUS(
+        "Increases the speed of focusing Soul, allowing for faster healing.",
+        "Augmente la vitesse de canalisation de l'Âme pour guérir plus vite."
+    ),
+    DESC_QUICK_SLASH(
+        "Allows the bearer to slash much more rapidly with their Nail.",
+        "Permet de frapper beaucoup plus rapidement avec l'Aiguillon."
+    ),
+    DESC_SOUL_CATCHER(
+        "Increases the amount of Soul gained when striking enemies.",
+        "Augmente la quantité d'Âme gagnée en frappant les ennemis."
+    ),
+    DESC_UNBREAKABLE_STRENGTH(
+        "Significantly increases the raw damage dealt by the Nail.",
+        "Augmente considérablement les dégâts bruts de l'Aiguillon."
+    ),
+    DESC_SHARP_SHADOW(
+        "Turns the shadow dash into a sharp attack that damages enemies.",
+        "Transforme la ruée d'ombre en une attaque qui blesse les ennemis."
+    ),
+    DESC_VOID_HERAT(
+        "Unifies the Void under the bearer's will. Void entities become passive.",
+        "Unifie le Vide sous la volonté du porteur. Les entités du Vide deviennent passives."
+    );
 
 
 

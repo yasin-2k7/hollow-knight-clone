@@ -7,6 +7,7 @@ import com.hollowknight.model.App;
 import com.hollowknight.model.EntityAudioListener;
 import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
+import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.EnemyState;
 
 public abstract class AbstractEnemy implements Enemy{
@@ -25,6 +26,10 @@ public abstract class AbstractEnemy implements Enemy{
     protected float damagedTimer = 0f;
     protected float turnTimer = 0f;
     protected float deathAirTimer = 0f;
+    protected float spikeCooldown = 0f;
+
+    private final float DAMAGED_TIME = 0.5f;
+    private final float DEATH_AIR_TIME = 0.55f;
 
     protected float startX, startY;
 
@@ -105,5 +110,24 @@ public abstract class AbstractEnemy implements Enemy{
     @Override
     public EnemyState getState() {
         return state;
+    }
+
+    public void takeSpikeDamage(int damage, float spikeCenterX) {
+        if (dead) return;
+        if (spikeCooldown > 0) return;
+        audioListener.onAudioEvent(AudioAction.ENEMY_TAKE_DAMAGE);
+        this.health -= damage;
+        this.velocity.x = (this.position.x > spikeCenterX) ? 250f : -250f;
+        this.velocity.y = 200f;
+
+        this.spikeCooldown = 0.5f;
+
+        if (this.health <= 0) {
+            state = EnemyState.DEATH_AIR;
+            deathAirTimer = DEATH_AIR_TIME;
+            return;
+        }
+        state = EnemyState.DAMAGED;
+        damagedTimer = DAMAGED_TIME;
     }
 }

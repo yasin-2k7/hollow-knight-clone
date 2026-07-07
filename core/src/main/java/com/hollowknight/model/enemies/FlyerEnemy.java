@@ -57,6 +57,9 @@ public class FlyerEnemy extends AbstractEnemy {
                 bounds.setPosition(position.x, position.y);
                 checkVerticalCollisions();
             }
+            if (App.getCurrentGame().getKnight().getPosition().dst(position) > 500f){
+                reset();
+            }
             return;
         }
 
@@ -246,11 +249,11 @@ public class FlyerEnemy extends AbstractEnemy {
     }
 
     @Override
-    public void takeDamage() {
+    public void takeDamage(int amount, float sourceX, float knockbackSpeed) {
         if (dead) return;
         audioListener.onAudioEvent(AudioAction.ENEMY_TAKE_DAMAGE);
-        velocity.x = GameController.getActiveSlashView().isFlipped() ? 250 : -250;
-        health--;
+        velocity.x = sourceX < position.x ? knockbackSpeed : -knockbackSpeed;
+        health -= amount;
         if (health == 0){
             state = EnemyState.DEATH_AIR;
             velocity.y = 60f;
@@ -268,6 +271,8 @@ public class FlyerEnemy extends AbstractEnemy {
         this.velocity.x = MOVE_SPEED;
         this.flipped = true;
         this.state = EnemyState.WALK;
+        this.health = 3;
+        this.dead = false;
     }
 
     public void turn(){

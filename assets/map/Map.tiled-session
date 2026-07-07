@@ -271,11 +271,11 @@
             "scaleInEditor": 1
         },
         "map.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 13,
+            "scale": 1,
+            "selectedLayer": 12,
             "viewCenter": {
-                "x": 3163,
-                "y": 1960
+                "x": 4976.5,
+                "y": 1839
             }
         },
         "map.tmx#believer_Bg_plat": {

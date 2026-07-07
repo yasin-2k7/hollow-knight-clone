@@ -100,15 +100,8 @@ public class KeyboardTable extends Stack {
                 rootTable.row().padTop(10);
             }
 
-            if (i < 13){
-                rootTable.add(actionNameLabel).center().padRight(150).padLeft(150);
-                rootTable.add(keyButton).size(48f, 48f).center();
-            }
-            else {
-                rootTable.add(actionNameLabel).right().padRight(150).colspan(2);
-                rootTable.add(keyButton).size(48f, 48f).left().padLeft(150).colspan(2);
-            }
-
+            rootTable.add(actionNameLabel).center().padRight(150).padLeft(150);
+            rootTable.add(keyButton).size(48f, 48f).center();
         }
 
 

@@ -37,7 +37,7 @@ public class PauseTable extends Table {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 AudioManager.playClick();
-                GameController.resumeGame();
+                GameController.togglePause();
             }
         });
 

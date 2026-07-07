@@ -33,7 +33,7 @@ public class SlashEffectView {
         TextureRegion[][] frames = TextureRegion.split(slashSheet, frameW, frameH);
         TextureRegion[] slashFrames = new TextureRegion[6];
         System.arraycopy(frames[0], 0, slashFrames, 0, 6);
-        slashAnimation = new Animation<>(0.04f, slashFrames);
+        slashAnimation = new Animation<>(model.getDuration()/6, slashFrames);
     }
 
     public void draw(SpriteBatch batch, float delta){

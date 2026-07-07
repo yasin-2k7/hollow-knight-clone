@@ -10,7 +10,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.hollowknight.controller.GameController;
 import com.hollowknight.model.enemies.*;
 import com.hollowknight.model.enums.EnemyState;
+import com.hollowknight.model.enums.KnightState;
 import com.hollowknight.model.enums.SlashDirection;
+import com.hollowknight.model.enums.SpellType;
 import com.hollowknight.view.game.enemiesView.CrawlerView;
 import com.hollowknight.view.game.enemiesView.CrystallizedView;
 import com.hollowknight.view.game.enemiesView.HuskHornHeadView;
@@ -20,14 +22,17 @@ import java.util.ArrayList;
 
 public class Game {
     private float startX, startY;
+    private float mapStartX, mapStartY;
     private float playTime;
     private String mapAddress;
     private Knight knight;
     private final float GRAVITY = -250f;
     private ArrayList<Rectangle> grounds;
+    private ArrayList<Rectangle> spikes;
     private ArrayList<Rectangle> turnPositions = new ArrayList<>();
     private ArrayList<Enemy> allEnemies = new ArrayList<>();
     private SlashEffect activeSlashEffect = null;
+    private SpellEffect activeSpellEffect = null;
     private ArrayList<Laser> lasers = new ArrayList<>();
 
 
@@ -35,10 +40,13 @@ public class Game {
         return GRAVITY;
     }
 
-    public Game(float startX, float startY, float playTime) {
+    public Game(float mapStartX, float mapStartY, float startX, float startY, float playTime) {
         this.startX = startX;
         this.startY = startY;
+        this.mapStartX = mapStartX;
+        this.mapStartY = mapStartY;
         grounds = new ArrayList<>();
+        spikes = new ArrayList<>();
         this.playTime = playTime;
     }
 
@@ -46,6 +54,7 @@ public class Game {
         knight = new Knight(masks, soul, startX, startY, this);
         this.mapAddress = mapAddress;
         addGrounds(tiledMap);
+        addSpikes(tiledMap);
         addTurnPositions(tiledMap);
         spawnEnemies(tiledMap, App.getUnitScale());
     }
@@ -55,6 +64,9 @@ public class Game {
         knight.update(delta);
         if (activeSlashEffect != null){
             activeSlashEffect.update(delta);
+        }
+        if (activeSpellEffect != null){
+            activeSpellEffect.update(delta);
         }
 
         for (Laser laser : lasers){
@@ -66,9 +78,9 @@ public class Game {
                 if (Intersector.overlaps(activeSlashEffect.getHitBounds(), enemy.getBounds())) {
                     if (!activeSlashEffect.hasHitAlready(enemy)){
                         if (!enemy.isDead()) {
-                            enemy.takeDamage();
+                            enemy.takeDamage(1, knight.getPosition().x, knight.getEnemyKnockbackSpeed());
                             activeSlashEffect.registerHit(enemy);
-                            knight.increaseSoul(11);
+                            knight.increaseSoul(knight.getSoulCatchAmount());
                             if (activeSlashEffect.getType() == SlashDirection.DOWN){
                                 knight.pogoJump();
                             }
@@ -78,19 +90,68 @@ public class Game {
             }
         }
 
-        if (!knight.isNoDamage()){
+        if (activeSpellEffect != null) {
             for (Enemy enemy : allEnemies) {
-                if (Intersector.overlaps(knight.getBounds(), enemy.getBounds()) && !enemy.isDead() && enemy.getState() != EnemyState.DEATH_AIR) {
-                    if (enemy.getPosition().x > knight.getPosition().x){
-                        knight.takeDamage(-1);
+                if (Intersector.overlaps(activeSpellEffect.getHitBounds(), enemy.getBounds())) {
+                    if (!activeSpellEffect.hasHitAlready(enemy)){
+                        if (!enemy.isDead()) {
+                            enemy.takeDamage(getActiveSpellEffect().getDamage(), knight.getPosition().x, 250f);
+                            activeSpellEffect.registerHit(enemy);
+                        }
                     }
-                    else {
-                        knight.takeDamage(1);
+                }
+            }
+            if (activeSpellEffect.getType() == SpellType.VENGEFUL_SPIRIT){
+                for (Rectangle ground : grounds){
+                    if (activeSpellEffect.getHitBounds().overlaps(ground)){
+                        activeSpellEffect.setFinished(true);
                     }
-                    enemy.knightHit(knight);
                 }
             }
         }
+
+
+        if (!knight.isNoDamage() || knight.getState().equals(KnightState.SHADOW_DASH)){
+            for (Enemy enemy : allEnemies) {
+                if (Intersector.overlaps(knight.getBounds(), enemy.getBounds()) && !enemy.isDead() && enemy.getState() != EnemyState.DEATH_AIR) {
+                    if (!knight.getState().equals(KnightState.SHADOW_DASH)) {
+                        if (enemy.getPosition().x > knight.getPosition().x) {
+                            knight.takeDamage(-1);
+                        } else {
+                            knight.takeDamage(1);
+                        }
+                        enemy.knightHit(knight);
+                    }
+                    else{
+                        if (!knight.getHitEnemiesByDash().contains(enemy)){
+                            enemy.takeDamage(1, knight.getPosition().x, 100f);
+                            knight.getHitEnemiesByDash().add(enemy);
+                        }
+
+                    }
+                }
+            }
+        }
+
+         for (Enemy enemy : allEnemies) {
+             for (Rectangle spike : spikes) {
+                 if (enemy.getBounds().overlaps(spike)) {
+                     float spikeCenterX = spike.x + (spike.width / 2f);
+                     enemy.takeSpikeDamage(1, spikeCenterX);
+                     break;
+                 }
+             }
+         }
+
+         if (!knight.isNoDamage()) {
+             for (Rectangle spike : spikes) {
+                 if (knight.getBounds().overlaps(spike)) {
+                     float spikeCenterX = spike.x + (spike.width / 2f);
+                     knight.takeDamage(spikeCenterX < knight.getBounds().x + knight.getBounds().width ? 1 : -1, true);
+                     break;
+                 }
+             }
+         }
 
         for (Enemy enemy : allEnemies){
             enemy.update(delta);
@@ -106,6 +167,18 @@ public class Game {
             Rectangle tiledRectangle = ((RectangleMapObject) object).getRectangle();
             Rectangle gameRectangle = new Rectangle(tiledRectangle.x * unitScale, tiledRectangle.y * unitScale, tiledRectangle.width * unitScale, tiledRectangle.height * unitScale);
             grounds.add(gameRectangle);
+        }
+    }
+
+    private void addSpikes(TiledMap tiledMap){
+        MapLayer spike = tiledMap.getLayers().get("spikes");
+
+        float unitScale = 1 / 6f;
+
+        for (MapObject object : spike.getObjects()){
+            Rectangle tiledRectangle = ((RectangleMapObject) object).getRectangle();
+            Rectangle gameRectangle = new Rectangle(tiledRectangle.x * unitScale, tiledRectangle.y * unitScale, tiledRectangle.width * unitScale, tiledRectangle.height * unitScale);
+            spikes.add(gameRectangle);
         }
     }
 
@@ -178,6 +251,14 @@ public class Game {
         return activeSlashEffect;
     }
 
+    public void setActiveSpellEffect(SpellEffect activeSpellEffect) {
+        this.activeSpellEffect = activeSpellEffect;
+    }
+
+    public SpellEffect getActiveSpellEffect() {
+        return activeSpellEffect;
+    }
+
     public ArrayList<Rectangle> getTurnPositions() {
         return turnPositions;
     }
@@ -196,5 +277,25 @@ public class Game {
 
     public String getMapAddress() {
         return mapAddress;
+    }
+
+    public ArrayList<Rectangle> getSpikes() {
+        return spikes;
+    }
+
+    public float getStartX() {
+        return startX;
+    }
+
+    public float getStartY() {
+        return startY;
+    }
+
+    public float getMapStartX() {
+        return mapStartX;
+    }
+
+    public float getMapStartY() {
+        return mapStartY;
     }
 }
