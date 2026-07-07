@@ -1,6 +1,7 @@
 package com.hollowknight.model;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -223,6 +224,8 @@ public class Knight {
                         this.position.set(lastSafePlace);
                         this.velocity.set(0, 0);
                         this.hitSpike = false;
+                        this.canDash = true;
+                        this.canAttack = true;
                     }, 0.2f);
                 }
                 state = KnightState.IDLE;
@@ -426,6 +429,7 @@ public class Knight {
         if (Gdx.input.isKeyJustPressed(App.bindings.get(GameAction.CAST)) && !Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_UP))){
             if (soul >= 33){
                 soul -= 33;
+                audioListener.onAudioEvent(AudioAction.FIREBALL);
                 state = KnightState.FIREBALL_CAST;
                 fireballCastTimer = fireballCastTime;
                 castVengefulSpirit();
@@ -436,6 +440,7 @@ public class Knight {
         if (Gdx.input.isKeyJustPressed(App.bindings.get(GameAction.CAST)) && Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_UP))){
             if (soul >= 33){
                 soul -= 33;
+                audioListener.onAudioEvent(AudioAction.SCREAM);
                 state = KnightState.SCREAM;
                 screamTimer = screamTime;
                 castHowlingWraiths();

@@ -12,6 +12,7 @@ keyBindings: {
 	MOVE_RIGHT: 22
 	ATTACK: 52
 }
+achievements: {}
 musicOn: true
 sfxOn: true
 musicVol: 0.6

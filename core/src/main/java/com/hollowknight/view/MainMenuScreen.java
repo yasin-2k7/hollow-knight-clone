@@ -72,6 +72,22 @@ public class MainMenuScreen extends MenuScreen {
             }
         });
 
+        achievementsBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.playClick();
+                fadeAndSwitchScreen(new AchievementsMenuScreen());
+            }
+        });
+
+        guideBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                AudioManager.playClick();
+                fadeAndSwitchScreen(new GuideMenuScreen());
+            }
+        });
+
         AudioManager.fadeInMusic(AudioManager.menuMusic);
     }
 

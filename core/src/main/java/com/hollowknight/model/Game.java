@@ -1,5 +1,7 @@
 package com.hollowknight.model;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.PointMapObject;
@@ -9,16 +11,14 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.hollowknight.controller.GameController;
 import com.hollowknight.model.enemies.*;
-import com.hollowknight.model.enums.EnemyState;
-import com.hollowknight.model.enums.KnightState;
-import com.hollowknight.model.enums.SlashDirection;
-import com.hollowknight.model.enums.SpellType;
+import com.hollowknight.model.enums.*;
 import com.hollowknight.view.game.enemiesView.CrawlerView;
 import com.hollowknight.view.game.enemiesView.CrystallizedView;
 import com.hollowknight.view.game.enemiesView.HuskHornHeadView;
 import com.hollowknight.view.game.enemiesView.MosquitoView;
 
 import java.util.ArrayList;
+
 
 public class Game {
     private float startX, startY;
@@ -34,6 +34,8 @@ public class Game {
     private SlashEffect activeSlashEffect = null;
     private SpellEffect activeSpellEffect = null;
     private ArrayList<Laser> lasers = new ArrayList<>();
+    private EntityAudioListener audioListener;
+    private ArrayList<EventListener> eventListeners = new ArrayList<>();
 
 
     public float getGRAVITY() {
@@ -104,6 +106,7 @@ public class Game {
             if (activeSpellEffect.getType() == SpellType.VENGEFUL_SPIRIT){
                 for (Rectangle ground : grounds){
                     if (activeSpellEffect.getHitBounds().overlaps(ground)){
+                        audioListener.onAudioEvent(AudioAction.STOP_FIREBALL);
                         activeSpellEffect.setFinished(true);
                     }
                 }
@@ -297,5 +300,19 @@ public class Game {
 
     public float getMapStartY() {
         return mapStartY;
+    }
+
+    public void setAudioListener(EntityAudioListener audioListener) {
+        this.audioListener = audioListener;
+    }
+
+    public void addEventListener(EventListener eventListener){
+        eventListeners.add(eventListener);
+    }
+
+    private void informListeners(Achievement achievement){
+        for (EventListener eventListener : eventListeners){
+            eventListener.onAchievementUnlocked(achievement);
+        }
     }
 }

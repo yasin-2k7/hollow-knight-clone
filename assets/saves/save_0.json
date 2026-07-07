@@ -1,10 +1,10 @@
 {
-startX: 3810.1216
-startY: 158.00002
+startX: 2815.0728
+startY: 319
 mapStartX: 2000
 mapStartY: 250
 soul: 5
 masks: 5
-playTime: 11.365001
+playTime: 28.539923
 tiledMapAddress: map/map.tmx
 }

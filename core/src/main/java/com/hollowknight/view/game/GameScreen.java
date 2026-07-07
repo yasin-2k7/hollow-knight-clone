@@ -10,12 +10,16 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -25,8 +29,10 @@ import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enemies.Enemy;
 import com.hollowknight.model.enemies.Laser;
+import com.hollowknight.model.enums.Achievement;
 import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.GameState;
+import com.hollowknight.model.enums.Texts;
 import com.hollowknight.view.AudioManager;
 import com.hollowknight.view.GameAssetManager;
 import com.hollowknight.view.MenuScreen;
@@ -47,6 +53,9 @@ public class GameScreen extends MenuScreen {
 
     private PauseTable pauseTable = new PauseTable(skin);
     private CharmsTable charmsTable = new CharmsTable(skin, App.getCurrentGame().getKnight());
+
+    private final Queue<Achievement> toastQueue = new Queue<>();
+    private boolean hasNotification = false;
 
     private ShapeRenderer shapeRenderer;
 
@@ -364,6 +373,73 @@ public class GameScreen extends MenuScreen {
             Actions.run(actionOnBlack),
             Actions.delay(blackTime),
             Actions.fadeOut(0.15f)
+        ));
+    }
+
+    public Table createToastNotification(Achievement achievement) {
+        Table toast = new Table();
+
+        toast.setBackground(skin.newDrawable("white", new Color(0f, 0f, 0f, 0.8f)));
+        toast.pad(15);
+
+        String imagePath = "achievements/" + achievement.name() + ".png";
+        Image icon = new Image(new Texture(Gdx.files.internal(imagePath)));
+        toast.add(icon).size(64f, 64f).padRight(15);
+
+        Table textTable = new Table();
+        textTable.left();
+
+        String unlockedStr = Texts.ACHIEVEMENT_UNLOCKED.get(App.getCurrentLanguage());
+        Label unlockedLabel = new Label(unlockedStr, skin, "small");
+        unlockedLabel.setColor(Color.GOLD);
+
+        String titleStr = achievement.title.get(App.getCurrentLanguage());
+        Label titleLabel = new Label(titleStr, skin, "default");
+
+        textTable.add(unlockedLabel).left().row();
+        textTable.add(titleLabel).left().padTop(4);
+
+        toast.add(textTable).expandX().fillX();
+
+        return toast;
+    }
+
+    public void addToast(Achievement achievement){
+        toastQueue.addLast(achievement);
+        if (!hasNotification){
+            showNextToast();
+        }
+    }
+
+    private void showNextToast() {
+        if (toastQueue.isEmpty()) {
+            hasNotification = false;
+            return;
+        }
+
+        hasNotification = true;
+        Achievement achievement = toastQueue.removeFirst();
+
+        final Table toastTable = createToastNotification(achievement);
+        Table wrapper = new Table();
+        wrapper.pad(10).right().top();
+
+        toastTable.setColor(toastTable.getColor().r, toastTable.getColor().g, toastTable.getColor().b, 1f);
+        wrapper.add(toastTable);
+        toastStack.addActor(wrapper);
+
+        toastTable.addAction(Actions.sequence(
+            Actions.moveBy(0, 200f),
+            Actions.moveBy(0, -200, 0.5f, Interpolation.bounceIn),
+            Actions.delay(3.0f),
+            Actions.fadeOut(0.4f),
+            Actions.removeActor(),
+            Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    showNextToast();
+                }
+            })
         ));
     }
 

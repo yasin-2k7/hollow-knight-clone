@@ -220,6 +220,20 @@ public class GameController {
         Game game = new Game(mapStartX, mapStartY, startX, startY, playTime);
         App.setCurrentGame(game);
         game.initialize(mapAddress, tiledMap, masks, soul);
+        game.addEventListener(new EventListener() {
+            @Override
+            public void onAchievementUnlocked(Achievement achievement) {
+                achievementNotif(achievement);
+            }
+        });
+
+        game.addEventListener(new EventListener() {
+            @Override
+            public void onAchievementUnlocked(Achievement achievement) {
+                App.updateAchievements(achievement);
+            }
+        });
+
 
         screen = new GameScreen();
         screen.setTiledMap(tiledMap);
@@ -227,6 +241,13 @@ public class GameController {
 
         KnightView knightView = new KnightView();
         screen.setKnightView(knightView);
+
+        game.setAudioListener(new EntityAudioListener() {
+            @Override
+            public void onAudioEvent(AudioAction action) {
+                handleAudioEvent(action);
+            }
+        });
 
         game.getKnight().setAudioListener(new EntityAudioListener() {
             @Override
@@ -272,6 +293,9 @@ public class GameController {
             case FOCUS_HEALTH_CHARGE -> AudioManager.playFocusHealthCharge();
             case FOCUS_HEALTH_HEAL -> AudioManager.playFocusHealthHeal();
             case FOCUS_NOT_FINISHED -> AudioManager.stopFocus();
+            case FIREBALL -> AudioManager.playFireball();
+            case SCREAM -> AudioManager.playScream();
+            case STOP_FIREBALL -> AudioManager.stopFireball();
             default -> {
                 return;
             }
@@ -359,5 +383,10 @@ public class GameController {
 
     public static void setGameState(GameState gameState) {
         GameController.gameState = gameState;
+    }
+
+
+    public static void achievementNotif(Achievement achievement) {
+        screen.addToast(achievement);
     }
 }

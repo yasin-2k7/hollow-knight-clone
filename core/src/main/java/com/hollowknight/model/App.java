@@ -1,6 +1,7 @@
 package com.hollowknight.model;
 
 import com.badlogic.gdx.utils.ObjectMap;
+import com.hollowknight.model.enums.Achievement;
 import com.hollowknight.model.enums.GameAction;
 import com.hollowknight.model.enums.Language;
 
@@ -13,6 +14,7 @@ public class App {
     private static boolean musicEnabled = true;
     private static boolean sfxEnabled = true;
     private static float musicVolume = 0.6f;
+    public static final ObjectMap<Achievement, Boolean> achievements = new ObjectMap<>();
 
     public static boolean isMusicEnabled() {
         return musicEnabled;
@@ -60,5 +62,10 @@ public class App {
 
     public static float getUnitScale() {
         return unitScale;
+    }
+
+    public static void updateAchievements(Achievement achievement) {
+        achievements.put(achievement, true);
+        Manager.saveConfig();
     }
 }

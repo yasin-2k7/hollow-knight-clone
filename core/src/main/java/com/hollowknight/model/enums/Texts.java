@@ -1,6 +1,7 @@
 package com.hollowknight.model.enums;
 
 import com.badlogic.gdx.Input;
+import com.hollowknight.model.App;
 
 public enum Texts {
     GAME_TITLE("HOLLOW KNIGHT","HOLLOW KNIGHT"),
@@ -73,7 +74,43 @@ public enum Texts {
     DESC_VOID_HERAT(
         "Unifies the Void under the bearer's will. Void entities become passive.",
         "Unifie le Vide sous la volonté du porteur. Les entités du Vide deviennent passives."
-    );
+    ),
+    COMPLETION("GAME COMPLETED", "JEU TERMINÉ"),
+    COMPLETION_DESC("COMPLETE THE GAME.", "TERMINEZ LE JEU."),
+    SPEEDRUN("SPEEDRUN", "SPEEDRUN"),
+    SPEEDRUN_DESC("COMPLETE THE GAME IN LESS THAN 15 MINUTES.", "TERMINEZ LE JEU EN MOINS DE 15 MINUTES."),
+    TRUE_HUNTER("TRUE HUNTER", "VRAI CHASSEUR"),
+    TRUE_HUNTER_DESC("KILL ALL TYPES OF ENEMIES IN THE GAME.", "TUEZ TOUS LES TYPES D'ENNEMIS DU JEU."),
+    DEFEAT_FALSE_KNIGHT("DEFEAT FALSE KNIGHT", "VAINCRE LE FAUX CHEVALIER"),
+    DEFEAT_FALSE_KNIGHT_DESC("DEFEAT THE FALSE KNIGHT.", "BATTEZ LE FAUX CHEVALIER."),
+    ZOTE("ZOTE", "ZOTE"),
+    ZOTE_DESC("TALK TO ZOTE.", "PARLEZ À ZOTE."),
+    ACHIEVEMENT_UNLOCKED("ACHIEVEMENT UNLOCKED", "SUCCÈS DÉVERROUILLÉ"),
+    KNIGHT_PROPERTIES("KNIGHT PROPERTIES", "PROPRIÉTÉS DU CHEVALIER"),
+    KNIGHT_ACTIONS("KNIGHT ACTIONS", "ACTIONS DU CHEVALIER"),
+    MOVEMENT("MOVEMENT", "MOUVEMENT"),
+    MOVE_INSTRUCTIONS("USE THE " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_RIGHT)) + " AND " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_LEFT)) + " BUTTONS TO MOVE RIGHT AND LEFT RESPECTIVELY.",
+        "UTILISEZ LES BOUTONS " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_RIGHT)) + " ET " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_LEFT)) + " POUR VOUS DÉPLACER VERS LA DROITE ET LA GAUCHE RESPECTIVEMENT."),
+
+    JUMP_INSTRUCTIONS("USE THE " + Input.Keys.toString(App.bindings.get(GameAction.JUMP)) + " BUTTON TO JUMP. THE LONGER YOU HOLD THE BUTTON, THE HIGHER THE KNIGHT JUMPS.",
+        "UTILISEZ LE BOUTON " + Input.Keys.toString(App.bindings.get(GameAction.JUMP)) + " POUR FAIRE SAUTER LE CHEVALIER. PLUS VOUS MAINTENEZ LE BOUTON ENFONCÉ, PLUS LE CHEVALIER SAUTE HAUT."),
+
+    ATTACK_INSTRUCTIONS("TO ATTACK WITH THE SWORD, PRESS THE " + Input.Keys.toString(App.bindings.get(GameAction.ATTACK)) + " BUTTON. TO CHOOSE THE ATTACK DIRECTION, YOU CAN USE THE " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_UP)) + ", " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_DOWN)) + ", " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_LEFT)) + ", " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_RIGHT)) + " BUTTONS.",
+        "POUR ATTAQUER AVEC L'ÉPÉE, APPUYEZ SUR LE BOUTON " + Input.Keys.toString(App.bindings.get(GameAction.ATTACK)) + ". POUR CHOISIR LA DIRECTION DE L'ATTAQUE, VOUS POUVEZ UTILISER LES BOUTONS " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_UP)) + ", " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_DOWN)) + ", " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_LEFT)) + " ET " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_RIGHT)) + "."),
+
+    DASH_INSTRUCTIONS("USING THE " + Input.Keys.toString(App.bindings.get(GameAction.DASH)) + " BUTTON, THE KNIGHT MOVES QUICKLY HORIZONTALLY FOR A SHORT TIME.",
+        "EN UTILISANT LE BOUTON " + Input.Keys.toString(App.bindings.get(GameAction.DASH)) + ", LE CHEVALIER SE DÉPLACE RAPIDEMENT ET HORIZONTALEMENT PENDANT UN MOMENT."),
+
+    HEAL_INSTRUCTIONS("USING THE " + Input.Keys.toString(App.bindings.get(GameAction.FOCUS)) + " BUTTON, YOU CAN GAIN ONE LIFE BY SPENDING SOME SOUL.",
+        "EN UTILISANT LE BOUTON " + Input.Keys.toString(App.bindings.get(GameAction.FOCUS)) + ", VOUS POUVEZ GAGNER UNE VIE EN DÉPENSANT DE L'ÂME."),
+    SPELLS_INSTRUCTIONS("PRESS THE " + Input.Keys.toString(App.bindings.get(GameAction.CAST)) + " BUTTON TO FIRE A VENGEFUL SPIRIT FORWARD. HOLD " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_UP)) + " AND PRESS " + Input.Keys.toString(App.bindings.get(GameAction.CAST)) + " TO RELEASE HOWLING WRAITHS UPWARD.",
+        "APPUYEZ SUR LE BOUTON " + Input.Keys.toString(App.bindings.get(GameAction.CAST)) + " POUR LANCER UN ESPRIT VENGEUR EN AVANT. MAINTENEZ " + Input.Keys.toString(App.bindings.get(GameAction.MOVE_UP)) + " ET APPUYEZ SUR " + Input.Keys.toString(App.bindings.get(GameAction.CAST)) + " POUR LIBÉRER DES SPECTRES HURLANTS VERS LE HAUT."),
+
+    SOUL_INSTRUCTIONS("MASKS REPRESENT YOUR HEALTH. STRIKE ENEMIES TO FILL THE SOUL VESSEL, WHICH IS USED TO HEAL OR CAST SPELLS.",
+        "LES MASQUES REPRÉSENTENT VOTRE SANTÉ. FRAPPEZ LES ENNEMIS POUR REMPLIR LE VASE D'ÂME, UTILISÉ POUR GUÉRIR OU LANCER DES SORTS."),
+
+    CHARMS_INSTRUCTIONS("CHARMS GRANT UNIQUE ABILITIES. PRESS THE " + Input.Keys.toString(App.bindings.get(GameAction.INVENTORY)) + " BUTTON TO VIEW AND EQUIP THEM.",
+        "LES CHARMES ACCORDENT DES CAPACITÉS UNIQUES. APPUYEZ SUR LE BOUTON " + Input.Keys.toString(App.bindings.get(GameAction.INVENTORY)) + " POUR LES VOIR ET LES ÉQUIPER.");
 
 
 

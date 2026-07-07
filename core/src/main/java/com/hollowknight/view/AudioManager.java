@@ -27,6 +27,8 @@ public class AudioManager {
     public static Sound focusHealthCharge;
     public static Sound focusReady;
     public static Sound focusHealthHeal;
+    public static Sound scream;
+    public static Sound fireball;
 
 
     public static Music menuMusic;
@@ -68,6 +70,9 @@ public class AudioManager {
         focusHealthCharge = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/focus_health_charging.wav"));
         focusReady = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/focus_ready.wav"));
         focusHealthHeal = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/focus_health_heal.wav"));
+        scream = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/hero_scream_spell.wav"));
+        focusHealthHeal = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/focus_health_heal.wav"));
+        fireball = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/hero_fireball.wav"));
 
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/26. Hollow Knight.mp3"));
         greenPathActionMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/S5 Green Path Action.wav"));
@@ -87,6 +92,8 @@ public class AudioManager {
     public static void playHeroLand() { if (App.isSfxEnabled()) heroLand.play(1f);}
     public static void playHeroMantisClaw() { if (App.isSfxEnabled()) heroMantisClaw.play(1f);}
     public static void playHeroWallJump() { if (App.isSfxEnabled()) heroWallJump.play(1f);}
+    public static void playScream() { if (App.isSfxEnabled()) scream.play(1f);}
+    public static void playFireball() { if (App.isSfxEnabled()) fireball.play(1f);}
     public static void playEnemyDamage() { if (App.isSfxEnabled()) enemyDamage.play(1f);}
     public static void playKnightGainSoul() { if (App.isSfxEnabled()) knightGainSoul.play(1f);}
     public static void playFocusReady() { if (App.isSfxEnabled()) focusReady.play(1f);}
@@ -138,6 +145,10 @@ public class AudioManager {
     public static void stopFocus(){
         focusHealthCharge.stop();
     }
+    public static void stopFireball(){
+        fireball.stop();
+    }
+
 
 
 

@@ -87,6 +87,9 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	title: {
 		font: large
 	}
+    small: {
+      font: TrajanPro-Regular
+    },
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
