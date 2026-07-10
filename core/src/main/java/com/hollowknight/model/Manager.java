@@ -94,7 +94,7 @@ public class Manager {
     }
 
     public static GameSave createNewGame(int slotIndex) {
-        GameSave newSave = new GameSave(2000f, 250f, 5, 5, 0, "map/map.tmx", 2000f, 250f);
+        GameSave newSave = new GameSave(200f, 50f, 5, 5, 0, "map/map2.tmx", 200f, 50f, "Area_Green_Path");
         App.getSaveSlots()[slotIndex] = newSave;
         saveGame(slotIndex, newSave);
         return newSave;

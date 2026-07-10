@@ -10,6 +10,7 @@ import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.EnemyState;
+import com.hollowknight.model.enums.EnemyType;
 
 public class FlyerEnemy extends AbstractEnemy {
     private float visionWidth = 100f;
@@ -32,8 +33,8 @@ public class FlyerEnemy extends AbstractEnemy {
     private final float TURN_TIME = 0.5f;
     private final float DEATH_AIR_TIME = 0.8f;
 
-    public FlyerEnemy(Game game, float startX, float startY, float width, float height, float wOffset, float hOffsetUp, float hOffsetDown) {
-        super(width, height, wOffset, hOffsetUp, hOffsetDown, game, startX, startY);
+    public FlyerEnemy(Game game, float startX, float startY, float width, float height, float wOffset, float hOffsetUp, float hOffsetDown, EnemyType type) {
+        super(width, height, wOffset, hOffsetUp, hOffsetDown, game, startX, startY, type);
 
         target = new Vector2();
         float newWidth = (this.width - 2*this.wOffset);
@@ -91,7 +92,7 @@ public class FlyerEnemy extends AbstractEnemy {
 
     private void checkVerticalCollisions() {
         onGround = false;
-        for (Rectangle rectangle : game.getGrounds()) {
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()) {
             if (Intersector.overlaps(rectangle, bounds)) {
                 if (velocity.y > 0) {
                     position.y = rectangle.y - bounds.height;
@@ -107,7 +108,7 @@ public class FlyerEnemy extends AbstractEnemy {
 
     private void checkHorizontalCollisions() {
 
-        for (Rectangle rectangle : game.getGrounds()) {
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()) {
             if (Intersector.overlaps(rectangle, bounds)) {
                 if (velocity.x > 0) {
                     position.x = rectangle.x - bounds.width;
@@ -193,8 +194,8 @@ public class FlyerEnemy extends AbstractEnemy {
         }
 
         Vector2 enemyEye = new Vector2(
-            position.x + bounds.x / 2f,
-            position.y + bounds.y / 2
+            position.x + bounds.width / 2f,
+            position.y + bounds.height / 2
         );
 
         Vector2 knightCenter = new Vector2(
@@ -202,7 +203,7 @@ public class FlyerEnemy extends AbstractEnemy {
             knight.getPosition().y + knight.getBounds().height / 2f
         );
 
-        for (Rectangle ground : App.getCurrentGame().getGrounds()) {
+        for (Rectangle ground : App.getCurrentGame().getCurrentMap().getGrounds()) {
             if (!visionBox.overlaps(ground)) {
                 continue;
             }
@@ -236,6 +237,7 @@ public class FlyerEnemy extends AbstractEnemy {
 
     }
 
+    @Override
     public void setPatrolRect(Rectangle patrolRect) {
         this.patrolRect = patrolRect;
     }

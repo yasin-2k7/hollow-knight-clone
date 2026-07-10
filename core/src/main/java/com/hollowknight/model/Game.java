@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.hollowknight.controller.GameController;
 import com.hollowknight.model.enemies.*;
 import com.hollowknight.model.enums.*;
+import com.hollowknight.view.game.ZoteView;
 import com.hollowknight.view.game.enemiesView.CrawlerView;
 import com.hollowknight.view.game.enemiesView.CrystallizedView;
 import com.hollowknight.view.game.enemiesView.HuskHornHeadView;
@@ -24,16 +25,11 @@ public class Game {
     private float startX, startY;
     private float mapStartX, mapStartY;
     private float playTime;
-    private String mapAddress;
     private Knight knight;
+    private GameMap currentMap;
     private final float GRAVITY = -250f;
-    private ArrayList<Rectangle> grounds;
-    private ArrayList<Rectangle> spikes;
-    private ArrayList<Rectangle> turnPositions = new ArrayList<>();
-    private ArrayList<Enemy> allEnemies = new ArrayList<>();
     private SlashEffect activeSlashEffect = null;
     private SpellEffect activeSpellEffect = null;
-    private ArrayList<Laser> lasers = new ArrayList<>();
     private EntityAudioListener audioListener;
     private ArrayList<EventListener> eventListeners = new ArrayList<>();
 
@@ -42,23 +38,18 @@ public class Game {
         return GRAVITY;
     }
 
-    public Game(float mapStartX, float mapStartY, float startX, float startY, float playTime) {
+    public Game(float mapStartX, float mapStartY, float startX, float startY, float playTime, int masks, int soul) {
         this.startX = startX;
         this.startY = startY;
         this.mapStartX = mapStartX;
         this.mapStartY = mapStartY;
-        grounds = new ArrayList<>();
-        spikes = new ArrayList<>();
         this.playTime = playTime;
+        knight = new Knight(masks, soul, startX, startY, this);
     }
 
-    public void initialize(String mapAddress, TiledMap tiledMap, int masks, int soul){
-        knight = new Knight(masks, soul, startX, startY, this);
-        this.mapAddress = mapAddress;
-        addGrounds(tiledMap);
-        addSpikes(tiledMap);
-        addTurnPositions(tiledMap);
-        spawnEnemies(tiledMap, App.getUnitScale());
+    public void loadMap(String mapAddress, TiledMap tiledMap, float knightSpawnX, float knightSpawnY) {
+        this.currentMap = new GameMap(this, mapAddress, tiledMap, 1/6f);
+        this.knight.getPosition().set(knightSpawnX, knightSpawnY);
     }
 
     public void update(float delta){
@@ -71,12 +62,12 @@ public class Game {
             activeSpellEffect.update(delta);
         }
 
-        for (Laser laser : lasers){
+        for (Laser laser : currentMap.getLasers()){
             laser.update(delta);
         }
 
         if (activeSlashEffect != null) {
-            for (Enemy enemy : allEnemies) {
+            for (Enemy enemy : currentMap.getAllEnemies()) {
                 if (Intersector.overlaps(activeSlashEffect.getHitBounds(), enemy.getBounds())) {
                     if (!activeSlashEffect.hasHitAlready(enemy)){
                         if (!enemy.isDead()) {
@@ -93,7 +84,7 @@ public class Game {
         }
 
         if (activeSpellEffect != null) {
-            for (Enemy enemy : allEnemies) {
+            for (Enemy enemy : currentMap.getAllEnemies()) {
                 if (Intersector.overlaps(activeSpellEffect.getHitBounds(), enemy.getBounds())) {
                     if (!activeSpellEffect.hasHitAlready(enemy)){
                         if (!enemy.isDead()) {
@@ -104,7 +95,7 @@ public class Game {
                 }
             }
             if (activeSpellEffect.getType() == SpellType.VENGEFUL_SPIRIT){
-                for (Rectangle ground : grounds){
+                for (Rectangle ground : currentMap.getGrounds()){
                     if (activeSpellEffect.getHitBounds().overlaps(ground)){
                         audioListener.onAudioEvent(AudioAction.STOP_FIREBALL);
                         activeSpellEffect.setFinished(true);
@@ -115,7 +106,7 @@ public class Game {
 
 
         if (!knight.isNoDamage() || knight.getState().equals(KnightState.SHADOW_DASH)){
-            for (Enemy enemy : allEnemies) {
+            for (Enemy enemy : currentMap.getAllEnemies()) {
                 if (Intersector.overlaps(knight.getBounds(), enemy.getBounds()) && !enemy.isDead() && enemy.getState() != EnemyState.DEATH_AIR) {
                     if (!knight.getState().equals(KnightState.SHADOW_DASH)) {
                         if (enemy.getPosition().x > knight.getPosition().x) {
@@ -136,8 +127,8 @@ public class Game {
             }
         }
 
-         for (Enemy enemy : allEnemies) {
-             for (Rectangle spike : spikes) {
+         for (Enemy enemy : currentMap.getAllEnemies()) {
+             for (Rectangle spike : currentMap.getSpikes()) {
                  if (enemy.getBounds().overlaps(spike)) {
                      float spikeCenterX = spike.x + (spike.width / 2f);
                      enemy.takeSpikeDamage(1, spikeCenterX);
@@ -147,93 +138,60 @@ public class Game {
          }
 
          if (!knight.isNoDamage()) {
-             for (Rectangle spike : spikes) {
+             for (Rectangle spike : currentMap.getSpikes()) {
                  if (knight.getBounds().overlaps(spike)) {
                      float spikeCenterX = spike.x + (spike.width / 2f);
                      knight.takeDamage(spikeCenterX < knight.getBounds().x + knight.getBounds().width ? 1 : -1, true);
                      break;
                  }
+                 if (activeSlashEffect != null){
+                     if (activeSlashEffect.getHitBounds().overlaps(spike) && !activeSlashEffect.getHitSpikes().contains(spike)){
+                         if (activeSlashEffect.getType() == SlashDirection.DOWN){
+                             activeSlashEffect.getHitSpikes().add(spike);
+                             knight.pogoJump();
+                         }
+                     }
+                 }
+             }
+             for (Laser laser : currentMap.getLasers()){
+                 if (knight.getBounds().overlaps(laser.getBounds())){
+                     knight.takeDamage(laser.isFlipped() ? 1 : -1, false);
+                     break;
+                 }
              }
          }
 
-        for (Enemy enemy : allEnemies){
+
+
+         if (currentMap.getZote() != null){
+             currentMap.getZote().update(delta);
+            if (knight.getBounds().overlaps(currentMap.getZote().getTalkBox()) && !knight.isTalking()){
+                if (!knight.CanTalk()){
+                    knight.setCanTalk(true);
+                    GameController.showInteractKey(true);
+                }
+                if (knight.getPosition().x > currentMap.getZote().getTalkBox().x + currentMap.getZote().getTalkBox().width/2 && currentMap.getZote().getState() == ZoteState.IDLE && !currentMap.getZote().isFlipped()){
+                    currentMap.getZote().turn();
+                }
+                else if (knight.getPosition().x < currentMap.getZote().getTalkBox().x + currentMap.getZote().getTalkBox().width/2 && currentMap.getZote().getState() == ZoteState.IDLE && currentMap.getZote().isFlipped()){
+                    currentMap.getZote().turn();
+                }
+            }
+            else{
+                if (knight.CanTalk()){
+                    knight.setCanTalk(false);
+                    GameController.showInteractKey(false);
+                }
+            }
+         }
+
+        for (Enemy enemy : currentMap.getAllEnemies()){
             enemy.update(delta);
         }
-    }
 
-    private void addGrounds(TiledMap tiledMap){
-        MapLayer ground = tiledMap.getLayers().get("ground");
-
-        float unitScale = 1 / 6f;
-
-        for (MapObject object : ground.getObjects()){
-            Rectangle tiledRectangle = ((RectangleMapObject) object).getRectangle();
-            Rectangle gameRectangle = new Rectangle(tiledRectangle.x * unitScale, tiledRectangle.y * unitScale, tiledRectangle.width * unitScale, tiledRectangle.height * unitScale);
-            grounds.add(gameRectangle);
-        }
-    }
-
-    private void addSpikes(TiledMap tiledMap){
-        MapLayer spike = tiledMap.getLayers().get("spikes");
-
-        float unitScale = 1 / 6f;
-
-        for (MapObject object : spike.getObjects()){
-            Rectangle tiledRectangle = ((RectangleMapObject) object).getRectangle();
-            Rectangle gameRectangle = new Rectangle(tiledRectangle.x * unitScale, tiledRectangle.y * unitScale, tiledRectangle.width * unitScale, tiledRectangle.height * unitScale);
-            spikes.add(gameRectangle);
-        }
-    }
-
-    private void addTurnPositions(TiledMap tiledMap){
-        MapLayer ground = tiledMap.getLayers().get("turn positions");
-
-        float unitScale = 1 / 6f;
-
-        for (MapObject object : ground.getObjects()){
-            Rectangle tiledRectangle = ((RectangleMapObject) object).getRectangle();
-            Rectangle gameRectangle = new Rectangle(tiledRectangle.x * unitScale, tiledRectangle.y * unitScale, tiledRectangle.width * unitScale, tiledRectangle.height * unitScale);
-            turnPositions.add(gameRectangle);
-        }
-    }
-
-    public void spawnEnemies(TiledMap map, float unitScale) {
-        MapLayer spawnLayer = map.getLayers().get("enemy spawns");
-        if (spawnLayer == null) return;
-
-        for (MapObject object : spawnLayer.getObjects()) {
-            if (object instanceof PointMapObject) {
-                PointMapObject pointObj = (PointMapObject) object;
-
-                float x = pointObj.getPoint().x * unitScale;
-                float y = pointObj.getPoint().y * unitScale;
-
-                String enemyType = pointObj.getProperties().get("enemyType", String.class);
-
-                if ("crawler".equals(enemyType)) {
-                    SimpleEnemy simpleEnemy = new SimpleEnemy(this, x, y, 200f, 80f, 60f, 40f, 5f);
-                    allEnemies.add(simpleEnemy);
-                    GameController.addEnemyView(new CrawlerView(simpleEnemy));
-                }
-                else if ("husk".equals(enemyType)) {
-                    HuskHornHeadEnemy huskHornHeadEnemy = new HuskHornHeadEnemy(this, x, y, 180f, 120f, 60f, 40f, 5f);
-                    allEnemies.add(huskHornHeadEnemy);
-                    GameController.addEnemyView(new HuskHornHeadView(huskHornHeadEnemy));
-                }
-                else if ("crystallized".equals(enemyType)) {
-                    CrystallizedEnemy crystallizedEnemy = new CrystallizedEnemy(this, x, y, 180f, 120f, 60f, 40f, 5f);
-                    allEnemies.add(crystallizedEnemy);
-                    GameController.addEnemyView(new CrystallizedView(crystallizedEnemy));
-                }
-                else if ("mosquito".equals(enemyType)) {
-                    FlyerEnemy flyerEnemy = new FlyerEnemy(this, x, y, 180f, 110f, 70f, 40f, 10f);
-                    allEnemies.add(flyerEnemy);
-                    RectangleMapObject patrolObj = pointObj.getProperties().get("patrol", RectangleMapObject.class);
-                    Rectangle tiledRectangle = patrolObj.getRectangle();
-                    Rectangle gameRectangle = new Rectangle(tiledRectangle.x * unitScale, tiledRectangle.y * unitScale, tiledRectangle.width * unitScale, tiledRectangle.height * unitScale);
-                    flyerEnemy.setPatrolRect(gameRectangle);
-                    GameController.addEnemyView(new MosquitoView(flyerEnemy));
-                }
+        for (SwitchPoint switchPoint : currentMap.getSwitchPoints()){
+            if (switchPoint.getBounds().overlaps(knight.getBounds())){
+                switchPoint.switchMap();
             }
         }
     }
@@ -242,9 +200,6 @@ public class Game {
         return knight;
     }
 
-    public ArrayList<Rectangle> getGrounds() {
-        return grounds;
-    }
 
     public void setActiveSlashEffect(SlashEffect activeSlashEffect) {
         this.activeSlashEffect = activeSlashEffect;
@@ -262,28 +217,8 @@ public class Game {
         return activeSpellEffect;
     }
 
-    public ArrayList<Rectangle> getTurnPositions() {
-        return turnPositions;
-    }
-
-    public ArrayList<Enemy> getAllEnemies() {
-        return allEnemies;
-    }
-
-    public ArrayList<Laser> getLasers() {
-        return lasers;
-    }
-
     public float getPlayTime() {
         return playTime;
-    }
-
-    public String getMapAddress() {
-        return mapAddress;
-    }
-
-    public ArrayList<Rectangle> getSpikes() {
-        return spikes;
     }
 
     public float getStartX() {
@@ -314,5 +249,22 @@ public class Game {
         for (EventListener eventListener : eventListeners){
             eventListener.onAchievementUnlocked(achievement);
         }
+    }
+
+    public void zoteTalked(){
+        informListeners(Achievement.ZOTE);
+    }
+
+    public GameMap getCurrentMap() {
+        return currentMap;
+    }
+
+    public void setCurrentMap(GameMap currentMap) {
+        this.currentMap = currentMap;
+    }
+
+    public void setNewMapStartPoint(float x, float y){
+        this.mapStartX = x;
+        this.mapStartY = y;
     }
 }

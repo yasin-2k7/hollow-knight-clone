@@ -9,10 +9,11 @@ public class GameSave {
     private int masks;
     private float playTime;
     private String tiledMapAddress;
+    private String loadButtonBgAddress;
 
     public GameSave() {}
 
-    public GameSave(float startX, float startY, int soul, int masks, float playMatch, String tiledMapAddress, float mapStartX, float mapStartY) {
+    public GameSave(float startX, float startY, int soul, int masks, float playMatch, String tiledMapAddress, float mapStartX, float mapStartY, String loadButtonBgAddress) {
         this.startX = startX;
         this.startY = startY;
         this.mapStartX = mapStartX;
@@ -21,6 +22,7 @@ public class GameSave {
         this.masks = masks;
         this.playTime = playMatch;
         this.tiledMapAddress = tiledMapAddress;
+        this.loadButtonBgAddress = loadButtonBgAddress;
     }
 
     public String getTiledMapAddress() {
@@ -53,5 +55,9 @@ public class GameSave {
 
     public float getMapStartY() {
         return mapStartY;
+    }
+
+    public String getLoadButtonBgAddress() {
+        return loadButtonBgAddress;
     }
 }

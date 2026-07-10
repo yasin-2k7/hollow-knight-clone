@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class SlashEffect {
     private final ArrayList<Enemy> hitEnemies = new ArrayList<>();
+    private final ArrayList<Rectangle> hitSpikes = new ArrayList<>();
     private SlashDirection type;
     private float x,y;
     private float width, height;
@@ -83,6 +84,10 @@ public class SlashEffect {
 
     public Rectangle getHitBounds() {
         return hitBounds;
+    }
+
+    public ArrayList<Rectangle> getHitSpikes() {
+        return hitSpikes;
     }
 
     public float getDuration() {

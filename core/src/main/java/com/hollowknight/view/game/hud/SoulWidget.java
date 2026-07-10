@@ -92,6 +92,7 @@ public class SoulWidget extends Actor {
                 introStateTime -= delta;
                 if (introStateTime <= 0){
                     isIntroPlaying = true;
+                    introStateTime = 0f;
                     started = false;
                 }
             }

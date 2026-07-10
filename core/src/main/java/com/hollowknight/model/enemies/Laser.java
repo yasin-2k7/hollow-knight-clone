@@ -11,11 +11,13 @@ public class Laser {
     private float minLength = DEFAULT_LENGTH;
     private float lifeTime = 0.6f;
     private boolean finished = false;
+    private boolean flipped;
 
     public Laser(float originX, float originY, Game game, boolean flipped) {
         this.originX = originX;
         this.originY = originY;
         bounds = new Rectangle();
+        this.flipped = flipped;
         makeBounds(originX, originY, game, flipped);
     }
 
@@ -24,7 +26,7 @@ public class Laser {
 
         Rectangle laserBeam = new Rectangle();
 
-        for (Rectangle ground : game.getGrounds()) {
+        for (Rectangle ground : game.getCurrentMap().getGrounds()) {
             if (flipped) {
                 laserBeam.set(originX, originY, DEFAULT_LENGTH, HEIGHT);
 
@@ -67,6 +69,10 @@ public class Laser {
         if (lifeTime <= 0){
             finished = true;
         }
+    }
+
+    public boolean isFlipped() {
+        return flipped;
     }
 
     public boolean isFinished() {

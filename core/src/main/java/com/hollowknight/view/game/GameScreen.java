@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -64,6 +65,9 @@ public class GameScreen extends MenuScreen {
     private Viewport viewport;
     private SpriteBatch batch;
 
+    private ParticleEffect dustEffect1;
+    private ParticleEffect dustEffect2;
+
     private MasksTable masksTable;
     private Table soulsTable;
 
@@ -74,6 +78,7 @@ public class GameScreen extends MenuScreen {
 
     private Game game;
     private KnightView knightView;
+    private ZoteView zoteView;
     private SlashEffectView slashEffectView;
     private SpellEffectView spellEffectView;
     private ArrayList<LaserView> laserViews = new ArrayList<>();
@@ -95,7 +100,7 @@ public class GameScreen extends MenuScreen {
         };
 
         camera = new OrthographicCamera();
-        viewport = new FitViewport(220f, 110f, camera);
+        viewport = new FitViewport(240f, 120f, camera);
 
         cameraManager = new CameraManager(camera, App.getUnitScale());
         cameraManager.loadBoundsFromMap(tiledMap);
@@ -130,10 +135,24 @@ public class GameScreen extends MenuScreen {
         rootStack.add(rootTable);
 
         rootTable.add(masksTable).padLeft(350).padTop(20);
-        AudioManager.fadeInMusic(AudioManager.crossroadsMainMusic);
+        if (game.getCurrentMap().getMapAddress().equals("map/map2.tmx")){
+            AudioManager.fadeInMusic(AudioManager.greenPathMainMusic);
+        }
+        else {
+            AudioManager.fadeInMusic(AudioManager.crossroadsMainMusic);
+        }
 
         fadeOverlay.getColor().a = 0f;
         rootStack.add(fadeOverlay);
+
+        dustEffect1 = new ParticleEffect();
+        dustEffect1.load(Gdx.files.internal("effects/p1.p"), Gdx.files.internal("effects/particles/"));
+
+        dustEffect2 = new ParticleEffect();
+        dustEffect2.load(Gdx.files.internal("effects/p2.p"), Gdx.files.internal("effects/particles/"));
+
+        dustEffect1.start();
+        dustEffect2.start();
 
     }
 
@@ -163,7 +182,15 @@ public class GameScreen extends MenuScreen {
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        shapeRenderer.setColor(0.05f, 0.05f, 0.15f, 1f);
+        if (game.getCurrentMap().getMapAddress().equals("map/map2.tmx")){
+            topColor.set(0.023f, 0.043f, 0.047f, 1f);
+            bottomColor.set(0.066f, 0.133f, 0.105f, 1f);
+        }
+        else{
+            topColor.set(0.2f, 0.25f, 0.55f, 1f);
+            bottomColor.set(0.01f, 0.01f, 0.05f, 1f);
+        }
+
 
         shapeRenderer.rect(
             camera.position.x - viewport.getWorldWidth() / 2,
@@ -188,7 +215,7 @@ public class GameScreen extends MenuScreen {
 
 
         renderer.setView(camera.combined, viewX, viewY, viewWidth, viewHeight);
-        renderer.render(new int[]{0,1,2,3,4,5,6});
+        renderer.render(new int[]{0,1,2,3,4,5,6,7});
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -207,8 +234,14 @@ public class GameScreen extends MenuScreen {
         for (EnemyView enemyView : GameController.getEnemyViews()){
             enemyView.draw(batch, gameDelta);
         }
+        if (zoteView != null){
+            zoteView.act(gameDelta);
+            zoteView.draw(batch, 1f);
+        }
         knightView.draw(batch, game.getKnight(), gameDelta);
         batch.end();
+
+
 
         if (slashEffectView != null) {
             batch.setProjectionMatrix(camera.combined);
@@ -224,13 +257,13 @@ public class GameScreen extends MenuScreen {
             batch.end();
         }
 
-        renderer.render(new int[]{7,8});
+        renderer.render(new int[]{8,9});
 
 
 
 
 
-        renderer.render(new int[]{9,10,11});
+        renderer.render(new int[]{10,11,12});
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -242,12 +275,12 @@ public class GameScreen extends MenuScreen {
         for (Enemy enemy : GameController.getActiveEnemies()){
             shapeRenderer.rect(enemy.getBounds().x, enemy.getBounds().y, enemy.getBounds().width, enemy.getBounds().height);
         }
-        for (Laser laser : game.getLasers()){
+        for (Laser laser : game.getCurrentMap().getLasers()){
             shapeRenderer.rect(laser.getBounds().x, laser.getBounds().y, laser.getBounds().width, laser.getBounds().height);
         }
 
         shapeRenderer.setColor(Color.GREEN);
-        for (Rectangle rect : game.getGrounds()) {
+        for (Rectangle rect : game.getCurrentMap().getGrounds()) {
             shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
         }
 
@@ -257,6 +290,24 @@ public class GameScreen extends MenuScreen {
         }
 
         shapeRenderer.end();
+
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+
+        if (game.getCurrentMap().getMapAddress().equals("map/map2.tmx")){
+            dustEffect1.setPosition(camera.position.x, camera.position.y);
+            dustEffect1.update(Gdx.graphics.getDeltaTime());
+            dustEffect1.draw(batch);
+        }
+        else{
+            dustEffect2.setPosition(camera.position.x, camera.position.y);
+            dustEffect2.update(Gdx.graphics.getDeltaTime());
+            dustEffect2.draw(batch);
+        }
+
+
+
+        batch.end();
 
 
         stage.getViewport().apply();
@@ -417,6 +468,7 @@ public class GameScreen extends MenuScreen {
             return;
         }
 
+
         hasNotification = true;
         Achievement achievement = toastQueue.removeFirst();
 
@@ -441,6 +493,52 @@ public class GameScreen extends MenuScreen {
                 }
             })
         ));
+    }
+
+    public ZoteView getZoteView() {
+        return zoteView;
+    }
+
+    public void showZoteDialogue(String text){
+        toastStack.clearChildren();
+        Table wrapper = new Table();
+        Table contentTable = new Table();
+        contentTable.setBackground(skin.newDrawable("white", new Color(0f, 0f, 0f, 0.8f)));
+        contentTable.setColor(0f, 0f, 0f, 0.8f);
+
+
+        contentTable.center();
+        contentTable.pad(20);
+
+        Label dialogueLabel = new Label(text, skin, "default");
+        dialogueLabel.setWrap(true);
+        dialogueLabel.setAlignment(com.badlogic.gdx.utils.Align.center);
+
+        contentTable.add(dialogueLabel).growX();
+
+        wrapper.pad(40).top();
+        wrapper.add(contentTable).growX().top();
+        toastStack.add(wrapper);
+    }
+
+    public void endTalking(){
+        for (Actor actor : toastStack.getChildren()){
+            actor.addAction(Actions.fadeOut(0.2f));
+        }
+        toastStack.clearChildren();
+    }
+
+    public void setZoteView(ZoteView zoteView) {
+        this.zoteView = zoteView;
+    }
+
+    public CameraManager getCameraManager() {
+        return cameraManager;
+    }
+
+    public void updateRendererMap(TiledMap newMap) {
+        this.tiledMap = newMap;
+        this.renderer.setMap(newMap);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.EnemyState;
+import com.hollowknight.model.enums.EnemyType;
 
 public class SimpleEnemy extends AbstractEnemy{
 
@@ -20,8 +21,8 @@ public class SimpleEnemy extends AbstractEnemy{
     private final float TURN_TIME = 0.5f;
     private final float DEATH_AIR_TIME = 0.8f;
 
-    public SimpleEnemy(Game game, float startX, float startY, float width, float height, float wOffset, float hOffsetUp, float hOffsetDown) {
-        super(width, height, wOffset, hOffsetUp, hOffsetDown, game, startX, startY);
+    public SimpleEnemy(Game game, float startX, float startY, float width, float height, float wOffset, float hOffsetUp, float hOffsetDown, EnemyType type) {
+        super(width, height, wOffset, hOffsetUp, hOffsetDown, game, startX, startY, type);
         reset();
     }
 
@@ -84,7 +85,7 @@ public class SimpleEnemy extends AbstractEnemy{
 
     private void checkHorizontalCollisions(){
         if (state == EnemyState.WALK) {
-            for (Rectangle trigger : game.getTurnPositions()) {
+            for (Rectangle trigger : game.getCurrentMap().getTurnPositions()) {
                 if (bounds.overlaps(trigger)) {
                     if ((flipped && velocity.x > 0) || (!flipped && velocity.x < 0)) {
                         if (state != EnemyState.DEATH_AIR && state != EnemyState.DEATH_LAND){
@@ -96,7 +97,7 @@ public class SimpleEnemy extends AbstractEnemy{
             }
         }
 
-        for (Rectangle rectangle : game.getGrounds()) {
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()) {
             if (Intersector.overlaps(rectangle, bounds)) {
                 if (velocity.x > 0) {
                     position.x = rectangle.x - bounds.width;
@@ -113,7 +114,7 @@ public class SimpleEnemy extends AbstractEnemy{
 
     private void checkVerticalCollisions(){
         onGround = false;
-        for (Rectangle rectangle : game.getGrounds()) {
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()) {
             if (Intersector.overlaps(rectangle, bounds)) {
                 if (velocity.y > 0) {
                     position.y = rectangle.y - bounds.height;

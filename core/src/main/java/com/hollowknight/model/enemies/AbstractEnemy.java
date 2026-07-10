@@ -9,13 +9,15 @@ import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.EnemyState;
+import com.hollowknight.model.enums.EnemyType;
 
 public abstract class AbstractEnemy implements Enemy{
     protected float width,height,wOffset,hOffsetUp,hOffsetDown;
     protected Rectangle bounds;
     protected boolean onGround = false;
-    protected boolean flipped = true;
+    protected boolean flipped = false;
     protected boolean dead = false;
+    protected EnemyType type;
 
     protected EntityAudioListener audioListener;
 
@@ -38,7 +40,7 @@ public abstract class AbstractEnemy implements Enemy{
     protected Vector2 position;
     protected Vector2 velocity;
 
-    public AbstractEnemy(float width, float height, float wOffset, float hOffsetUp, float hOffsetDown, Game game, float startX, float startY) {
+    public AbstractEnemy(float width, float height, float wOffset, float hOffsetUp, float hOffsetDown, Game game, float startX, float startY, EnemyType type) {
         float scale = App.getUnitScale();
         this.width = width*scale;
         this.height = height*scale;
@@ -53,6 +55,7 @@ public abstract class AbstractEnemy implements Enemy{
         float newWidth = this.width - 2 * this.wOffset;
         float newHeight = this.height - this.hOffsetDown - this.hOffsetUp;
         this.bounds = new Rectangle(startX, startY + this.hOffsetDown, newWidth, newHeight);
+        this.type = type;
     }
 
     @Override
@@ -129,5 +132,15 @@ public abstract class AbstractEnemy implements Enemy{
         }
         state = EnemyState.DAMAGED;
         damagedTimer = DAMAGED_TIME;
+    }
+
+    @Override
+    public void setPatrolRect(Rectangle rectangle) {
+
+    }
+
+    @Override
+    public EnemyType getType() {
+        return type;
     }
 }

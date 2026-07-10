@@ -22,5 +22,6 @@ public enum AudioAction {
     FOCUS_NOT_FINISHED,
     FIREBALL,
     STOP_FIREBALL,
-    SCREAM
+    SCREAM,
+    ZOTE_SPEAK
 }

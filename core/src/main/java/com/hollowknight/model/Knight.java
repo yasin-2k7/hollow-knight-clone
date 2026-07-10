@@ -44,7 +44,11 @@ public class Knight {
     private boolean hasShadowDash = false;
     private boolean hitSpike = false;
     private boolean isDead = false;
+    private boolean canTalk = false;
+    private boolean isTalking = false;
 
+
+    private float saveLastSafeGroundTimer = 0f;
     private float screamTimer = 0f;
     private float screamTime = 0.7f;
     private float fireballCastTimer = 0f;
@@ -86,7 +90,7 @@ public class Knight {
     private final float JUMP_SPEED = 125f;
 
     public Knight(int masks, int soul, float startX, float startY, Game game) {
-        position = new Vector2(startX * unitScale, startY * unitScale);
+        position = new Vector2(startX, startY);
         velocity = new Vector2(0, 0);
         lastSafePlace = new Vector2(position);
         state = KnightState.IDLE;
@@ -99,17 +103,29 @@ public class Knight {
     }
 
     public void update(float delta){
+        if (isTalking){
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+                GameController.zoteNextDialogue();
+            }
+            return;
+        }
+        if (canTalk && Gdx.input.isKeyJustPressed(Input.Keys.E)){
+            isTalking = true;
+            GameController.zoteNextDialogue();
+            return;
+        }
         if (state == KnightState.DEATH && isDead){
             deathTimer -= delta;
             if (deathTimer <= 0){
                 isDead = false;
                 GameController.fadeScreen(() -> {
-                    position.set(App.getCurrentGame().getMapStartX()*unitScale, App.getCurrentGame().getMapStartY()*unitScale);
+                    position.set(App.getCurrentGame().getMapStartX(), App.getCurrentGame().getMapStartY());
                     state = KnightState.IDLE;
                     velocity.set(0, 0);
                     lastSafePlace.set(position);
                     masks = 5;
                     GameController.updateMasks();
+                    GameController.snapCamera();
                     soul = 0;
                 }, 0.5f);
             }
@@ -259,7 +275,7 @@ public class Knight {
         position.x += velocity.x * delta;
         bounds.setPosition(position.x, position.y);
 
-        for (Rectangle rectangle : game.getGrounds()){
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()){
             if (Intersector.overlaps(rectangle, bounds)){
                 if (velocity.x > 0){
                     position.x = rectangle.x - bounds.width;
@@ -274,6 +290,7 @@ public class Knight {
                     velocity.y /= 2;
                 }
                 velocity.x = 0;
+                canDash = true;
                 bounds.setPosition(position.x, position.y);
             }
         }
@@ -290,7 +307,7 @@ public class Knight {
 
         onGround = false;
 
-        for (Rectangle rectangle : game.getGrounds()){
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()){
             if (Intersector.overlaps(rectangle, bounds)){
                 if (velocity.y > 0){
                     position.y = rectangle.y - bounds.height;
@@ -309,6 +326,11 @@ public class Knight {
 
         if (onGround){
             isPogo = false;
+            for (Rectangle rectangle : game.getCurrentMap().getSpikes()){
+                if (rectangle.overlaps(bounds)){
+                    return;
+                }
+            }
             lastSafePlace.set(position);
         }
 
@@ -383,6 +405,9 @@ public class Knight {
                 state = hasShadowDash ? KnightState.SHADOW_DASH : KnightState.DASH;
                 velocity.x = (flipped ? 1 : -1 ) * MOVE_SPEED * 3;
                 return;
+            }
+            else{
+                System.out.println(dashCooldownTimer + "" + dashTimer);
             }
         }
 
@@ -687,5 +712,21 @@ public class Knight {
 
     public ArrayList<Enemy> getHitEnemiesByDash() {
         return hitEnemiesByDash;
+    }
+
+    public boolean CanTalk() {
+        return canTalk;
+    }
+
+    public void setTalking(boolean talking) {
+        isTalking = talking;
+    }
+
+    public boolean isTalking() {
+        return isTalking;
+    }
+
+    public void setCanTalk(boolean canTalk) {
+        this.canTalk = canTalk;
     }
 }

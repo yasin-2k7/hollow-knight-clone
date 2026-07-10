@@ -5,6 +5,14 @@
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "02002.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "BG_bug_corpse_05.tsx": {
             "scaleInDock": 0.25,
             "scaleInEditor": 1
@@ -41,6 +49,19 @@
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
+        "BG_vines_0021_a-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "BG_vines_0023_a-map2.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/AP/Hollow Knight/assets/game/Architecture & Environment/Area specfic architecture/Forgotten Crossroads/cd_wall_01_solid.png": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
         "C:/Users/mytei/AppData/Local/Temp/Rar$DIa15252.21047/crysalPath.tsx": {
             "scaleInDock": 1
         },
@@ -76,13 +97,15 @@
             }
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/Area_Forgotten Crossroads.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/FG_rocks_02.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/FK_break__0000_wall_default.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 0.5
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/FK_break__0001_wall_half_break.tsx": {
             "scaleInDock": 1
@@ -91,54 +114,76 @@
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/backfo.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_BG_bone_01.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_BG_egg_04.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_BG_well_shaft.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_FG_bone_08.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_arch_01.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_archway_02.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_big_roof_0000_07.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_big_roof_0006_01.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_broken_wall.tsx": {
-            "scaleInDock": 1
+            "dynamicWrapping": false,
+            "scaleInDock": 0.5
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_floor_02.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_floor_highway_05.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_wall_01_solid.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cd_wall_04.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/cliff.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/floor_FG_rock_03_0002_03.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/floor_layered_0000_04_green.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/guard_clubs.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx": {
@@ -155,18 +200,33 @@
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx#back": {
             "scaleInDock": 1
         },
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map2.tmx": {
+            "scale": 0.439453125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3999.2888888888892,
+                "y": 1199.2177777777779
+            }
+        },
         "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/vil_BG_05.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1
         },
         "FG_eggs_03_0003_01.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
-        "FG_rocks.tsx": {
+        "FG_rocks-map2.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "FG_rocks.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
         "FG_webs.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
@@ -184,6 +244,7 @@
             "scaleInEditor": 1
         },
         "Nailmasters_FG_pieces_0002_Layer-46.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 0.25,
             "scaleInEditor": 1.5
         },
@@ -192,6 +253,10 @@
             "scaleInEditor": 1
         },
         "Nailmasters_FG_pieces_0008_Layer-51.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Ouiji_Cave_0001_candle_fg_04-map2.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
@@ -204,6 +269,7 @@
             "scaleInEditor": 1
         },
         "believer_Bg_plat.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
@@ -212,35 +278,45 @@
             "scaleInEditor": 1
         },
         "bg_highway_bridge_0002_3.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "cd_BG_egg_04.tsx": {
-            "scaleInDock": 0.33,
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "cd_FG_bone_05-map2.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "cd_FG_rock_20.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 0.5,
             "scaleInEditor": 1
         },
         "cd_room_BG_01.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 0.25,
             "scaleInEditor": 1
         },
         "cd_wall.tsx": {
-            "scaleInDock": 0.25,
+            "scaleInDock": 1.5,
             "scaleInEditor": 1.5
         },
         "deep_bridge_bottom_rubble.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "fall_BG_06.tsx": {
-            "scaleInDock": 0.25,
+            "scaleInDock": 1.5,
             "scaleInEditor": 1.5
         },
         "fence_01.tsx": {
-            "scaleInDock": 0.25,
+            "scaleInDock": 2,
             "scaleInEditor": 1.5
         },
         "floor.tsx": {
@@ -249,14 +325,161 @@
             "scaleInEditor": 1.5
         },
         "floor_FG_rock_03_0004_01.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1.5
+        },
+        "floor_FG_rock_04_0002_04-map2.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "floor_layered_0000_04_green.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "floor_layered_0001_03_green.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "floor_layered_0002_02_green.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "floor_layered_0003_01_green.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fog1.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fog2.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_acid_BG_02_0001_a-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_acid_BG_02_0002_a-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "fung_acid_BG_02_0002_a.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
+        "fung_acid_BG_05-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_acid_BG_06-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_big_roof_0000_a.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_big_roof_0002_a.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_big_roof_0003_a.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_big_roof_0004_a.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_new_0054_Layer-288.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_new_0064_Layer-294-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_new_0099_Layer-258-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_new_0118_Layer-248-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_new_0120_Layer-246-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_new_0126_03.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fung_new_0130_Layer-239.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_floor_01-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_floor_03_0001_a-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_rock_01_0002_a-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_rock_03_0001_Layer-1-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_spikes_01-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_spikes_02-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_spikes_04-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_spikes_05-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_spikes_06-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_spikes_07-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "fungd_wall_rock_03_0003_a-map2.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "grass1.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "grass2.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -266,20 +489,179 @@
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
+        "grass3.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "grass4.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "greenpath_fog.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "highway_FG_0007_Layer-78.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "lift_bushes-map2.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "map.tmx": {
-            "scale": 1,
-            "selectedLayer": 12,
+            "expandedObjectLayers": [
+                9,
+                20,
+                15,
+                17,
+                18,
+                16
+            ],
+            "scale": 0.5,
+            "selectedLayer": 13,
             "viewCenter": {
-                "x": 4976.5,
-                "y": 1839
+                "x": 4334,
+                "y": 1410
             }
+        },
+        "map.tmx#BG_egg_07_0000_Layer-1": {
+            "scaleInDock": 1
+        },
+        "map.tmx#BG_egg_07_0001_Layer-2": {
+            "scaleInDock": 1
+        },
+        "map.tmx#BG_egg_07_0003_Layer-4": {
+            "scaleInDock": 1
+        },
+        "map.tmx#FK_break__0005_wall_back": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map.tmx#barrel shelf bg": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
         },
         "map.tmx#believer_Bg_plat": {
             "scaleInDock": 1
+        },
+        "map.tmx#cd_BG_egg_03": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map.tmx#cd_FG_rock_20": {
+            "scaleInDock": 0.75
+        },
+        "map.tmx#cd_big_roof_0002_05": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map.tmx#cd_big_roof_0006_01": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map.tmx#cd_wall_01_solid": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map.tmx#central_BG_unlit": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map.tmx#crumble_floor": {
+            "scaleInDock": 1
+        },
+        "map.tmx#deep_bridge_back": {
+            "dynamicWrapping": false,
+            "scaleInDock": 2
+        },
+        "map.tmx#deep_bridge_back_rubble": {
+            "scaleInDock": 1
+        },
+        "map.tmx#deep_far_back": {
+            "scaleInDock": 1
+        },
+        "map.tmx#deep_mid_back2": {
+            "scaleInDock": 1
+        },
+        "map.tmx#deep_roof_break_rock": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map.tmx#deepnest_Mid_eggs_BGs": {
+            "scaleInDock": 1
+        },
+        "map.tmx#fungus_crubmle_floor": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map2.tmx": {
+            "expandedObjectLayers": [
+                17
+            ],
+            "scale": 0.33,
+            "selectedLayer": 14,
+            "viewCenter": {
+                "x": 4463.636363636364,
+                "y": 1193.939393939394
+            }
+        },
+        "map2.tmx#BG_bush_set-map2": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#BG_vines_0005_g-map2": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#BG_vines_0014_c-map2": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#BG_vines_0024_a-map2": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map2.tmx#a": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#floor": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#fog1": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#fog3": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#fung_bg_rocks_full_01": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#fung_bg_rocks_full_01-map2": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#fung_new_0150_be-map2": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#fung_slug_back-map2": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#fungd_roof_vine_01_0004_a-map2": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#fungd_spike_13-map2": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#fungd_vine_11_0000_Layer-1-map2": {
+            "scaleInDock": 1
+        },
+        "map2.tmx#lighthouse_light_0001_1": {
+            "scaleInDock": 1
+        },
+        "nailmaster_03_cloth #51838-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "old_nail_bg.tsx": {
             "dynamicWrapping": false,
@@ -307,11 +689,41 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "rocks_FG_01-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "rocks_FG_02-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "rocks_FG_02.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "roof_03-map2.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "roof_06-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "roof_07-map2.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "roof_FG_rock_08_0002_04.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "royal_garden_BG_plants-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "royal_garden_BG_small_plant-map2.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
@@ -369,8 +781,13 @@
             "scaleInEditor": 1
         },
         "wd_BG_skull_01.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1.5
+        },
+        "wd_FG_pole_01-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "wd_FG_string_02.tsx": {
             "scaleInDock": 1,
@@ -380,13 +797,30 @@
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
+        "wd_string_FG_05_0000_Layer-1-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "wd_string_FG_05_0001_Layer-2-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "wd_string_FG_05_0003_Layer-0-map2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "white_light_donut.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "wp_exterior_bg_pole.tsx": {
-            "scaleInDock": 0.25,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         }
     },
     "frame.defaultDuration": 200,
-    "last.imagePath": "C:/AP/Hollow Knight/assets/game/Architecture & Environment",
+    "last.externalTilesetPath": "C:/AP/Hollow Knight/assets/game/Architecture & Environment/Area specfic architecture/Forgotten Crossroads",
+    "last.imagePath": "C:/AP/Hollow Knight/assets/game/Architecture & Environment/Area specfic architecture/Forgotten Crossroads",
     "map.height": 300,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 8,
@@ -454,24 +888,84 @@
         "Zote_BG_statue.tsx",
         "BG_far_0004_a.tsx",
         "right_hill.tsx",
-        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx"
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx",
+        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/floor_layered_0000_04_green.tsx",
+        "map2.tmx",
+        "floor_layered_0001_03_green.tsx",
+        "floor_layered_0002_02_green.tsx",
+        "floor_layered_0003_01_green.tsx",
+        "fung_new_0130_Layer-239.tsx",
+        "fung_new_0054_Layer-288.tsx",
+        "fung_new_0126_03.tsx",
+        "02002.tsx",
+        "grass2.tsx",
+        "grass3.tsx",
+        "grass4.tsx",
+        "fung_big_roof_0002_a.tsx",
+        "floor_layered_0000_04_green.tsx",
+        "fung_big_roof_0000_a.tsx",
+        "fung_big_roof_0003_a.tsx",
+        "fung_big_roof_0004_a.tsx",
+        "wd_string_FG_05_0001_Layer-2-map2.tsx",
+        "wd_string_FG_05_0003_Layer-0-map2.tsx",
+        "wd_string_FG_05_0000_Layer-1-map2.tsx",
+        "wd_FG_pole_01-map2.tsx",
+        "royal_garden_BG_small_plant-map2.tsx",
+        "royal_garden_BG_plants-map2.tsx",
+        "roof_07-map2.tsx",
+        "roof_06-map2.tsx",
+        "roof_03-map2.tsx",
+        "rocks_FG_02-map2.tsx",
+        "rocks_FG_01-map2.tsx",
+        "Ouiji_Cave_0001_candle_fg_04-map2.tsx",
+        "nailmaster_03_cloth #51838-map2.tsx",
+        "lift_bushes-map2.tsx",
+        "fungd_wall_rock_03_0003_a-map2.tsx",
+        "fungd_floor_01-map2.tsx",
+        "fungd_floor_03_0001_a-map2.tsx",
+        "fung_acid_BG_06-map2.tsx",
+        "fung_acid_BG_05-map2.tsx",
+        "fung_acid_BG_02_0002_a-map2.tsx",
+        "fung_acid_BG_02_0001_a-map2.tsx",
+        "floor_FG_rock_04_0002_04-map2.tsx",
+        "FG_rocks-map2.tsx",
+        "cd_FG_bone_05-map2.tsx",
+        "BG_vines_0023_a-map2.tsx",
+        "BG_vines_0021_a-map2.tsx",
+        "fung_new_0064_Layer-294-map2.tsx",
+        "fung_new_0099_Layer-258-map2.tsx",
+        "fung_new_0118_Layer-248-map2.tsx",
+        "fung_new_0120_Layer-246-map2.tsx",
+        "fungd_rock_01_0002_a-map2.tsx",
+        "fungd_rock_03_0001_Layer-1-map2.tsx",
+        "fungd_spikes_01-map2.tsx",
+        "fungd_spikes_02-map2.tsx",
+        "fungd_spikes_04-map2.tsx",
+        "fungd_spikes_05-map2.tsx",
+        "fungd_spikes_06-map2.tsx",
+        "fungd_spikes_07-map2.tsx",
+        "white_light_donut.tsx",
+        "greenpath_fog.tsx",
+        "fog1.tsx",
+        "fog2.tsx"
     ],
     "project": "Map.tiled-project",
-    "property.type": "string",
+    "property.type": "object",
     "recentFiles": [
-        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx",
-        "right_hill.tsx",
-        "BG_far_0004_a.tsx",
-        "Zote_BG_statue.tsx",
-        "rocks_FG_02.tsx",
-        "wall_01.tsx",
-        "wd_FG_string_02.tsx",
-        "FG_webs.tsx",
-        "cd_FG_rock_20.tsx",
-        "FG_rocks.tsx",
-        "Nailmasters_FG_pieces_0004_Layer-54.tsx",
-        "Spider_interior_set_0018_spider_web_FG_02.tsx"
+        "fog2.tsx",
+        "fog1.tsx",
+        "greenpath_fog.tsx",
+        "white_light_donut.tsx",
+        "fungd_spikes_07-map2.tsx",
+        "fungd_spikes_06-map2.tsx",
+        "fungd_spikes_05-map2.tsx",
+        "fungd_spikes_04-map2.tsx",
+        "fungd_spikes_02-map2.tsx",
+        "fungd_spikes_01-map2.tsx",
+        "fungd_rock_03_0001_Layer-1-map2.tsx",
+        "fungd_rock_01_0002_a-map2.tsx"
     ],
+    "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 8,

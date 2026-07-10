@@ -90,10 +90,10 @@ public class StartGameMenuScreen extends MenuScreen{
             GameSave gameSave = App.getSaveSlots()[index];
             Button newButton;
             if (gameSave == null){
-                newButton = new LoadButton(true, 0, index+1, 0);
+                newButton = new LoadButton(true, 0, index+1, 0, "");
             }
             else{
-                newButton = new LoadButton(false, gameSave.getPlayTime() / 60, index+1, gameSave.getMasks());
+                newButton = new LoadButton(false, gameSave.getPlayTime() / 60, index+1, gameSave.getMasks(), gameSave.getLoadButtonBgAddress());
             }
             rootTable.add(newButton);
             Button clear = new TextButton(Texts.CLEAR_SAVE.get(App.getCurrentLanguage()), skin);
@@ -113,14 +113,9 @@ public class StartGameMenuScreen extends MenuScreen{
                             @Override
                             public void run() {
                                 blackOverlay.remove();
-                                if (gameSave == null){
-                                    GameSave newSave = Manager.createNewGame(finalI);
-                                    TiledMap map = new TmxMapLoader().load(newSave.getTiledMapAddress());
-                                    GameController.init(newSave.getTiledMapAddress(), map, newSave.getStartX(), newSave.getStartY(), newSave.getMasks(), newSave.getSoul(), newSave.getPlayTime(), newSave.getMapStartX(), newSave.getMapStartY());
-                                } else {
-                                    TiledMap map = new TmxMapLoader().load(gameSave.getTiledMapAddress());
-                                    GameController.init(gameSave.getTiledMapAddress(), map, gameSave.getStartX(), gameSave.getStartY(), gameSave.getMasks(), gameSave.getSoul(), gameSave.getPlayTime(), gameSave.getMapStartX(), gameSave.getMapStartY());
-                                }
+                                GameSave activeSave = (gameSave == null) ? Manager.createNewGame(finalI) : gameSave;
+                                TiledMap map = new TmxMapLoader().load(activeSave.getTiledMapAddress());
+                                GameController.init(activeSave, map);
                                 GameController.setCurrentSaveIndex(finalI);
                                 GameController.setGameState(GameState.RUNNING);
                                 UiManager.setScreen(GameController.getScreen());

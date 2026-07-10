@@ -58,8 +58,8 @@ public abstract class MenuScreen implements Screen {
 
         stage.addActor(mainStack);
         mainStack.add(rootStack);
-        mainStack.add(modalStack);
         mainStack.add(toastStack);
+        mainStack.add(modalStack);
 
         stage.getRoot().getColor().a = 0;
         stage.getRoot().addAction(Actions.fadeIn(0.4f));

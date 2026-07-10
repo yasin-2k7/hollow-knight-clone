@@ -10,6 +10,7 @@ import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.EnemyState;
+import com.hollowknight.model.enums.EnemyType;
 
 public class HuskHornHeadEnemy extends AbstractEnemy{
     private float visionWidth = 80f;
@@ -31,8 +32,8 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
     private final float TURN_TIME = 0.5f;
     private final float DEATH_AIR_TIME = 0.55f;
 
-    public HuskHornHeadEnemy(Game game, float startX, float startY, float width, float height, float wOffset, float hOffsetUp, float hOffsetDown) {
-        super(width, height, wOffset, hOffsetUp, hOffsetDown, game, startX, startY);
+    public HuskHornHeadEnemy(Game game, float startX, float startY, float width, float height, float wOffset, float hOffsetUp, float hOffsetDown, EnemyType type) {
+        super(width, height, wOffset, hOffsetUp, hOffsetDown, game, startX, startY, type);
         float newY = startY + this.hOffsetDown;
         visionBox = new Rectangle(bounds.x + bounds.width, newY + bounds.height/2 - visionHeight/2, visionWidth, visionHeight);
         reset();
@@ -75,7 +76,7 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
 
     private void checkVerticalCollisions() {
         onGround = false;
-        for (Rectangle rectangle : game.getGrounds()) {
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()) {
             if (Intersector.overlaps(rectangle, bounds)) {
                 if (velocity.y > 0) {
                     position.y = rectangle.y - bounds.height;
@@ -92,7 +93,7 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
     private void checkHorizontalCollisions() {
 
         if (state == EnemyState.WALK || state == EnemyState.ATTACK) {
-            for (Rectangle trigger : game.getTurnPositions()) {
+            for (Rectangle trigger : game.getCurrentMap().getTurnPositions()) {
                 if (bounds.overlaps(trigger)) {
                     if (velocity.x > 0) {
                         position.x = trigger.x - bounds.width;
@@ -116,7 +117,7 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
             }
         }
 
-        for (Rectangle rectangle : game.getGrounds()) {
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()) {
             if (Intersector.overlaps(rectangle, bounds)) {
                 if (velocity.x > 0) {
                     position.x = rectangle.x - bounds.width;
@@ -202,8 +203,8 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
         }
 
         Vector2 enemyEye = new Vector2(
-            position.x + bounds.x / 2f,
-            position.y + bounds.y / 2
+            position.x + bounds.width / 2f,
+            position.y + bounds.height / 2
         );
 
         Vector2 knightCenter = new Vector2(
@@ -211,7 +212,7 @@ public class HuskHornHeadEnemy extends AbstractEnemy{
             knight.getPosition().y + knight.getBounds().height / 2f
         );
 
-        for (Rectangle ground : App.getCurrentGame().getGrounds()) {
+        for (Rectangle ground : App.getCurrentGame().getCurrentMap().getGrounds()) {
             if (!visionBox.overlaps(ground)) {
                 continue;
             }

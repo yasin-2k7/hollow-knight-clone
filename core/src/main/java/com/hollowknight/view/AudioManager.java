@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.hollowknight.model.App;
 
+import java.util.Random;
+
 public class AudioManager {
     public static Sound buttonHover;
     public static Sound buttonClick;
@@ -29,6 +31,13 @@ public class AudioManager {
     public static Sound focusHealthHeal;
     public static Sound scream;
     public static Sound fireball;
+    public static Sound zote1;
+    public static Sound zote2;
+    public static Sound zote3;
+    public static Sound zote4;
+    public static Sound zote5;
+
+    public static Sound[] zoteSounds = new Sound[]{zote1, zote2, zote3, zote4, zote5};
 
 
     public static Music menuMusic;
@@ -38,15 +47,22 @@ public class AudioManager {
     public static Music crossroadsMainMusic;
 
     private static Music backgroundMusic;
-    private static Music nextBackgroundMusic;
+    private static Music fadingOutMusic;
 
-    private static float fadeTimer = 0f;
-    private static final float FADE_DURATION = 1f;
-    private static boolean isFading = false;
+    private static float fadeOutTimer = 0f;
+    private static final float FADE_OUT_DURATION = 0.3f;
+    private static boolean isFadingOut = false;
+    private static float fadeInTimer = 0f;
+    private static final float FADE_IN_DURATION = 0.5f;
+    private static boolean isFadingIn = false;
 
     private static long lastFootstepTime = 0;
     private static final long FOOTSTEP_COOLDOWN = 550;
     private static long wallSlideId = -1;
+
+    private static Sound zoteLastSound;
+
+    private static Random random = new Random();
 
 
 
@@ -73,6 +89,12 @@ public class AudioManager {
         scream = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/hero_scream_spell.wav"));
         focusHealthHeal = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/focus_health_heal.wav"));
         fireball = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/hero_fireball.wav"));
+        zote1 = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/Zote_01.wav"));
+        zote2 = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/Zote_02.wav"));
+        zote3 = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/Zote_03.wav"));
+        zote4 = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/Zote_04.wav"));
+        zote5 = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/Zote_05.wav"));
+        zoteSounds = new Sound[]{zote1, zote2, zote3, zote4, zote5};
 
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/26. Hollow Knight.mp3"));
         greenPathActionMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/S5 Green Path Action.wav"));
@@ -103,6 +125,20 @@ public class AudioManager {
         focusHealthCharge.stop();
     }}
 
+    public static void playZoteSound(){
+        Sound zoteSoundToPlay;
+        int randomNum = random.nextInt(5);
+        if (zoteLastSound != null && zoteSounds[randomNum] == zoteLastSound){
+            zoteSoundToPlay = (zoteSounds[(randomNum + random.nextInt(4) + 1) % 5]);
+        }
+        else{
+            zoteSoundToPlay = zoteSounds[randomNum];
+        }
+        if (App.isSfxEnabled()){
+            zoteSoundToPlay.play(1f);
+            zoteLastSound = zoteSoundToPlay;
+        }
+    }
 
 
 
@@ -156,43 +192,53 @@ public class AudioManager {
 
 
     public static void update(float delta) {
-        if (!isFading) return;
+        handleFadeOut(delta);
+        handleFadeIn(delta);
+    }
 
-        fadeTimer += delta;
-        float progress = fadeTimer / FADE_DURATION;
+    private static void handleFadeOut(float delta) {
+        if (!isFadingOut) return;
+
+        fadeOutTimer += delta;
+        float progress = fadeOutTimer / FADE_OUT_DURATION;
+
+        if (progress >= 1f) {
+            if (fadingOutMusic != null) {
+                fadingOutMusic.stop();
+            }
+            fadingOutMusic = null;
+            isFadingOut = false;
+        } else {
+            if (fadingOutMusic != null) {
+                fadingOutMusic.setVolume((1 - progress) * App.getMusicVolume());
+            }
+        }
+    }
+
+    private static void handleFadeIn(float delta) {
+        if (!isFadingIn) return;
+
+        fadeInTimer += delta;
+        float progress = fadeInTimer / FADE_IN_DURATION;
 
         if (progress >= 1f) {
             if (backgroundMusic != null) {
-                backgroundMusic.stop();
-            }
-
-            backgroundMusic = nextBackgroundMusic;
-
-            if (backgroundMusic != null) {
                 backgroundMusic.setVolume(App.getMusicVolume());
-                backgroundMusic.play();
             }
-
-            nextBackgroundMusic = null;
-            isFading = false;
+            isFadingIn = false;
         } else {
             if (backgroundMusic != null) {
-                backgroundMusic.setVolume((1 - progress) * App.getMusicVolume());
-            }
-            if (nextBackgroundMusic != null) {
-                if (!nextBackgroundMusic.isPlaying()) {
-                    nextBackgroundMusic.play();
-                }
-                nextBackgroundMusic.setVolume(progress * App.getMusicVolume());
+                backgroundMusic.setVolume(progress * App.getMusicVolume());
             }
         }
     }
 
     public static void fadeOutCurrentMusic() {
         if (backgroundMusic != null && backgroundMusic.isPlaying()) {
-            isFading = true;
-            fadeTimer = 0f;
-            nextBackgroundMusic = null;
+            fadingOutMusic = backgroundMusic;
+            backgroundMusic = null;
+            isFadingOut = true;
+            fadeOutTimer = 0f;
         }
     }
 
@@ -204,19 +250,29 @@ public class AudioManager {
             return;
         }
 
-        nextBackgroundMusic = newMusic;
-        nextBackgroundMusic.setLooping(true);
-        nextBackgroundMusic.setVolume(0f);
-        nextBackgroundMusic.play();
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+        }
 
-        isFading = true;
-        fadeTimer = 0f;
+        backgroundMusic = newMusic;
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0f);
+        backgroundMusic.play();
+
+        isFadingIn = true;
+        fadeInTimer = 0f;
     }
 
     public static void stopMusic() {
         if (backgroundMusic != null && backgroundMusic.isPlaying()) {
             backgroundMusic.stop();
         }
+        if (fadingOutMusic != null && fadingOutMusic.isPlaying()) {
+            fadingOutMusic.stop();
+        }
+        fadingOutMusic = null;
+        isFadingOut = false;
+        isFadingIn = false;
     }
 
     public static void updateMusicBoolean(){

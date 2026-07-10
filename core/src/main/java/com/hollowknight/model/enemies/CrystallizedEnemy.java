@@ -10,6 +10,7 @@ import com.hollowknight.model.Game;
 import com.hollowknight.model.Knight;
 import com.hollowknight.model.enums.AudioAction;
 import com.hollowknight.model.enums.EnemyState;
+import com.hollowknight.model.enums.EnemyType;
 
 public class CrystallizedEnemy extends AbstractEnemy{
     private float visionWidth = 80f;
@@ -36,8 +37,8 @@ public class CrystallizedEnemy extends AbstractEnemy{
     private final float TURN_TIME = 0.5f;
     private final float DEATH_AIR_TIME = 0.55f;
 
-    public CrystallizedEnemy(Game game, float startX, float startY, float width, float height, float wOffset, float hOffsetUp, float hOffsetDown) {
-        super(width, height, wOffset, hOffsetUp, hOffsetDown, game, startX, startY);
+    public CrystallizedEnemy(Game game, float startX, float startY, float width, float height, float wOffset, float hOffsetUp, float hOffsetDown, EnemyType type) {
+        super(width, height, wOffset, hOffsetUp, hOffsetDown, game, startX, startY, type);
         float newY = startY + this.hOffsetDown;
         state = EnemyState.IDLE;
         previousState = state;
@@ -82,7 +83,7 @@ public class CrystallizedEnemy extends AbstractEnemy{
 
     private void checkVerticalCollisions() {
         onGround = false;
-        for (Rectangle rectangle : game.getGrounds()) {
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()) {
             if (Intersector.overlaps(rectangle, bounds)) {
                 if (velocity.y > 0) {
                     position.y = rectangle.y - bounds.height;
@@ -108,7 +109,7 @@ public class CrystallizedEnemy extends AbstractEnemy{
             }
         }
 
-        for (Rectangle rectangle : game.getGrounds()) {
+        for (Rectangle rectangle : game.getCurrentMap().getGrounds()) {
             if (Intersector.overlaps(rectangle, bounds)) {
                 if (velocity.x > 0) {
                     position.x = rectangle.x - bounds.width;
@@ -197,8 +198,8 @@ public class CrystallizedEnemy extends AbstractEnemy{
         }
 
         Vector2 enemyEye = new Vector2(
-            position.x + bounds.x / 2f,
-            position.y + bounds.y / 2
+            position.x + bounds.width / 2f,
+            position.y + bounds.height / 2
         );
 
         Vector2 knightCenter = new Vector2(
@@ -206,7 +207,7 @@ public class CrystallizedEnemy extends AbstractEnemy{
             knight.getPosition().y + knight.getBounds().height / 2f
         );
 
-        for (Rectangle ground : App.getCurrentGame().getGrounds()) {
+        for (Rectangle ground : App.getCurrentGame().getCurrentMap().getGrounds()) {
             if (!visionBox.overlaps(ground)) {
                 continue;
             }
@@ -260,7 +261,7 @@ public class CrystallizedEnemy extends AbstractEnemy{
         this.position.y = this.startY;
         this.velocity.y = 0;
         this.velocity.x = 0;
-        this.flipped = true;
+        this.flipped = false;
         this.state = EnemyState.IDLE;
         this.health = 5;
         this.dead = false;

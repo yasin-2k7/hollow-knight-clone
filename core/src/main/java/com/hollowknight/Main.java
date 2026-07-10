@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.hollowknight.controller.GameController;
+import com.hollowknight.model.App;
 import com.hollowknight.model.Manager;
 import com.hollowknight.view.AudioManager;
 import com.hollowknight.view.GameAssetManager;
@@ -36,7 +38,9 @@ public class Main extends Game {
 
     @Override
     public void render() {
-        AudioManager.update(Gdx.graphics.getDeltaTime());
+
+        float cappedDelta = Math.min(Gdx.graphics.getDeltaTime(), 0.016f);
+        AudioManager.update(cappedDelta);
         super.render();
     }
 

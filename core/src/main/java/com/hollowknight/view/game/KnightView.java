@@ -29,6 +29,7 @@ public class KnightView {
     private Texture fireballCastSheet;
     private Texture screamSheet;
     private Texture shadowDashSheet;
+    private Texture deathSheet;
 
     private Animation<TextureRegion> idleAnimation;
     private Animation<TextureRegion> runAnimation;
@@ -49,6 +50,7 @@ public class KnightView {
     private Animation<TextureRegion> fireballCastAnimation;
     private Animation<TextureRegion> screamAnimation;
     private Animation<TextureRegion> shadowDashAnimation;
+    private Animation<TextureRegion> deathAnimation;
 
     private float stateTime = 0;
     private float flashTime = 0;
@@ -172,6 +174,12 @@ public class KnightView {
         System.arraycopy(frames[0], 0, shadowDashFrames, 0, 11);
         shadowDashAnimation = new Animation<>(0.02f, shadowDashFrames);
 
+        deathSheet = new Texture("knight/Death.png");
+        frames = TextureRegion.split(deathSheet, frameW, frameH);
+        TextureRegion[] deathFrames = new TextureRegion[18];
+        System.arraycopy(frames[0], 0, deathFrames, 0, 18);
+        deathAnimation = new Animation<>(0.1f, deathFrames);
+
     }
 
     public void draw(SpriteBatch batch, Knight knight, float delta){
@@ -253,6 +261,9 @@ public class KnightView {
                 break;
             case SHADOW_DASH:
                 currentFrame = shadowDashAnimation.getKeyFrame(stateTime, false);
+                break;
+            case DEATH:
+                currentFrame = deathAnimation.getKeyFrame(stateTime, false);
                 break;
             case IDLE:
             default:

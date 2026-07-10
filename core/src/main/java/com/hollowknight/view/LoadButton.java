@@ -14,7 +14,7 @@ public class LoadButton extends Button {
     private int masks;
     private Stack stack;
 
-    public LoadButton(boolean empty, float playTime, int buttonNum, int masks) {
+    public LoadButton(boolean empty, float playTime, int buttonNum, int masks, String bgAddress) {
         super(new ButtonStyle());
 
         float buttonWidth = 600f;
@@ -44,7 +44,7 @@ public class LoadButton extends Button {
 
         }
         else {
-            Image bg = new Image(skin.getDrawable("Area_Forgotten Crossroads"));
+            Image bg = new Image(skin.getDrawable(bgAddress));
             bg.setScaling(com.badlogic.gdx.utils.Scaling.stretch);
 
             Table bgTable = new Table();
