@@ -8,18 +8,24 @@ public class GameSave {
     private int soul;
     private int masks;
     private float playTime;
+    private int saveIndex;
+    private int deathNumber;
+    private int enemyDeathNumber;
     private String tiledMapAddress;
     private String loadButtonBgAddress;
 
     public GameSave() {}
 
-    public GameSave(float startX, float startY, int soul, int masks, float playMatch, String tiledMapAddress, float mapStartX, float mapStartY, String loadButtonBgAddress) {
+    public GameSave(float startX, float startY, int soul, int masks, float playMatch, String tiledMapAddress, float mapStartX, float mapStartY, String loadButtonBgAddress, int saveIndex, int deathNumber, int enemyDeathNumber) {
         this.startX = startX;
         this.startY = startY;
         this.mapStartX = mapStartX;
         this.mapStartY = mapStartY;
         this.soul = soul;
         this.masks = masks;
+        this.saveIndex = saveIndex;
+        this.deathNumber = deathNumber;
+        this.enemyDeathNumber = enemyDeathNumber;
         this.playTime = playMatch;
         this.tiledMapAddress = tiledMapAddress;
         this.loadButtonBgAddress = loadButtonBgAddress;
@@ -55,6 +61,18 @@ public class GameSave {
 
     public float getMapStartY() {
         return mapStartY;
+    }
+
+    public int getDeathNumber() {
+        return deathNumber;
+    }
+
+    public int getEnemyDeathNumber() {
+        return enemyDeathNumber;
+    }
+
+    public int getSaveIndex() {
+        return saveIndex;
     }
 
     public String getLoadButtonBgAddress() {

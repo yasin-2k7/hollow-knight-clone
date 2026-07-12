@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.hollowknight.model.enemies.Enemy;
 import com.hollowknight.model.enemies.FlyerEnemy;
 import com.hollowknight.model.enemies.SimpleEnemy;
 import com.hollowknight.model.enums.EnemyState;
@@ -121,6 +122,16 @@ public class MosquitoView implements EnemyView{
         float renderHeight = model.getHeight();
 
         batch.draw(currentFrame, renderX, renderY, renderWidth, renderHeight);
+    }
+
+    @Override
+    public Enemy getModel() {
+        return null;
+    }
+
+    @Override
+    public void updateRate(float rate) {
+
     }
 
     public void dispose() {

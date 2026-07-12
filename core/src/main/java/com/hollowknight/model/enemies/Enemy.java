@@ -21,4 +21,7 @@ public interface Enemy {
     EnemyState getState();
     void setPatrolRect(Rectangle rectangle);
     EnemyType getType();
+    Rectangle getWeapon();
+    void setActive();
+    void reset();
 }

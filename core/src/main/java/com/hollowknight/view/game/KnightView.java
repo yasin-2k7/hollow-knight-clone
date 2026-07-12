@@ -190,7 +190,7 @@ public class KnightView {
 
         flashTime += delta;
 
-        if (App.getCurrentGame().getKnight().getState() != KnightState.DAMAGED){
+        if (knight.getState() != KnightState.DAMAGED && !knight.isSpectatorMode()){
             stateTime += delta;
         }
 

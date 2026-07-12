@@ -1,10 +1,10 @@
 {
-startX: 546.00037
-startY: 319
-mapStartX: 450
-mapStartY: 250
-masks: 3
-playTime: 929.4997
-tiledMapAddress: map/map.tmx
-loadButtonBgAddress: Area_Forgotten Crossroads
+startX: 200
+startY: 50
+mapStartX: 200
+mapStartY: 50
+soul: 5
+masks: 5
+tiledMapAddress: map/map2.tmx
+loadButtonBgAddress: Area_Green_Path
 }

@@ -27,8 +27,11 @@ public class GameController {
     private static int currentSaveIndex = -1;
     private static Texts zoteCurrentDialogue;
     private static int zoteDialogueNum = 0;
+    private static Enemy boss;
     private static Texts[] zoteMainDialogues = {Texts.ZOTE_BOAST_1, Texts.ZOTE_MEDITATION, Texts.ZOTE_BOSS_WARNING };
     private static boolean isTransitioning = false;
+    private static ArrayList<BossArenaController> bossArenaControllers = new ArrayList<>();
+    private static ArrayList<MovingWallView> movingWallViews = new ArrayList<>();
 
     public static void addEnemyView(EnemyView enemyView){
         enemyViews.add(enemyView);
@@ -42,8 +45,85 @@ public class GameController {
         if (Gdx.input.isKeyJustPressed(App.bindings.get(GameAction.INVENTORY))){
             toggleInventory();
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.B)){
+            if (isTransitioning) return;
+            isTransitioning = true;
 
-        if (gameState == GameState.PAUSED) return;
+            boss = null;
+            bossArenaControllers.clear();
+            AudioManager.fadeOutCurrentMusic();
+            screen.getLaserViews().clear();
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    fadeScreen(() -> {
+                        TiledMap newMap = new TmxMapLoader().load("map/map3.tmx");
+                        App.getCurrentGame().loadMap("map/map3.tmx", newMap, 75, 142);
+                        App.getCurrentGame().setNewMapStartPoint(75, 142);
+                        App.getCurrentGame().getKnight().getBounds().setPosition(75, 142);
+
+                        GameMap currentMap = App.getCurrentGame().getCurrentMap();
+
+                        if (currentMap.getZote() != null) {
+                            addZoteView(new ZoteView(currentMap.getZote()));
+                            currentMap.getZote().setAudioListener(GameController::handleAudioEvent);
+                        } else {
+                            screen.setZoteView(null);
+                        }
+                        clearAllEnemyViews();
+                        for (Enemy enemy : currentMap.getAllEnemies()) {
+                            enemy.setAudioListener(action -> handleAudioEvent(action));
+
+                            makeEnemyView(enemy, enemy.getType().name().toLowerCase());
+                        }
+
+                        screen.getCameraManager().loadBoundsFromMap(newMap);
+
+                        screen.updateRendererMap(newMap);
+
+                        screen.getCameraManager().snapToPosition(App.getCurrentGame().getKnight().getBounds());
+
+                        if (App.getCurrentGame().getCurrentMap().getMapAddress().equals("map/map2.tmx")){
+                            AudioManager.fadeInMusic(AudioManager.greenPathMainMusic);
+                        }
+                        else {
+                            AudioManager.fadeInMusic(AudioManager.crossroadsMainMusic);
+                        }
+
+                        isTransitioning = false;
+                    }, 0.7f);
+                }
+            }, 0.3f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.E)){
+            if (App.getCurrentGame().getKnight().getMasks() < 5){
+                App.getCurrentGame().getKnight().increaseMask();
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.R)){
+            App.getCurrentGame().getKnight().setSoul(99);
+            AudioManager.playKnightGainSoul();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.G)){
+            App.getCurrentGame().getKnight().toggleNoDamage();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.K)){
+            for (Enemy enemy : App.getCurrentGame().getCurrentMap().getAllEnemies()){
+                if (enemy.getPosition().dst(App.getCurrentGame().getKnight().getPosition()) < 120){
+                    enemy.takeDamage(100, App.getCurrentGame().getKnight().getPosition().x, 50f);
+                }
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.S)){
+            App.getCurrentGame().getKnight().setSpectatorMode(!App.getCurrentGame().getKnight().isSpectatorMode());
+        }
+
+
+
+
+
+
+            if (gameState == GameState.PAUSED) return;
         float cappedDelta = Math.min(delta, 0.016f);
 
         App.getCurrentGame().update(cappedDelta);
@@ -55,6 +135,10 @@ public class GameController {
             }
         }
 
+        for (BossArenaController bossArenaController : bossArenaControllers){
+            bossArenaController.update(cappedDelta, boss);
+        }
+
         if (App.getCurrentGame().getActiveSpellEffect() != null) {
             if (App.getCurrentGame().getActiveSpellEffect().isFinished()) {
                 App.getCurrentGame().setActiveSpellEffect(null);
@@ -63,8 +147,18 @@ public class GameController {
             }
         }
 
+        if (App.getCurrentGame().getActiveAttackWave() != null) {
+            if (App.getCurrentGame().getActiveAttackWave().isDead()) {
+                App.getCurrentGame().setActiveAttackWave(null);
+                screen.getAttackWaveView().dispose();
+                screen.setAttackWaveView(null);
+            }
+        }
+
         App.getCurrentGame().getCurrentMap().getLasers().removeIf(Laser::isFinished);
     }
+
+
 
     public static void setSpellEffect(boolean isUpgraded, SpellType type, float x, float y, float width, float height, int damage, boolean isFlipped){
         String address;
@@ -89,6 +183,12 @@ public class GameController {
         SpellEffect spellEffect = new SpellEffect(type, x, y, width, height, damage, isFlipped);
         App.getCurrentGame().setActiveSpellEffect(spellEffect);
         screen.setSpellEffectView(new SpellEffectView(wFrame, hFrame, address, totalFrame, frameDuration, isFlipped, spellEffect));
+    }
+
+    public static void setAttackWave(float x, float y, float direction){
+        AttackWave attackWave = new AttackWave(150, 70, direction, x, y);
+        App.getCurrentGame().setActiveAttackWave(attackWave);
+        screen.setAttackWaveView(new AttackWaveView(attackWave));
     }
 
     public static void setSlashEffect(Knight knight, float attackTime){
@@ -222,7 +322,7 @@ public class GameController {
     }
 
     public static void init(GameSave gameSave,TiledMap tiledMap){
-        Game game = new Game(gameSave.getMapStartX()*unitScale, gameSave.getMapStartY()*unitScale, gameSave.getStartX()*unitScale, gameSave.getStartY()*unitScale, gameSave.getPlayTime(), gameSave.getMasks(), gameSave.getSoul());
+        Game game = new Game(gameSave.getMapStartX()*unitScale, gameSave.getMapStartY()*unitScale, gameSave.getStartX()*unitScale, gameSave.getStartY()*unitScale, gameSave.getPlayTime(), gameSave.getMasks(), gameSave.getSoul(), gameSave.getDeathNumber(), gameSave.getEnemyDeathNumber(), gameSave.getSaveIndex());
         App.setCurrentGame(game);
         GameMap map = new GameMap(game, gameSave.getTiledMapAddress(), tiledMap, 1/6f);
         game.setCurrentMap(map);
@@ -294,7 +394,9 @@ public class GameController {
     public static void switchMap(SwitchPoint switchPoint){
         if (isTransitioning) return;
         isTransitioning = true;
-        clearAllEnemyViews();
+
+        boss = null;
+        bossArenaControllers.clear();
         AudioManager.fadeOutCurrentMusic();
         screen.getLaserViews().clear();
         Timer.schedule(new Timer.Task() {
@@ -314,7 +416,7 @@ public class GameController {
                     } else {
                         screen.setZoteView(null);
                     }
-
+                    clearAllEnemyViews();
                     for (Enemy enemy : currentMap.getAllEnemies()) {
                         enemy.setAudioListener(action -> handleAudioEvent(action));
 
@@ -366,6 +468,8 @@ public class GameController {
             case SCREAM -> AudioManager.playScream();
             case STOP_FIREBALL -> AudioManager.stopFireball();
             case ZOTE_SPEAK -> AudioManager.playZoteSound();
+            case WALL_MOVE -> AudioManager.playWallMove();
+            case WALL_MOVE_IMPACT -> AudioManager.playWallMoveImpact();
             default -> {
                 return;
             }
@@ -408,8 +512,9 @@ public class GameController {
 
     public static void saveGame(){
         Knight knight = App.getCurrentGame().getKnight();
-        GameSave currentGame = new GameSave(knight.getPosition().x / unitScale, knight.getPosition().y / unitScale, knight.getSoul(), knight.getMasks(), App.getCurrentGame().getPlayTime(), App.getCurrentGame().getCurrentMap().getMapAddress(), App.getCurrentGame().getMapStartX() / unitScale, App.getCurrentGame().getMapStartY() / unitScale, App.getCurrentGame().getCurrentMap().getLoadBgAddress());
+        GameSave currentGame = new GameSave(knight.getPosition().x / unitScale, knight.getPosition().y / unitScale, knight.getSoul(), knight.getMasks(), App.getCurrentGame().getPlayTime(), App.getCurrentGame().getCurrentMap().getMapAddress(), App.getCurrentGame().getMapStartX() / unitScale, App.getCurrentGame().getMapStartY() / unitScale, App.getCurrentGame().getCurrentMap().getLoadBgAddress(), App.getCurrentGame().getSaveIndex(), App.getCurrentGame().getDeathNumber(), App.getCurrentGame().getEnemyDeathNumber());
         Manager.saveGame(currentSaveIndex, currentGame);
+        Manager.saveConfig();
         currentSaveIndex = -1;
         screen.fadeAndSwitchScreen(new MainMenuScreen());
     }
@@ -516,6 +621,76 @@ public class GameController {
             case "mosquito":
                 GameController.addEnemyView(new MosquitoView((FlyerEnemy) enemy));
                 break;
+            case "falseknight":
+                GameController.addEnemyView(new FalseKnightView((FalseKnight) enemy));
+                break;
+        }
+    }
+
+    public static void addBossArena(BossArenaController bossArenaController){
+        bossArenaControllers.add(bossArenaController);
+        bossArenaController.getFirstWall().setAudioListener(new EntityAudioListener() {
+            @Override
+            public void onAudioEvent(AudioAction action) {
+                handleAudioEvent(action);
+            }
+        });
+        bossArenaController.getSecondWall().setAudioListener(new EntityAudioListener() {
+            @Override
+            public void onAudioEvent(AudioAction action) {
+                handleAudioEvent(action);
+            }
+        });
+        movingWallViews.add(new MovingWallView(bossArenaController.getFirstWall()));
+        movingWallViews.add(new MovingWallView(bossArenaController.getSecondWall()));
+    }
+
+    public static ArrayList<BossArenaController> getBossArenaControllers() {
+        return bossArenaControllers;
+    }
+
+    public static ArrayList<MovingWallView> getMovingWallViews() {
+        return movingWallViews;
+    }
+
+    public static void finishGame() {
+        AudioManager.fadeInMusic(AudioManager.victory);
+        App.getCurrentGame().informListeners(Achievement.DEFEAT_FALSE_KNIGHT);
+        App.getCurrentGame().informListeners(Achievement.COMPLETION);
+        if (App.getCurrentGame().getPlayTime() < 900f){
+            App.getCurrentGame().informListeners(Achievement.SPEEDRUN);
+        }
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                gameState = GameState.PAUSED;
+                screen.showFinishMenu();
+            }
+        }, 10f);
+
+
+    }
+
+    public static void upgradeBoss(Enemy boss, float rate){
+        for (EnemyView enemyView : enemyViews){
+            if (enemyView.getModel() == boss){
+                enemyView.updateRate(rate);
+            }
+        }
+    }
+
+    public static Enemy getBoss() {
+        return boss;
+    }
+
+    public static void setBoss(Enemy boss) {
+        GameController.boss = boss;
+    }
+
+    public static void resetBossArenas() {
+        for (BossArenaController bossArenaController : bossArenaControllers){
+            bossArenaController.reset();
         }
     }
 }

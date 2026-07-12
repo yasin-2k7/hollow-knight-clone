@@ -1,5 +1,4 @@
 {
-language: ENGLISH
 keyBindings: {
 	DASH: 31
 	MOVE_LEFT: 21
@@ -12,8 +11,19 @@ keyBindings: {
 	MOVE_RIGHT: 22
 	ATTACK: 52
 }
-achievements: {}
-musicOn: true
-sfxOn: true
-musicVol: 0.6
+achievements: {
+	ZOTE: false
+	TRUE_HUNTER: false
+	COMPLETION: true
+	SPEEDRUN: true
+	DEFEAT_FALSE_KNIGHT: true
+}
+enemyList: {
+	CRYSTALLIZED: false
+	MOSSCREEP: false
+	MOSQUITO: false
+	FALSEKNIGHT: true
+	HUSK: false
+	CRAWLER: false
+}
 }

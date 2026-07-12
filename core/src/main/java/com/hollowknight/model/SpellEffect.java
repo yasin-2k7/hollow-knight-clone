@@ -18,6 +18,7 @@ public class SpellEffect {
     private float stateTime = 0;
     private int damage;
     private boolean isFlipped;
+    private float clearTime = 0;
 
 
     public SpellEffect(SpellType type, float x, float y, float width, float height, int damage, boolean isFlipped) {
@@ -37,7 +38,7 @@ public class SpellEffect {
             this.velocityX = isFlipped ? speed : -speed;
             this.velocityY = 0;
         } else if (type == SpellType.HOWLING_WRAITHS) {
-            this.duration = 0.4f;
+            this.duration = 1f;
             this.velocityX = 0;
             this.velocityY = 0;
         }
@@ -45,12 +46,17 @@ public class SpellEffect {
 
     public void update(float delta) {
         stateTime += delta;
+        clearTime += delta;
         if (stateTime >= duration) {
             isFinished = true;
         }
         x += velocityX * delta;
         y += velocityY * delta;
         hitBounds.setPosition(x, y);
+        if (clearTime >= duration/3){
+            hitEnemies.clear();
+            clearTime = 0;
+        }
     }
 
     public boolean isFinished() {

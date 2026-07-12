@@ -7,6 +7,8 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.hollowknight.controller.BossArenaController;
+import com.hollowknight.controller.GameController;
 
 import java.util.ArrayList;
 
@@ -83,6 +85,13 @@ public class CameraManager {
                 cameraMaxX = MathUtils.lerp(cameraMaxX, targetMaxX, BOUNDS_LERP * delta);
                 cameraMinY = MathUtils.lerp(cameraMinY, targetMinY, BOUNDS_LERP * delta);
                 cameraMaxY = MathUtils.lerp(cameraMaxY, targetMaxY, BOUNDS_LERP * delta);
+            }
+        }
+
+        for (BossArenaController bossArenaController : GameController.getBossArenaControllers()){
+            if (bossArenaController.isActive()){
+                cameraMinX = bossArenaController.getArenaMinX();
+                cameraMaxX = bossArenaController.getArenaMaxX();
             }
         }
 

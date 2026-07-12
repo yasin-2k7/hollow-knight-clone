@@ -176,7 +176,9 @@ public class SimpleEnemy extends AbstractEnemy{
         audioListener.onAudioEvent(AudioAction.ENEMY_TAKE_DAMAGE);
         velocity.x = sourceX < position.x ? knockbackSpeed : -knockbackSpeed;
         health -= amount;
-        if (health == 0){
+        if (health <= 0){
+            App.getCurrentGame().setEnemyDeathNumber(App.getCurrentGame().getEnemyDeathNumber() + 1);
+            App.enemyList.put(type, true);
             state = EnemyState.DEATH_AIR;
             velocity.y = 60f;
             deathAirTimer = DEATH_AIR_TIME;
@@ -187,6 +189,7 @@ public class SimpleEnemy extends AbstractEnemy{
         velocity.y = 20f;
     }
 
+    @Override
     public void reset(){
         this.position.x = this.startX;
         this.position.y = this.startY;

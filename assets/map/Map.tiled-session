@@ -30,6 +30,7 @@
             "scaleInEditor": 1
         },
         "BG_far_0010_a.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1.5
         },
@@ -57,6 +58,10 @@
             "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "C:/AP/Hollow Knight/assets/game/Architecture & Environment/Area specfic architecture/Forgotten Crossroads/cd_floor_highway_05.png": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
         },
         "C:/AP/Hollow Knight/assets/game/Architecture & Environment/Area specfic architecture/Forgotten Crossroads/cd_wall_01_solid.png": {
             "dynamicWrapping": true,
@@ -294,8 +299,11 @@
         },
         "cd_FG_rock_20.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 0.5,
+            "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "cd_floor_highway_05.tsx": {
+            "scaleInDock": 1
         },
         "cd_room_BG_01.tsx": {
             "dynamicWrapping": false,
@@ -515,18 +523,18 @@
         },
         "map.tmx": {
             "expandedObjectLayers": [
-                9,
                 20,
-                15,
                 17,
+                16,
                 18,
-                16
+                9,
+                15
             ],
             "scale": 0.5,
-            "selectedLayer": 13,
+            "selectedLayer": 15,
             "viewCenter": {
-                "x": 4334,
-                "y": 1410
+                "x": 11387,
+                "y": 1416
             }
         },
         "map.tmx#BG_egg_07_0000_Layer-1": {
@@ -603,11 +611,11 @@
             "expandedObjectLayers": [
                 17
             ],
-            "scale": 0.33,
+            "scale": 0.5,
             "selectedLayer": 14,
             "viewCenter": {
-                "x": 4463.636363636364,
-                "y": 1193.939393939394
+                "x": 4800,
+                "y": 1201
             }
         },
         "map2.tmx#BG_bush_set-map2": {
@@ -657,6 +665,50 @@
             "scaleInDock": 1
         },
         "map2.tmx#lighthouse_light_0001_1": {
+            "scaleInDock": 1
+        },
+        "map3.tmx": {
+            "expandedObjectLayers": [
+                12,
+                11,
+                10,
+                14,
+                13
+            ],
+            "scale": 0.33,
+            "selectedLayer": 13,
+            "viewCenter": {
+                "x": 1568.1818181818182,
+                "y": 1015.1515151515152
+            }
+        },
+        "map3.tmx#BG_egg_07_0001_Layer-2": {
+            "scaleInDock": 1
+        },
+        "map3.tmx#bg_wall": {
+            "scaleInDock": 1
+        },
+        "map3.tmx#breakable_pole_top_anim0000": {
+            "scaleInDock": 1
+        },
+        "map3.tmx#cd_floor_highway_05": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map3.tmx#cd_floor_highway_05-map3": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "map3.tmx#cd_room_BG_02": {
+            "scaleInDock": 1
+        },
+        "map3.tmx#fungd_wall_side_01": {
+            "scaleInDock": 1
+        },
+        "map3.tmx#fungus_stone_short_wall": {
+            "scaleInDock": 1
+        },
+        "map3.tmx#stone_wall_mid": {
             "scaleInDock": 1
         },
         "nailmaster_03_cloth #51838-map2.tsx": {
@@ -763,6 +815,7 @@
             "scaleInEditor": 1
         },
         "vil_BG_01.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 0.25,
             "scaleInEditor": 1
         },
@@ -819,7 +872,7 @@
         }
     },
     "frame.defaultDuration": 200,
-    "last.externalTilesetPath": "C:/AP/Hollow Knight/assets/game/Architecture & Environment/Area specfic architecture/Forgotten Crossroads",
+    "last.externalTilesetPath": "C:/AP/Hollow Knight/assets/map",
     "last.imagePath": "C:/AP/Hollow Knight/assets/game/Architecture & Environment/Area specfic architecture/Forgotten Crossroads",
     "map.height": 300,
     "map.lastUsedFormat": "tmx",
@@ -888,8 +941,6 @@
         "Zote_BG_statue.tsx",
         "BG_far_0004_a.tsx",
         "right_hill.tsx",
-        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/map1.tmx",
-        "C:/Users/mytei/Downloads/ap-hollow-knight-main/assets/maps/map1/floor_layered_0000_04_green.tsx",
         "map2.tmx",
         "floor_layered_0001_03_green.tsx",
         "floor_layered_0002_02_green.tsx",
@@ -947,11 +998,13 @@
         "white_light_donut.tsx",
         "greenpath_fog.tsx",
         "fog1.tsx",
-        "fog2.tsx"
+        "fog2.tsx",
+        "map3.tmx"
     ],
     "project": "Map.tiled-project",
     "property.type": "object",
     "recentFiles": [
+        "map3.tmx",
         "fog2.tsx",
         "fog1.tsx",
         "greenpath_fog.tsx",
@@ -962,8 +1015,7 @@
         "fungd_spikes_04-map2.tsx",
         "fungd_spikes_02-map2.tsx",
         "fungd_spikes_01-map2.tsx",
-        "fungd_rock_03_0001_Layer-1-map2.tsx",
-        "fungd_rock_01_0002_a-map2.tsx"
+        "fungd_rock_03_0001_Layer-1-map2.tsx"
     ],
     "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",

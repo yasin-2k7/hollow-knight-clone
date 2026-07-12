@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.hollowknight.controller.InputManager;
 import com.hollowknight.model.App;
+import com.hollowknight.model.Manager;
 import com.hollowknight.model.enums.GameAction;
 import com.hollowknight.model.enums.Texts;
 
@@ -62,6 +63,7 @@ public class KeyboardTable extends Stack {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 InputManager.resetToDefaults();
+                Manager.saveConfig();
                 buildKeyboardMenu();
                 rootTable.invalidateHierarchy();
                 AudioManager.playClick();

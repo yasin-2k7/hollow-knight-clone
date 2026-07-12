@@ -6,6 +6,8 @@ import com.badlogic.gdx.maps.objects.PointMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.hollowknight.controller.BossArenaController;
 import com.hollowknight.controller.GameController;
 import com.hollowknight.model.enemies.*;
 import com.hollowknight.model.enums.EnemyType;
@@ -33,8 +35,42 @@ public class GameMap {
         loadGrounds(tiledMap, unitScale);
         loadSpikes(tiledMap, unitScale);
         loadTurnPositions(tiledMap, unitScale);
+        loadMovingWalls(tiledMap, unitScale);
         spawnEnemies(tiledMap, unitScale);
         loadSwitchPoints(tiledMap, unitScale);
+
+    }
+
+    private void loadMovingWalls(TiledMap tiledMap, float unitScale) {
+        MapLayer layer = tiledMap.getLayers().get("boss trigger");
+        if (layer == null) return;
+        for (MapObject obj : layer.getObjects()) {
+            if (obj instanceof RectangleMapObject && "trigger".equals(obj.getName())) {
+                RectangleMapObject rectObj = (RectangleMapObject) obj;
+                Rectangle rect = rectObj.getRectangle();
+                Rectangle trigger = new Rectangle(
+                    rect.x * unitScale,
+                    rect.y * unitScale,
+                    rect.width * unitScale,
+                    rect.height * unitScale
+                );
+
+                PointMapObject firstWallPoint = (PointMapObject) obj.getProperties().get("firstWallPos");
+                PointMapObject secondWallPoint = (PointMapObject) obj.getProperties().get("secondWallPos");
+                if (firstWallPoint != null && secondWallPoint != null) {
+
+                    float w1X = firstWallPoint.getProperties().get("x", Float.class);
+                    float w1Y = firstWallPoint.getProperties().get("y", Float.class);
+                    Vector2 firstWall = new Vector2(w1X, w1Y).scl(unitScale);
+
+                    float w2X = secondWallPoint.getProperties().get("x", Float.class);
+                    float w2Y = secondWallPoint.getProperties().get("y", Float.class);
+                    Vector2 secondWall = new Vector2(w2X, w2Y).scl(unitScale);
+
+                    GameController.addBossArena(new BossArenaController(firstWall, secondWall, trigger));
+                }
+            }
+        }
     }
 
     private void loadGrounds(TiledMap tiledMap, float unitScale) {
@@ -101,6 +137,11 @@ public class GameMap {
                 } else if ("crystallized".equals(enemyType)) {
                     enemy = new CrystallizedEnemy(game, x, y, 180f, 120f, 60f, 40f, 5f, EnemyType.CRYSTALLIZED);
                     allEnemies.add(enemy);
+                } else if ("falseknight".equals(enemyType)) {
+                    enemy = new FalseKnight(game, x, y, 700f, 400f, 280f, 150f, 30f, EnemyType.FALSEKNIGHT);
+                    allEnemies.add(enemy);
+                    System.out.println("created model");
+                    GameController.setBoss(enemy);
                 } else if ("zote".equals(enemyType)) {
                     this.zote = new Zote(x, y, 180f, 120f, 60f, 40f, 5f);
                 } else if ("mosquito".equals(enemyType)) {
@@ -111,6 +152,7 @@ public class GameMap {
                     enemy.setPatrolRect(new Rectangle(rect.x * unitScale, rect.y * unitScale, rect.width * unitScale, rect.height * unitScale));
                 }
                 if (enemy != null){
+                    System.out.println("creating view");
                     GameController.makeEnemyView(enemy, enemyType);
                 }
 

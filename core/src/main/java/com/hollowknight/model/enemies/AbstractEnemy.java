@@ -64,7 +64,15 @@ public abstract class AbstractEnemy implements Enemy{
     @Override
     public abstract void attack(Knight knight);
 
+    @Override
+    public Rectangle getWeapon() {
+        return null;
+    }
 
+    @Override
+    public void setActive() {
+
+    }
 
     @Override
     public Rectangle getBounds() {
@@ -116,7 +124,7 @@ public abstract class AbstractEnemy implements Enemy{
     }
 
     public void takeSpikeDamage(int damage, float spikeCenterX) {
-        if (dead) return;
+        if (dead || state == EnemyState.DEATH_AIR) return;
         if (spikeCooldown > 0) return;
         audioListener.onAudioEvent(AudioAction.ENEMY_TAKE_DAMAGE);
         this.health -= damage;

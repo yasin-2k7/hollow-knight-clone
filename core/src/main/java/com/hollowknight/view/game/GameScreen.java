@@ -37,6 +37,7 @@ import com.hollowknight.model.enums.Texts;
 import com.hollowknight.view.AudioManager;
 import com.hollowknight.view.GameAssetManager;
 import com.hollowknight.view.MenuScreen;
+import com.hollowknight.view.game.enemiesView.AttackWaveView;
 import com.hollowknight.view.game.enemiesView.EnemyView;
 import com.hollowknight.view.game.enemiesView.LaserView;
 import com.hollowknight.view.game.hud.MasksTable;
@@ -79,6 +80,7 @@ public class GameScreen extends MenuScreen {
     private Game game;
     private KnightView knightView;
     private ZoteView zoteView;
+    private AttackWaveView attackWaveView;
     private SlashEffectView slashEffectView;
     private SpellEffectView spellEffectView;
     private ArrayList<LaserView> laserViews = new ArrayList<>();
@@ -257,6 +259,19 @@ public class GameScreen extends MenuScreen {
             batch.end();
         }
 
+        if (attackWaveView != null) {
+            batch.setProjectionMatrix(camera.combined);
+            batch.begin();
+            attackWaveView.draw(batch, gameDelta);
+            batch.end();
+        }
+
+        batch.begin();
+        for (MovingWallView movingWallView : GameController.getMovingWallViews()){
+            movingWallView.draw(batch);
+        }
+        batch.end();
+
         renderer.render(new int[]{8,9});
 
 
@@ -274,6 +289,10 @@ public class GameScreen extends MenuScreen {
         shapeRenderer.setColor(Color.CLEAR_WHITE);
         for (Enemy enemy : GameController.getActiveEnemies()){
             shapeRenderer.rect(enemy.getBounds().x, enemy.getBounds().y, enemy.getBounds().width, enemy.getBounds().height);
+            if (enemy.getWeapon() != null){
+                Rectangle weapon = enemy.getWeapon();
+                shapeRenderer.rect(weapon.x, weapon.y, weapon.width, weapon.height);
+            }
         }
         for (Laser laser : game.getCurrentMap().getLasers()){
             shapeRenderer.rect(laser.getBounds().x, laser.getBounds().y, laser.getBounds().width, laser.getBounds().height);
@@ -404,6 +423,14 @@ public class GameScreen extends MenuScreen {
         modalStack.setVisible(true);
     }
 
+    public void showFinishMenu() {
+        modalStack.clearChildren();
+        Image darkOverlay = createDarkOverlay(0.5f);
+        modalStack.add(darkOverlay);
+        switchModalTable(new FinishTable(skin));
+        modalStack.setVisible(true);
+    }
+
     public void showInventoryMenu() {
         modalStack.clearChildren();
         Image darkOverlay = createDarkOverlay(0.5f);
@@ -489,7 +516,9 @@ public class GameScreen extends MenuScreen {
             Actions.run(new Runnable() {
                 @Override
                 public void run() {
+                    System.out.println("notif");
                     showNextToast();
+
                 }
             })
         ));
@@ -539,6 +568,14 @@ public class GameScreen extends MenuScreen {
     public void updateRendererMap(TiledMap newMap) {
         this.tiledMap = newMap;
         this.renderer.setMap(newMap);
+    }
+
+    public AttackWaveView getAttackWaveView() {
+        return attackWaveView;
+    }
+
+    public void setAttackWaveView(AttackWaveView attackWaveView) {
+        this.attackWaveView = attackWaveView;
     }
 
     @Override

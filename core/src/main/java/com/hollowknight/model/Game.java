@@ -25,11 +25,15 @@ public class Game {
     private float startX, startY;
     private float mapStartX, mapStartY;
     private float playTime;
+    private int deathNumber;
+    private int enemyDeathNumber;
     private Knight knight;
+    private int saveIndex;
     private GameMap currentMap;
     private final float GRAVITY = -250f;
     private SlashEffect activeSlashEffect = null;
     private SpellEffect activeSpellEffect = null;
+    private AttackWave activeAttackWave = null;
     private EntityAudioListener audioListener;
     private ArrayList<EventListener> eventListeners = new ArrayList<>();
 
@@ -38,12 +42,15 @@ public class Game {
         return GRAVITY;
     }
 
-    public Game(float mapStartX, float mapStartY, float startX, float startY, float playTime, int masks, int soul) {
+    public Game(float mapStartX, float mapStartY, float startX, float startY, float playTime, int masks, int soul, int deathNumber, int enemyDeathNumber, int saveIndex) {
         this.startX = startX;
         this.startY = startY;
         this.mapStartX = mapStartX;
         this.mapStartY = mapStartY;
         this.playTime = playTime;
+        this.deathNumber = deathNumber;
+        this.enemyDeathNumber = enemyDeathNumber;
+        this.saveIndex = saveIndex;
         knight = new Knight(masks, soul, startX, startY, this);
     }
 
@@ -124,6 +131,11 @@ public class Game {
 
                     }
                 }
+                if (enemy.getWeapon() != null){
+                    if (enemy.getWeapon().overlaps(knight.getBounds())){
+                        knight.takeDamage(enemy.getPosition().x > knight.getPosition().x ? -1 : 1);
+                    }
+                }
             }
         }
 
@@ -136,6 +148,10 @@ public class Game {
                  }
              }
          }
+
+        if (activeAttackWave != null) {
+            activeAttackWave.update(delta);
+        }
 
          if (!knight.isNoDamage()) {
              for (Rectangle spike : currentMap.getSpikes()) {
@@ -159,6 +175,12 @@ public class Game {
                      break;
                  }
              }
+             if (activeAttackWave != null){
+                 if (knight.getBounds().overlaps(activeAttackWave.getBounds())){
+                     knight.takeDamage((int) activeAttackWave.getDirection());
+                 }
+             }
+
          }
 
 
@@ -245,7 +267,8 @@ public class Game {
         eventListeners.add(eventListener);
     }
 
-    private void informListeners(Achievement achievement){
+    public void informListeners(Achievement achievement){
+        if (App.achievements.get(achievement)) return;
         for (EventListener eventListener : eventListeners){
             eventListener.onAchievementUnlocked(achievement);
         }
@@ -266,5 +289,33 @@ public class Game {
     public void setNewMapStartPoint(float x, float y){
         this.mapStartX = x;
         this.mapStartY = y;
+    }
+
+    public void setActiveAttackWave(AttackWave activeAttackWave) {
+        this.activeAttackWave = activeAttackWave;
+    }
+
+    public AttackWave getActiveAttackWave() {
+        return activeAttackWave;
+    }
+
+    public int getDeathNumber() {
+        return deathNumber;
+    }
+
+    public void setDeathNumber(int deathNumber) {
+        this.deathNumber = deathNumber;
+    }
+
+    public void setEnemyDeathNumber(int enemyDeathNumber) {
+        this.enemyDeathNumber = enemyDeathNumber;
+    }
+
+    public int getSaveIndex() {
+        return saveIndex;
+    }
+
+    public int getEnemyDeathNumber() {
+        return enemyDeathNumber;
     }
 }

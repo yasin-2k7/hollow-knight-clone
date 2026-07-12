@@ -36,12 +36,14 @@ public class AudioManager {
     public static Sound zote3;
     public static Sound zote4;
     public static Sound zote5;
+    public static Sound wallMove;
+    public static Sound wallMoveImpact;
 
     public static Sound[] zoteSounds = new Sound[]{zote1, zote2, zote3, zote4, zote5};
 
 
     public static Music menuMusic;
-    public static Music greenPathActionMusic;
+    public static Music victory;
     public static Music greenPathMainMusic;
     public static Music crossroadsActionMusic;
     public static Music crossroadsMainMusic;
@@ -95,9 +97,11 @@ public class AudioManager {
         zote4 = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/Zote_04.wav"));
         zote5 = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/Zote_05.wav"));
         zoteSounds = new Sound[]{zote1, zote2, zote3, zote4, zote5};
+        wallMove = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/col_moving_wall_move.wav"));
+        wallMoveImpact = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/col_moving_wall_impact_into_place.wav"));
 
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/26. Hollow Knight.mp3"));
-        greenPathActionMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/S5 Green Path Action.wav"));
+        victory = Gdx.audio.newMusic(Gdx.files.internal("audio/music/S61-216 Hollow Knight.wav"));
         greenPathMainMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/S5 Green Path Main.wav"));
         crossroadsActionMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/S19 Action.wav"));
         crossroadsMainMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/S19 Crossroads Main.wav"));
@@ -124,6 +128,9 @@ public class AudioManager {
         focusHealthHeal.play(1f);
         focusHealthCharge.stop();
     }}
+    public static void playWallMove() { if (App.isSfxEnabled()) wallMove.play(1f);}
+    public static void playWallMoveImpact() { if (App.isSfxEnabled()) wallMoveImpact.play(1f);}
+
 
     public static void playZoteSound(){
         Sound zoteSoundToPlay;
@@ -299,7 +306,7 @@ public class AudioManager {
 
         if (menuMusic != null) menuMusic.dispose();
         if (greenPathMainMusic != null) greenPathMainMusic.dispose();
-        if (greenPathActionMusic != null) greenPathActionMusic.dispose();
+        if (victory != null) victory.dispose();
         if (crossroadsMainMusic != null) crossroadsMainMusic.dispose();
         if (crossroadsActionMusic != null) crossroadsActionMusic.dispose();
 

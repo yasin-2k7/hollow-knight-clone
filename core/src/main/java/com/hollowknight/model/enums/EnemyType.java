@@ -5,5 +5,6 @@ public enum EnemyType {
     CRAWLER,
     HUSK,
     MOSQUITO,
-    CRYSTALLIZED
+    CRYSTALLIZED,
+    FALSEKNIGHT
 }

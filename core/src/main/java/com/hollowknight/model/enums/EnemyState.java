@@ -13,5 +13,16 @@ public enum EnemyState {
     ATTACK_ANTICIPATE,
     EVADE,
     SHOOT,
-    BACK
+    BACK,
+    ATTACK_RECOVER,
+    BODY,
+    DEATH_HIT,
+    JUMP,
+    JUMP_ANTIC,
+    JUMP_ATTACK,
+    JUMP_ATTACK_RECOVER,
+    LAND,
+    RUN,
+    RUN_ANTIC,
+    STUN_RECOVER,
 }

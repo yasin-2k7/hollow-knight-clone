@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.hollowknight.controller.InputManager;
 import com.hollowknight.model.enums.Achievement;
+import com.hollowknight.model.enums.EnemyType;
 import com.hollowknight.model.enums.GameAction;
 import com.hollowknight.model.enums.Language;
 
@@ -16,21 +17,27 @@ public class Manager {
     private static final int MAX_SLOTS = 4;
 
     private static class SettingsDTO {
-        public Language language;
-        public ObjectMap<String, Integer> keyBindings;
-        public ObjectMap<String, Boolean> achievements;
-        public boolean musicOn;
-        public boolean sfxOn;
-        public float musicVol;
+        public Language language = Language.ENGLISH;
+        public ObjectMap<String, Integer> keyBindings = new ObjectMap<>();
+        public ObjectMap<String, Boolean> achievements = new ObjectMap<>();
+        public ObjectMap<String, Boolean> enemyList = new ObjectMap<>();
+        public boolean musicOn = true;
+        public boolean sfxOn = true;
+        public float musicVol = 0.6f;
+
+        public SettingsDTO() {}
     }
 
+
     public static void loadConfig() {
-        Json json = new Json();
         FileHandle file = Gdx.files.local(CONFIG_FILE);
 
         InputManager.resetToDefaults();
         for (Achievement achievement : Achievement.values()){
             App.achievements.put(achievement, false);
+        }
+        for (EnemyType enemyType : EnemyType.values()){
+            App.enemyList.put(enemyType, false);
         }
 
         if (file.exists()) {
@@ -40,16 +47,37 @@ public class Manager {
             App.setSfxEnabled(dto.sfxOn);
             App.setMusicVolume(dto.musicVol);
             if (dto.keyBindings != null) {
-                App.bindings.clear();
+                System.out.println("hi");
                 for (ObjectMap.Entry<String, Integer> entry : dto.keyBindings.entries()) {
-                    GameAction action = GameAction.valueOf(entry.key);
-                    App.bindings.put(action, entry.value);
+                    try {
+                        GameAction action = GameAction.valueOf(entry.key);
+                        App.bindings.put(action, entry.value);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("error");
+                    }
+
                 }
             }
             if (dto.achievements != null) {
                 for (ObjectMap.Entry<String, Boolean> entry : dto.achievements.entries()) {
-                    Achievement achievement = Achievement.valueOf(entry.key);
-                    App.achievements.put(achievement, entry.value);
+                    try{
+                        Achievement achievement = Achievement.valueOf(entry.key);
+                        App.achievements.put(achievement, entry.value);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("error");
+                    }
+
+                }
+            }
+            if (dto.enemyList != null) {
+                for (ObjectMap.Entry<String, Boolean> entry : dto.enemyList.entries()) {
+                    try{
+                        EnemyType type = EnemyType.valueOf(entry.key);
+                        App.enemyList.put(type, entry.value);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("error");
+                    }
+
                 }
             }
         } else {
@@ -74,7 +102,11 @@ public class Manager {
             dto.achievements.put(entry.key.name(), entry.value);
         }
 
-        Json json = new Json();
+        dto.enemyList = new ObjectMap<>();
+        for (ObjectMap.Entry<EnemyType, Boolean> entry : App.enemyList.entries()) {
+            dto.enemyList.put(entry.key.name(), entry.value);
+        }
+
         Gdx.files.local(CONFIG_FILE).writeString(json.prettyPrint(dto), false);
     }
 
@@ -94,7 +126,7 @@ public class Manager {
     }
 
     public static GameSave createNewGame(int slotIndex) {
-        GameSave newSave = new GameSave(200f, 50f, 5, 5, 0, "map/map2.tmx", 200f, 50f, "Area_Green_Path");
+        GameSave newSave = new GameSave(200f, 50f, 5, 5, 0, "map/map2.tmx", 200f, 50f, "Area_Green_Path", slotIndex, 0, 0);
         App.getSaveSlots()[slotIndex] = newSave;
         saveGame(slotIndex, newSave);
         return newSave;

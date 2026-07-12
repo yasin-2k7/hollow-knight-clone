@@ -23,5 +23,7 @@ public enum AudioAction {
     FIREBALL,
     STOP_FIREBALL,
     SCREAM,
-    ZOTE_SPEAK
+    ZOTE_SPEAK,
+    WALL_MOVE,
+    WALL_MOVE_IMPACT
 }

@@ -74,6 +74,9 @@ public class Knight {
     private float deathTime = 2f;
     private float deathTimer = 0f;
 
+    private boolean godMode = false;
+    private boolean spectatorMode = false;
+
     private ArrayList<Charms> unlockedCharms = new ArrayList<>();
     private ArrayList<Charms> equippedCharms = new ArrayList<>();
 
@@ -103,6 +106,32 @@ public class Knight {
     }
 
     public void update(float delta){
+        if (spectatorMode){
+            if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_RIGHT))){
+                position.x += 3;
+            }
+            if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_LEFT))){
+                position.x -= 3;
+            }
+            if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_DOWN))){
+                position.y -= 3;
+            }
+            if (Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_UP))){
+                position.y += 3;
+            }
+            if (noDamage){
+                if (godMode) return;
+                noDamageTimer -= delta;
+                if (noDamageTimer <= 0){
+                    noDamage = false;
+                }
+            }
+            hitSpike = false;
+            velocity.x = 0;
+            velocity.y = 0;
+            bounds.setPosition(position.x, position.y);
+            return;
+        }
         if (isTalking){
             if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
                 GameController.zoteNextDialogue();
@@ -126,6 +155,7 @@ public class Knight {
                     masks = 5;
                     GameController.updateMasks();
                     GameController.snapCamera();
+                    GameController.resetBossArenas();
                     soul = 0;
                 }, 0.5f);
             }
@@ -250,6 +280,7 @@ public class Knight {
         }
 
         if (noDamage){
+            if (godMode) return;
             noDamageTimer -= delta;
             if (noDamageTimer <= 0){
                 noDamage = false;
@@ -346,7 +377,7 @@ public class Knight {
 
     }
 
-    public void inputHandle(){
+    private void inputHandle(){
         boolean jumpJustPressed = Gdx.input.isKeyJustPressed(App.bindings.get(GameAction.JUMP));
         boolean jumpPressed = Gdx.input.isKeyPressed(App.bindings.get(GameAction.JUMP));
 
@@ -356,7 +387,24 @@ public class Knight {
         boolean leftPressed = Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_LEFT));
         boolean rightPressed = Gdx.input.isKeyPressed(App.bindings.get(GameAction.MOVE_RIGHT));
 
-        if (state == KnightState.SHADOW_DASH || state == KnightState.DASH || state == KnightState.ATTACK_UP || state == KnightState.ATTACK_DOWN || state == KnightState.ATTACK_SLASH || state == KnightState.ATTACK_ALT_SLASH || state == KnightState.DAMAGED || state == KnightState.FIREBALL_CAST || state == KnightState.SCREAM){
+        if (state == KnightState.SHADOW_DASH || state == KnightState.DASH || state == KnightState.DAMAGED || state == KnightState.FIREBALL_CAST || state == KnightState.SCREAM){
+            return;
+        }
+
+        if (state == KnightState.ATTACK_UP || state == KnightState.ATTACK_DOWN || state == KnightState.ATTACK_SLASH || state == KnightState.ATTACK_ALT_SLASH) {
+            if (rightPressed) {
+                flipped = true;
+                velocity.x = MOVE_SPEED;
+            } else if (leftPressed) {
+                flipped = false;
+                velocity.x = -MOVE_SPEED;
+            } else {
+                velocity.x = 0;
+            }
+
+            if (!isPogo && !jumpPressed && velocity.y > 0){
+                velocity.y = velocity.y * 0.7f;
+            }
             return;
         }
 
@@ -448,6 +496,7 @@ public class Knight {
                 useAltSlash = !useAltSlash;
             }
             GameController.setSlashEffect(this, attackTime);
+            velocity.x = 0;
             return;
         }
 
@@ -519,6 +568,7 @@ public class Knight {
     }
 
     public void takeDamage(int sign, boolean isSpike){
+        if (godMode) return;
         if (state == KnightState.DEATH) return;
         this.hitSpike = isSpike;
         audioListener.onAudioEvent(AudioAction.KNIGHT_TAKE_DAMAGE);
@@ -529,6 +579,7 @@ public class Knight {
             GameController.updateMasks();
             isDead = true;
             state = KnightState.DEATH;
+            App.getCurrentGame().setDeathNumber(App.getCurrentGame().getDeathNumber()+1);
             deathTimer = deathTime;
             return;
         }
@@ -538,6 +589,7 @@ public class Knight {
         state = KnightState.DAMAGED;
         damagedTimer = damagedTime;
         velocity.y = 70f;
+        canDash = true;
     }
 
     public void pogoJump(){
@@ -724,6 +776,27 @@ public class Knight {
 
     public boolean isTalking() {
         return isTalking;
+    }
+
+    public void increaseMask(){
+        masks++;
+        GameController.updateMasks();
+    }
+
+    public void setSoul(int soul) {
+        this.soul = soul;
+    }
+
+    public void toggleNoDamage(){
+        godMode = !godMode;
+    }
+
+    public void setSpectatorMode(boolean spectatorMode) {
+        this.spectatorMode = spectatorMode;
+    }
+
+    public boolean isSpectatorMode() {
+        return spectatorMode;
     }
 
     public void setCanTalk(boolean canTalk) {
